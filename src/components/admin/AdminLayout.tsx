@@ -1,5 +1,5 @@
 import { MouseEvent, useEffect } from 'react'
-import Sidebar from '../ui/Sidebar'
+import Sidebar from '../layout/AdminSidebar'
 import BreadCrumbs from '../ui/BreadCrumbs'
 import { useStoreDispatch } from '../../store'
 import { getAuthStatus, logOut } from '../../store/slices/authSlice'

@@ -84,7 +84,7 @@ const ReviewTile = ({ review, refetchReview }: Props) => {
             </span>
 
             <span className='text-sm text-slate-500'>
-                {getMonth((new Date(review.createdAt)).getMonth()) + ', ' + (new Date(review.createdAt)).getDate()}
+                {getMonth((new Date(review.createdAt)).getMonth() + 1) + ', ' + (new Date(review.createdAt)).getDate()}
             </span>
 
             <button

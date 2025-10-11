@@ -74,7 +74,7 @@ const UserOrders = () => {
           refinedData.map((order: Order) => (
             <div key={order.id} className="grid grid-cols-ui-table-order items-center justify-between gap-x-8 px-8 py-4 border-b-[1px] ">
               <span className="text-sm text-slate-500 ">{order.orderNumber}</span>
-              <span className="text-sm text-slate-500">{new Date(order.orderPlaced).getDate() +' '+getMonth((new Date(order.orderPlaced).getMonth())) + ' ' + (new Date(order.orderPlaced).getFullYear())}</span>
+              <span className="text-sm text-slate-500">{new Date(order.orderPlaced).getDate() +' '+getMonth((new Date(order.orderPlaced).getMonth() + 1)) + ' ' + (new Date(order.orderPlaced).getFullYear())}</span>
               <span className="text-sm text-slate-500 ">{order.items.length}</span>
               <span className="text-sm text-slate-500">{order.total}</span>
               <span className="text-sm text-slate-500">{order.status}</span>

@@ -1,8 +1,8 @@
-import  {  MouseEvent, useEffect } from 'react'
+import { MouseEvent, useEffect } from 'react'
 
 import { getAuthStatus, logOut, useAuth } from '../../store/slices/authSlice'
-import {  Outlet, useLocation, useNavigate } from 'react-router-dom'
-import Sidebar from '../../components/ui/Sidebar'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import Sidebar from '../../components/layout/AdminSidebar'
 import BreadCrumbs from '../../components/ui/BreadCrumbs'
 
 import { useToasts } from "../../store/slices/toastSlice"
@@ -28,27 +28,27 @@ const PrivateRoute = () => {
         dispatch(getAuthStatus())
     }, [])
 
-    useEffect(()=> {
-        if(status === Status.FULFILLED && !isLoggedIn) {
+    useEffect(() => {
+        if (status === Status.FULFILLED && !isLoggedIn) {
             navigate('/admin/login')
         }
-        else if(status === Status.REJECTED) {
+        else if (status === Status.REJECTED) {
             navigate('/admin/login')
         }
 
     }, [isLoggedIn, status])
 
-    useEffect(()=> {
-        
-        if(authUser && authUser.role !== Role.ADMIN) {
+    useEffect(() => {
+
+        if (authUser && authUser.role !== Role.ADMIN) {
             navigate('/admin/login')
         }
     }, [authUser])
 
-    useEffect(()=> {
-    if (location.pathname === '/admin' || location.pathname === '/admin/') {
-        return navigate('/admin/dashboard')
-    }
+    useEffect(() => {
+        if (location.pathname === '/admin' || location.pathname === '/admin/') {
+            return navigate('/admin/dashboard')
+        }
     }, [location.pathname])
 
 
@@ -57,13 +57,13 @@ const PrivateRoute = () => {
         dispatch(logOut())
     }
 
-    if(status === Status.PENDING || !isLoggedIn || authUser?.role !== Role.ADMIN) {
+    if (status === Status.PENDING || !isLoggedIn || authUser?.role !== Role.ADMIN) {
         return <Preloader />
     }
-    
+
     return (
         <div className='admin-wrapper'>
-       
+
             {
                 allToasts?.length > 0 && <ToastComponent toasts={allToasts} />
             }
@@ -81,7 +81,7 @@ const PrivateRoute = () => {
                 </div>
 
                 {
-                    status !== Status.FULFILLED ? <ProgressLoader cssClass='mt-32' /> :<Outlet />
+                    status !== Status.FULFILLED ? <ProgressLoader cssClass='mt-32' /> : <Outlet />
                 }
 
 

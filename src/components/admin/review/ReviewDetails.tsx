@@ -43,7 +43,7 @@ const ReviewDetails = ({ review }: Props) => {
 
                 <span className=" font-medium">Submitted</span>
                 <span className='col-span-2'>
-                    {(new Date(review.createdAt)).getDate() + ' ' + getMonth((new Date(review.createdAt)).getMonth()) + ', ' + (new Date(review.createdAt)).getFullYear()}
+                    {(new Date(review.createdAt)).getDate() + ' ' + getMonth((new Date(review.createdAt)).getMonth() + 1) + ', ' + (new Date(review.createdAt)).getFullYear()}
                 </span>
             </div>
 

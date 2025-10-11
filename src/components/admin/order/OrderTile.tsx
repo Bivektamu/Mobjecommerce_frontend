@@ -52,7 +52,7 @@ const OrderTile = ({ order, refetchOrders }: Props) => {
             <span className='text-sm text-slate-500'>
                 {
 
-                    (new Date(order.orderPlaced)).getDate() + ' ' + getMonth((new Date(order.orderPlaced)).getMonth()) + ' ' + (new Date(order.orderPlaced).getFullYear())
+                    (new Date(order.orderPlaced)).getDate() + ' ' + getMonth((new Date(order.orderPlaced)).getMonth() + 1) + ' ' + (new Date(order.orderPlaced).getFullYear())
                 }
             </span>
 

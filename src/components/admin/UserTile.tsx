@@ -118,7 +118,7 @@ const UserTile = ({ user, refetchUsers }: Props) => {
                     {
                         (new Date(user.registeredDate)).getDate()
                         + ' ' +
-                        getMonth((new Date(user.registeredDate)).getMonth())
+                        getMonth((new Date(user.registeredDate)).getMonth() + 1)
                         + ' ' +
                         (new Date(user.registeredDate)).getFullYear()
 

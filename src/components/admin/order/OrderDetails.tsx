@@ -46,7 +46,7 @@ const OrderDetails = ({ order }: Props) => {
             <div className="flex items-center justify-between mb-4">
                 <span className="text-sm font-medium text-slate-500">Ordered on:</span>
                 {
-                    (new Date(order.orderPlaced)).getDate() + ' ' + getMonth((new Date(order.orderPlaced)).getMonth()) + ' ' + (new Date(order.orderPlaced).getFullYear())
+                    (new Date(order.orderPlaced)).getDate() + ' ' + getMonth((new Date(order.orderPlaced)).getMonth() + 1) + ' ' + (new Date(order.orderPlaced).getFullYear())
                 }
 
             </div>

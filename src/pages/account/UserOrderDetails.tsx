@@ -46,7 +46,7 @@ const UserOrderDetails = () => {
 
         <div className="flex items-center gap-x-8 px-8 py-4 border-b-[1px]">
           <span className="text-sm text-slate-500 font-semibold basis-1/3 ">Placed On</span>
-          <span className="text-sm text-slate-500 basis-2/3">{new Date(order.orderPlaced).getDate() + ' ' + getMonth((new Date(order.orderPlaced).getMonth())) + ' ' + (new Date(order.orderPlaced).getFullYear())}</span>
+          <span className="text-sm text-slate-500 basis-2/3">{new Date(order.orderPlaced).getDate() + ' ' + getMonth((new Date(order.orderPlaced).getMonth() + 1)) + ' ' + (new Date(order.orderPlaced).getFullYear())}</span>
         </div>
 
         <div className="flex items-center gap-x-8 px-8 py-4 border-b-[1px]">

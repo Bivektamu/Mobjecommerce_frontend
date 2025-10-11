@@ -32,7 +32,7 @@ const WishListItem = ({ item, removeFromWishList }: Props) => {
                 <img src={product.imgs[0].url} alt="UTRAANET Black" className="w-20 h-20 object-contain" />
                 <div>
                     <h3 className="font-semibold mb-2">{product.title}</h3>
-                    <p className="text-xs font-medium mb-2 text-slate-600">Added on: {new Date(item.createdAt).getDate() +' '+getMonth((new Date(item.createdAt).getMonth())) + ' ' + (new Date(item.createdAt).getFullYear())}</p>
+                    <p className="text-xs font-medium mb-2 text-slate-600">Added on: {new Date(item.createdAt).getDate() +' '+getMonth((new Date(item.createdAt).getMonth() + 1)) + ' ' + (new Date(item.createdAt).getFullYear())}</p>
                     <button className="text-sm font-medium" onClick={e=>removeFromWishList(e, item.id)}>Remove Item</button>
                 </div>
             </div>
