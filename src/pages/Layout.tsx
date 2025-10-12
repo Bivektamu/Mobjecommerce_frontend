@@ -6,6 +6,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { useToasts } from '../store/slices/toastSlice'
 import ToastComponent from '../components/ui/Toast'
 import { AnimatePresence } from 'framer-motion'
+import NewsLetter from '../components/layout/NewsLetter'
 
 const Layout = () => {
   const allToasts = useToasts()
@@ -31,6 +32,7 @@ const Layout = () => {
           <Outlet />
         </main>
       </AnimatePresence >
+      <NewsLetter />
       <Footer />
     </>
 

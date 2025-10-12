@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
-import Arrow from './ui/Arrow'
-import HeroImg from '../assets/hero.png'
+import Arrow from '../ui/Arrow'
+import HeroImg from '../../assets/hero.png'
 
 const Hero = () => {
     return (
-        <section id="hero" className='bg-regal-white'>
+        <section id="hero" className='bg-regal-white px-4'>
             <div className="container flex justify-between items-center mx-auto">
                 <div className="flex flex-col items-start py-32 ">
                     <h1 className='mb-4 text-4xl font-semibold'>Fresh Arrivals Online</h1>

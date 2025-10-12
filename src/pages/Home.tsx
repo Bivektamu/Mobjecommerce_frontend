@@ -1,4 +1,4 @@
-import Hero from "../components/Hero"
+import Hero from "../components/home/Hero"
 import Grids from "../components/ui/Grids"
 import { getProducts, useProduct } from "../store/slices/productSlice"
 import { useEffect } from "react"
@@ -9,7 +9,7 @@ import Arrow from "../components/ui/Arrow"
 import { Link } from "react-router-dom"
 import GridLoader from "../components/ui/GridLoader"
 import { Status } from "../store/types"
-import FeaturedLatest from "../components/FeaturedLatest"
+import FeaturedLatest from "../components/home/FeaturedLatest"
 import ProductCard from "../components/ui/ProductCard"
 import PageWrapper from "../components/ui/PageWrapper"
 
@@ -24,8 +24,8 @@ const Home = () => {
   return (
     <PageWrapper>
       <Hero />
-      <section className="bg-white pt-24 pb-36">
-        <Grids cssClass='container mx-auto grid-cols-3 grid gap-24 mb-36'>
+      <section className="bg-white pt-24 pb-36 px-4">
+        <Grids cssClass='container mx-auto md:grid-cols-1 lg:grid-cols-3  grid gap-24 mb-36'>
           <div>
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="48" height="48" rx="24" fill="#F6F6F6" />
@@ -60,7 +60,7 @@ const Home = () => {
 
         {(status === Status.PENDING) ? <GridLoader col='4' /> : products.length < 1 ? <h2 className="text-lg text-slate-600 text-center">Sorry, there are no products.</h2> :
 
-          <Grids cssClass='container mx-auto grid-cols-4 grid gap-12'>
+          <Grids cssClass='container mx-auto lg:grid-cols-4 md:grid-cols-1 grid gap-12'>
 
             {
               products.slice(0, 4).map(product =>
@@ -72,7 +72,7 @@ const Home = () => {
         }
       </section>
 
-      <section className="bg-regal-white">
+      <section className="bg-regal-white px-4">
         <div className="container flex justify-between items-center mx-auto pb-12">
           <div className="flex flex-col items-start ">
             <h1 className='mb-4 text-4xl font-semibold'>Browse Our Fashion Paradise!</h1>

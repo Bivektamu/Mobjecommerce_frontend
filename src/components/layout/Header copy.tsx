@@ -16,7 +16,7 @@ import { GiShoppingCart } from 'react-icons/gi'
 const Header = () => {
   const { products } = useProduct()
   const { isLoggedIn, authUser } = useAuth()
-  const { setAvatarEmail, avatar } = useAvatar()
+  const {setAvatarEmail, avatar} = useAvatar()
   const { user } = useUser()
 
 
@@ -25,7 +25,7 @@ const Header = () => {
 
   useEffect(() => {
     if (authUser && authUser.role === Role.CUSTOMER) {
-
+      
       dispatch(getUser(authUser.id))
     }
   }, [authUser])
@@ -48,38 +48,27 @@ const Header = () => {
   }
 
   return (
-    <header className='bg-white p-4 fixed lg:relative w-full h-[75px]'>
-      <nav className="container mx-auto  flex justify-between flex-wrap ">
+    <header className=' bg-white p-4 overflow-hidden'>
+      <div className="container mx-auto  flex justify-between">
         <Logo />
-        <div className="flex  gap-6 fixed lg:static flex-col lg:flex-row w-full lg:w-fit bg-white top-[75px] left-0 p-4 lg:p-0">
+        <div className="flex gap-x-6">
           {/* dynamically add active class */}
           <CustomNavLink isNavLink={true} cssClass='flex items-center hover:font-bold' to="/">Home</CustomNavLink>
           <CustomNavLink isNavLink={true} cssClass='flex items-center hover:font-bold' to="/collections">Collections</CustomNavLink>
           <CustomNavLink isNavLink={true} cssClass='flex items-center hover:font-bold' to="/contact">Contact</CustomNavLink>
-
         </div>
-
-
         <div className="flex gap-x-6 items-center">
-
-          <div className="hidden md:block">
-            <Search data={products} />
-          </div>
+          <Search data={products} />
 
           <CustomNavLink to='/cart' cssClass="text-2xl">
-            <GiShoppingCart />
+            <GiShoppingCart  />
           </CustomNavLink>
-
-          <button type="button" id='burger-menu' className='lg:hidden'>
-            <span></span>
-          </button>
-
-
           <div className='relative group'>
             <button className='block rounded-full w-8 h-8 overflow-hidden'>
               {avatar}
+
             </button>
-            <div className="absolute top-7 right-0 bg-white w-[70px] rounded shadow-md z-10 flex flex-col group-hover:visible invisible ">
+            <div className="absolute top-7 -left-[10px] bg-white w-[90px] rounded shadow-md z-10 flex flex-col group-hover:visible invisible">
               {
                 isLoggedIn && authUser?.role !== Role.ADMIN ?
                   <>
@@ -92,11 +81,11 @@ const Header = () => {
                   </>
                   :
                   <>
-                    <CustomNavLink to='/login' cssClass='block min-w-full flex gap-2 text-xs font-normal text-left hover:bg-slate-100 slate-100 px-2 py-2 items-center justify-between'   >
+                    <CustomNavLink to='/login' cssClass='block min-w-full flex gap-2 text-xs font-normal text-left hover:bg-slate-100 px-2 py-2 items-center justify-between'   >
                       Log in
                     </CustomNavLink>
 
-                    <CustomNavLink to='/signup' cssClass='block min-w-full flex gap-2 text-xs font-normal text-left hover:bg-slate-100 slate-100 px-2 py-2 items-center justify-between'   >
+                    <CustomNavLink to='/signup' cssClass='block min-w-full flex gap-2 text-xs font-normal text-left hover:bg-slate-100 px-2 py-2 items-center justify-between'   >
                       Sign Up
                     </CustomNavLink>
                   </>
@@ -104,9 +93,8 @@ const Header = () => {
 
             </div>
           </div>
-
         </div>
-      </nav>
+      </div>
     </header>
   )
 }
