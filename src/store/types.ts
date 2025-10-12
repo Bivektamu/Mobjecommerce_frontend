@@ -358,3 +358,14 @@ export interface WishList {
     userId: string,
     products: [LikedProduct]
 }
+
+
+
+export interface LowStockProduct {
+    id: string,
+    heroImg: string,
+    title: string,
+    price: number,
+    quantity: number,
+    sku: string,
+}

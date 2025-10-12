@@ -1,7 +1,7 @@
 // import React, { useState } from 'react'
 import OrderTile from '../../components/admin/order/OrderTile'
 import { useQuery } from '@apollo/client'
-import { GET_ORDERS } from '../../data/query'
+import { GET_ORDERS } from '../../data/query/orders.query'
 import { stripTypename } from '@apollo/client/utilities'
 import { Order } from '../../store/types'
 import ProgressLoader from '../../components/ui/ProgressLoader'

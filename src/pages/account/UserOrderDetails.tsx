@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client"
 import { useNavigate, useParams } from "react-router-dom"
-import { GET_ORDER_DETAILS_BY_ORDER_NUMBER } from "../../data/query"
+import { GET_ORDER_DETAILS_BY_ORDER_NUMBER } from "../../data/query/orders.query"
 import Preloader from "../../components/ui/Preloader"
 import { useEffect } from "react"
 import { stripTypename } from "@apollo/client/utilities"

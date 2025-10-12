@@ -17,7 +17,7 @@ import { CREATE_ORDER } from '../../data/mutation'
 import PageWrapper from '../../components/ui/PageWrapper'
 import { addToast } from '../../store/slices/toastSlice'
 import { useUser } from '../../store/slices/userSlice'
-import { GET_ORDERS_BY_USER_ID } from '../../data/query';
+import { GET_ORDERS_BY_USER_ID } from '../../data/query/orders.query';
 import client from '../../data/client';
 
 const Checkout = () => {

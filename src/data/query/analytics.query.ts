@@ -43,8 +43,18 @@ export const GET_LOW_STOCK_PRODUCTS = gql`
 export const GET_SALES_OVER_TIME = gql`
     query SalesOverTime {
         salesOverTime {
-            orderPlaced
-            total
+            date
+            sales
+        }
+    }
+`
+
+export const GET_ORDERS_BY_CATEGORY = gql`
+    query OrdersByCategory {
+        ordersByCategory {
+            
+            count
+            category
         }
     }
 `

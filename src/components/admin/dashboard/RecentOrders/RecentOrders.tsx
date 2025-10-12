@@ -1,0 +1,79 @@
+import { useQuery } from '@apollo/client'
+import { useStoreDispatch } from '../../../../store'
+import { GET_ORDERS } from '../../../../data/query/orders.query'
+import { Order, Toast, Toast_Vairant } from '../../../../store/types'
+import { v4 } from 'uuid'
+import { addToast } from '../../../../store/slices/toastSlice'
+import ProgressLoader from '../../../ui/ProgressLoader'
+import UserInfo from './UserInfo'
+import { NavLink } from 'react-router-dom'
+
+const RecentOrders = () => {
+
+   const dispatch = useStoreDispatch()
+      const { data, error, loading } = useQuery(GET_ORDERS, {
+          fetchPolicy: 'network-only'
+      })
+      if (error) {
+          const newToast: Toast = {
+              id: v4(),
+              variant: Toast_Vairant.WARNING,
+              msg: error.message
+          }
+          dispatch(addToast(newToast))
+      }
+  
+      if (loading) {
+          return <ProgressLoader />
+      }
+  
+      const orders = data.orders
+
+  return (
+    <div>
+        <p className="font-semibold p-4 text-slate-600 flex justify-between items-center">
+            <span>Recent Orders</span>
+            <NavLink to='/admin/orders' className="bg-cultured p-2 text-xs rounded-full px-4">
+              View All
+            </NavLink>
+          </p>
+
+          <div className="grid grid-cols-7 gap-x-4 p-4 border-t-[1px] border-b-[1px]">
+            <span className='text-xs text-slate-500 font-medium '>
+              Order Number
+            </span>
+            <span className='text-xs text-slate-500 font-medium '>
+              Items
+            </span>
+            <span className='text-xs text-slate-500 font-medium col-span-2'>
+              Customer
+            </span>
+            <span className='text-xs text-slate-500 font-medium'>
+              Status
+            </span>
+            <span className='text-xs text-slate-500 font-medium'>
+              Total
+            </span>
+            <span className='text-xs text-slate-500 font-medium'>
+              Date
+            </span>
+          </div>
+
+          {
+            orders.slice(0,10).map((order:Order) =>
+              <div key={order.id} className="grid grid-cols-7 px-4 py-2 border-b-[1px] items-center gap-x-4">
+                <span className="text-xs text-slate-500 ">{order.orderNumber}</span>
+                <span className="text-xs text-slate-500 capitalize">{order.items.length}</span>
+
+                <UserInfo id={order.userId} />
+                <span className="text-xs text-slate-500 capitalize">{order.status}</span>
+                <span className="text-xs text-slate-500">$ {order.total}</span>
+                <span className="text-xs text-slate-500">{(new Date(order.orderPlaced).toLocaleString()).split(',')[0]}</span>
+              </div>
+            )
+          }
+    </div>
+  )
+}
+
+export default RecentOrders

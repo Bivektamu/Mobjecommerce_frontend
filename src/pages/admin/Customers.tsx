@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import UserTile from '../../components/admin/UserTile'
 import SearchIcon from '../../components/ui/SearchIcons'
 import { useQuery } from '@apollo/client'
-import { GET_USERS } from '../../data/query'
+import { GET_USERS } from '../../data/query/user.query'
 import { Toast, Toast_Vairant, User } from '../../store/types'
 import { addToast } from '../../store/slices/toastSlice';
 import ProgressLoader from '../../components/ui/ProgressLoader';

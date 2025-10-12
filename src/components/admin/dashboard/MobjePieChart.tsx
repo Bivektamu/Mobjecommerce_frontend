@@ -1,21 +1,53 @@
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { useStoreDispatch } from '../../../store';
+import { useQuery } from '@apollo/client';
+import { GET_ORDERS_BY_CATEGORY } from '../../../data/query/analytics.query';
+import { Toast, Toast_Vairant } from '../../../store/types';
+import { v4 } from 'uuid';
+import { addToast } from '../../../store/slices/toastSlice';
+import ProgressLoader from '../../ui/ProgressLoader';
 
-const categoryOrders = [
-    { category: "monochrome", sales: 120 },
-    { category: "tees", sales: 90 },
-    { category: "sweatshirts", sales: 60 },
-    { category: "hoodie", sales: 40 },
-    { category: "shirt", sales: 30 }
+
+const COLOR_PALETTES = [
+  "rgba(99,102,241, 0.5)",  // indigo
+  "rgba(34,197,94, 0.5)",   // green
+  "rgba(239,68,68, 0.5)",   // red
+  "rgba(245,158,11, 0.5)",  // amber
+  "rgba(129,140,248, 0.5)", // light indigo
+  "rgba(250,204,21, 0.5)",  // yellow
+  "rgba(59,130,246, 0.5)",  // blue
+  "rgba(74,222,128, 0.5)",  // light green
+  "rgba(248,113,113, 0.5)", // light red
+  "rgba(147,197,253, 0.5)", // light blue
 ];
-const COLORS = ["rgba(99,102,241, 0.5)", "rgba(34,197,94, 0.5)", "rgba(245,158,11, 0.5)", "rgba(239,68,68, 0.5)", "rgba(59,130,246, 0.5)"];
+
 
 const MobjePieChart = () => {
+     const dispatch = useStoreDispatch()
+        const { data, error, loading } = useQuery(GET_ORDERS_BY_CATEGORY, {
+            fetchPolicy: 'network-only'
+        })
+        if (error) {
+            const newToast: Toast = {
+                id: v4(),
+                variant: Toast_Vairant.WARNING,
+                msg: error.message
+            }
+            dispatch(addToast(newToast))
+        }
+    
+        if (loading) {
+            return <ProgressLoader />
+        }
+    
+        const ordersByCategory = data.ordersByCategory
+
     return (
         <ResponsiveContainer width="100%" height={400}>
             <PieChart>
                 <Pie
-                    data={categoryOrders}
-                    dataKey="sales"
+                    data={ordersByCategory}
+                    dataKey="count"
                     nameKey="category"
                     cx="50%"
                     cy="50%"
@@ -24,8 +56,9 @@ const MobjePieChart = () => {
                     label={{ fontSize: 10 }}
                 >
                     {
-                        categoryOrders.map((_, index) =>
-                            <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                        // eslint-disable-next-line
+                        ordersByCategory.map((_:any, index:number) =>
+                            <Cell key={`cell-${index}`} fill={COLOR_PALETTES[index]} />
                         )
                     }
 

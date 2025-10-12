@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import gravatar from 'gravatar'
 
 import client from '../../data/client'
-import { GET_USER_EMAIL } from '../../data/query'
+import { GET_USER_EMAIL } from '../../data/query/user.query'
 import { Status } from '../../store/types'
 import AvatarPlaceholder from './AvatarPlaceholder'
 type Props = {

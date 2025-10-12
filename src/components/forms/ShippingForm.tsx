@@ -7,7 +7,7 @@ import { useStoreDispatch } from "../../store"
 import { addToast } from "../../store/slices/toastSlice";
 import { useAuth } from "../../store/slices/authSlice";
 import { useLazyQuery } from "@apollo/client";
-import { GET_USER_ADDRESS } from "../../data/query";
+import { GET_USER_ADDRESS } from "../../data/query/user.query";
 
 
 const ShippingForm = () => {

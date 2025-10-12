@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client"
 import { Link } from "react-router-dom"
-import {  GET_ORDERS_BY_USER_ID } from "../../data/query"
+import {  GET_ORDERS_BY_USER_ID } from "../../data/query/orders.query"
 import {  useMemo } from "react"
 import { stripTypename } from "@apollo/client/utilities"
 import ProgressLoader from "../../components/ui/ProgressLoader"

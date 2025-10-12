@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Action, UserInput, UserSlice, Status, RootState, Address } from "../types";
 import client from "../../data/client";
 import { CREATE_USER, UPDATE_ADDRESS } from "../../data/mutation";
-import { GET_USER } from "../../data/query";
+import { GET_USER } from "../../data/query/user.query";
 import { stripTypename } from "@apollo/client/utilities";
 import { useSelector } from "react-redux";
 

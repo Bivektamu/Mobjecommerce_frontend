@@ -2,7 +2,7 @@
 // import { Outlet } from 'react-router-dom'
 import { GoAlertFill } from 'react-icons/go'
 import MobjePieChart from '../../components/admin/dashboard/MobjePieChart'
-import RecentOrders from '../../components/admin/dashboard/RecentOrders'
+import RecentOrders from '../../components/admin/dashboard/RecentOrders/RecentOrders'
 import LowStockProducts from '../../components/admin/dashboard/LowStockProducts'
 import TotalSales from '../../components/admin/dashboard/TotalSales'
 import TotalOrders from '../../components/admin/dashboard/TotalOrders'
@@ -77,7 +77,10 @@ const DashBoard = () => {
         </div>
 
         <div className='bg-white  rounded-xl text-sm'>
-          <LowStockProducts />
+          {
+            loading ? <Preloader /> :
+              <LowStockProducts lowProducts={lowStockProducts} />
+          }
         </div>
       </div>
 

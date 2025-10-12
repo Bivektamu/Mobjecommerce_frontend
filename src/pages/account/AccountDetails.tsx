@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client"
 import AccountDetailsForm from "../../components/forms/AccountDetailsForm"
-import { GET_USER } from "../../data/query"
+import { GET_USER } from "../../data/query/user.query"
 import { useAuth } from "../../store/slices/authSlice"
 import ProgressLoader from "../../components/ui/ProgressLoader"
 import { stripTypename } from "@apollo/client/utilities"

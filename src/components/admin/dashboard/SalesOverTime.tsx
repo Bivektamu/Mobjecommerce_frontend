@@ -26,6 +26,7 @@ const dispatch = useStoreDispatch()
      if (loading) {
         return <ProgressLoader />
     }
+
     
     const salesOverTime = stripTypename(data?.salesOverTime)
 

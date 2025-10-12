@@ -33,8 +33,8 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 // ];
 
 type SaleData = {
-    orderPlaced: Date,
-    total: number
+    date: Date,
+    sales: number
 }
 
 type Props = {
@@ -42,13 +42,8 @@ type Props = {
 }
 const SalesChart = ({ data }: Props) => {
 
-    const salesData = data.map(item => {
-        const orderDate = new Date(item.orderPlaced)
-        const year = orderDate.getFullYear()
-        const month = orderDate.getMonth() + 1
-        const day = orderDate.getDate()
-        const date = year + '-' + month + '-' + day
-        return { date, sales: item.total }
+    const salesData = data.map(({date, sales}) => {
+        return { date:new Date(date).toISOString().split('T')[0], sales }
     }
 
     )
