@@ -19,23 +19,23 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-16">
-            <div className='flex flex-col gap-6'>
-              <p className="text-slate-500 uppercase mb-6 font-medium">support</p>
+          <div className="flex justify-center gap-8 md:gap-16">
+            <div className='flex flex-col gap-2 md:gap-6 text-xs md:text-base'>
+              <p className="text-slate-500 uppercase mb-4 md:mb-6 font-medium">support</p>
               <Link to='' className=''>FAQ</Link>
               <Link to='' className=''>Terms of use</Link>
               <Link to='' className=''>Privacy Policy</Link>
             </div>
 
-            <div className='flex flex-col gap-6'>
-              <p className="text-slate-500 uppercase mb-6 font-medium">COMPANY</p>
+            <div className='flex flex-col gap-2 md:gap-6 text-xs md:text-base'>
+              <p className="text-slate-500 uppercase mb-4 md:mb-6 font-medium">COMPANY</p>
               <Link to='' className=''>About us</Link>
               <Link to='' className=''>Contact</Link>
               <Link to='' className=''>Careers</Link>
             </div>
 
-            <div className='flex flex-col gap-6'>
-              <p className="text-slate-500 uppercase mb-6 font-medium">SHOP</p>
+            <div className='flex flex-col gap-2 md:gap-6 text-xs md:text-base'>
+              <p className="text-slate-500 uppercase mb-4 md:mb-6 font-medium">SHOP</p>
               <Link to='' className=''>My Account</Link>
               <Link to='' className=''>Checkout</Link>
               <Link to='' className=''>Cart</Link>
@@ -43,7 +43,7 @@ const Footer = () => {
           </div>
 
           <div className="">
-            <p className="text-slate-500 uppercase mb-12 font-medium">ACCEPTED PAYMENTS</p>
+            <p className="text-slate-500 uppercase mb-4 md:mb-12 font-medium">ACCEPTED PAYMENTS</p>
             <svg width="185" height="40" viewBox="0 0 185 40" fill="none" xmlns="http://www.w3.org/2000/svg" className='grayscale'>
               <g opacity="0.8" filter="url(#filter0_d_5507_350)">
                 <g clipPath="url(#clip0_5507_350)">

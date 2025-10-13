@@ -1,6 +1,6 @@
 import { MouseEvent, useEffect } from 'react'
 import Sidebar from '../layout/AdminSidebar'
-import BreadCrumbs from '../ui/BreadCrumbs'
+import BreadCrumbs from '../layout/BreadCrumbs'
 import { useStoreDispatch } from '../../store'
 import { getAuthStatus, logOut } from '../../store/slices/authSlice'
 import { Outlet } from 'react-router-dom'

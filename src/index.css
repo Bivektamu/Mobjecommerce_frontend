@@ -150,12 +150,22 @@ input[type="number"] {
 #burger-menu span:after {
   top: 8px;
 }
-/* 
-header.active-nav #nav-toggle span {
+#burger-menu.active span {
   background: transparent;
 }
 
-header.active-nav #nav-toggle span:before {
+#burger-menu.active span:before {
   transform: rotate(45deg);
   top: 0;
-} */
+}
+
+#burger-menu.active span:after {
+  transform: rotate(-45deg);
+  top: 0;
+}
+
+@media screen and (max-width: 1000px) {
+  main {
+    padding-top:75px;
+  }
+}

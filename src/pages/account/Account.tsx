@@ -1,5 +1,5 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom"
-import BreadCrumbs from "../../components/ui/BreadCrumbs"
+import BreadCrumbs from "../../components/layout/BreadCrumbs"
 import PageWrapper from "../../components/ui/PageWrapper"
 import AccountSubNav from "../../components/layout/AccountSubNav"
 import { useEffect } from "react"

@@ -4,7 +4,7 @@ import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid';
 import { useStoreDispatch } from '../store'
 import { useAuth, getAuthStatus } from '../store/slices/authSlice'
-import BreadCrumbs from '../components/ui/BreadCrumbs'
+import BreadCrumbs from '../components/layout/BreadCrumbs'
 import { ValidateSchema } from '../store/types'
 import validateForm from '../utils/validate'
 import { createUser, useUser } from '../store/slices/userSlice'

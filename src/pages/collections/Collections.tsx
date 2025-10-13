@@ -3,7 +3,7 @@ import Grids from "../../components/ui/Grids"
 import { getProducts, useProduct } from "../../store/slices/productSlice"
 import { MouseEvent, useEffect, useState } from "react"
 import { useStoreDispatch } from "../../store"
-import BreadCrumbs from "../../components/ui/BreadCrumbs"
+import BreadCrumbs from "../../components/layout/BreadCrumbs"
 import { Filters, Product, Status } from "../../store/types"
 import ProductFilter from "../../components/collections/ProductFilter"
 import Close from "../../components/ui/Close"
@@ -112,16 +112,16 @@ const Collections = () => {
 
   return (
     <PageWrapper>
-      <section id="breadcrums" className="">
+      <section id="breadcrums" className="px-4">
         <div className="py-8 container mx-auto">
           <BreadCrumbs rootLink="Ecommerce" />
         </div>
       </section>
 
-      <section className="bg-white">
-        <div className="container mx-auto py-8 flex gap-16 items-start">
+      <section className="bg-white px-4">
+        <div className="container mx-auto py-8 flex flex-col md:flex-row gap-4 xl:gap-16 items-start">
           <ProductFilter products={products} status={status} setFilters={setFilters} filters={filters} />
-          <div id="filtered-products" className="py-8 px-5  w-3/4 ">
+          <div id="filtered-products" className="py-8 md:pl-5 w-full md:w-3/5 lg:w-3/4 ">
             <p className="text-sm font-bold mb-4">Applied Filters:</p>
             <div className="flex gap-4 mb-8 flex-wrap">
               {
@@ -193,7 +193,7 @@ const Collections = () => {
 
               {(status === Status.PENDING) ? <GridLoader col='3' /> : filteredProducts.length < 1 ? <h2 className="text-lg text-slate-600 text-center">Sorry, there are no products for given filters.</h2> :
 
-                <Grids cssClass='container mx-auto grid-cols-3 grid gap-x-12 gap-y-16'>
+                <Grids cssClass='container mx-auto grid-cols-1 lg:grid-cols-3  grid gap-x-12 gap-y-16'>
                   {
                     filteredProducts.map(product =>
                       <ProductCard key={product.id} item={product} />

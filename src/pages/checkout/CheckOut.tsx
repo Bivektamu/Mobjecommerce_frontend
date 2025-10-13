@@ -1,7 +1,7 @@
 import { MouseEvent, useEffect, useMemo, useState } from 'react'
 import { useStoreDispatch } from '../../store/index'
 import { useAuth } from '../../store/slices/authSlice'
-import BreadCrumbs from '../../components/ui/BreadCrumbs'
+import BreadCrumbs from '../../components/layout/BreadCrumbs'
 import { v4 as uuidv4 } from 'uuid';
 
 import { deleteCartByCustomerId } from '../../store/slices/cartSlice'

@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import { useStoreDispatch } from '../store/index'
 import { useAuth, getAuthStatus } from '../store/slices/authSlice'
-import BreadCrumbs from '../components/ui/BreadCrumbs'
+import BreadCrumbs from '../components/layout/BreadCrumbs'
 import { useCart } from '../store/slices/cartSlice'
 import { Order_Status, Status, OrderInput, OrderItemInput, Colour, Size, Address } from '../store/types'
 import CartItem from '../components/CartItem'

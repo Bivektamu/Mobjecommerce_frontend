@@ -3,7 +3,7 @@ import { MouseEvent, useEffect } from 'react'
 import { getAuthStatus, logOut, useAuth } from '../../store/slices/authSlice'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Sidebar from '../../components/layout/AdminSidebar'
-import BreadCrumbs from '../../components/ui/BreadCrumbs'
+import BreadCrumbs from '../../components/layout/BreadCrumbs'
 
 import { useToasts } from "../../store/slices/toastSlice"
 import ToastComponent from "../../components/ui/Toast"

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import BreadCrumbs from '../../components/ui/BreadCrumbs'
+import BreadCrumbs from '../../components/layout/BreadCrumbs'
 import { useStoreDispatch } from '../../store'
 
 import { getProducts, useProduct } from '../../store/slices/productSlice'

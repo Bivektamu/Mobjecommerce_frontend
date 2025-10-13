@@ -5,7 +5,7 @@ import { Cart, LoginInput, FormError, Role, Toast, Toast_Vairant, ValidateSchema
 import { useStoreDispatch } from '../store/index'
 import { useAuth, logInUser, getAuthStatus } from '../store/slices/authSlice'
 
-import BreadCrumbs from '../components/ui/BreadCrumbs'
+import BreadCrumbs from '../components/layout/BreadCrumbs'
 import validateForm from '../utils/validate'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import CustomNavLink from '../components/CustomNavLink'

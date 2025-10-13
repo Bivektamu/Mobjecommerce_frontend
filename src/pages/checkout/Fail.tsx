@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import BreadCrumbs from '../../components/ui/BreadCrumbs'
+import BreadCrumbs from '../../components/layout/BreadCrumbs'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Arrow from '../../components/ui/Arrow'
 import PageWrapper from '../../components/ui/PageWrapper'

@@ -4,20 +4,24 @@ import Search from './Search'
 import { useProduct } from '../../store/slices/productSlice'
 import { Role } from '../../store/types'
 import { logOut, useAuth } from '../../store/slices/authSlice'
-import { MouseEvent, useEffect } from 'react'
+import { MouseEvent, useEffect, useState } from 'react'
 import { useStoreDispatch } from '../../store'
 import { getUser, useUser } from '../../store/slices/userSlice'
 import CustomNavLink from '../CustomNavLink'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import useAvatar from '../hooks/useAvatar'
 import { GiShoppingCart } from 'react-icons/gi'
 
 
 const Header = () => {
+      const { pathname } = useLocation();
+  
   const { products } = useProduct()
   const { isLoggedIn, authUser } = useAuth()
   const { setAvatarEmail, avatar } = useAvatar()
   const { user } = useUser()
+
+  const [isOpen, setIsOpen] = useState(false)
 
 
   const dispatch = useStoreDispatch()
@@ -29,6 +33,10 @@ const Header = () => {
       dispatch(getUser(authUser.id))
     }
   }, [authUser])
+
+  useEffect(()=> {
+    setIsOpen(false)
+  }, [pathname])
 
 
   useEffect(() => {
@@ -48,10 +56,10 @@ const Header = () => {
   }
 
   return (
-    <header className='bg-white p-4 fixed lg:relative w-full h-[75px]'>
-      <nav className="container mx-auto  flex justify-between flex-wrap ">
+    <header className='bg-white p-4 fixed lg:static w-full h-[75px] z-30'>
+      <nav className="container mx-auto  flex justify-between flex-wrap items-center">
         <Logo />
-        <div className="flex  gap-6 fixed lg:static flex-col lg:flex-row w-full lg:w-fit bg-white top-[75px] left-0 p-4 lg:p-0">
+        <div className={`flex h-[100%] text-3xl lg:text-base items-center justify-center pb-[75px]  gap-6 fixed lg:static flex-col lg:flex-row w-full lg:w-fit bg-white  left-0 p-4 lg:p-0 z-20 transition-all duration-700 ease-in-out top-[75px] origin-top lg:translate-x-0 ${isOpen?'translate-x-0':'-translate-x-[100%]'}`}>
           {/* dynamically add active class */}
           <CustomNavLink isNavLink={true} cssClass='flex items-center hover:font-bold' to="/">Home</CustomNavLink>
           <CustomNavLink isNavLink={true} cssClass='flex items-center hover:font-bold' to="/collections">Collections</CustomNavLink>
@@ -70,7 +78,7 @@ const Header = () => {
             <GiShoppingCart />
           </CustomNavLink>
 
-          <button type="button" id='burger-menu' className='lg:hidden'>
+          <button type="button" id='burger-menu' className={`lg:hidden ${isOpen?'active':''}`} onClick={()=>setIsOpen(!isOpen)}>
             <span></span>
           </button>
 
@@ -79,7 +87,7 @@ const Header = () => {
             <button className='block rounded-full w-8 h-8 overflow-hidden'>
               {avatar}
             </button>
-            <div className="absolute top-7 right-0 bg-white w-[70px] rounded shadow-md z-10 flex flex-col group-hover:visible invisible ">
+            <div className="absolute top-7 right-0 bg-white w-[70px] rounded shadow-md z-30 flex flex-col group-hover:visible invisible ">
               {
                 isLoggedIn && authUser?.role !== Role.ADMIN ?
                   <>

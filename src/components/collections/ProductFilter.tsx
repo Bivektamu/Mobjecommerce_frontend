@@ -98,7 +98,7 @@ const ProductFilter = ({ products, status, setFilters, filters }: Props) => {
     }
 
     return (
-        <div id="filters" className="py-8 px-5 rounded-lg border w-1/4 shadow-lg">
+        <div id="filters" className="py-8 px-5 rounded-lg border shadow-lg w-full md:w-2/5 lg:w-1/4 md:sticky top-[85px] lg:static">
             <div id="catgory-filter" className="mb-10">
                 <p className="text-sm font-bold mb-4">Categories</p>
                 {(status === Status.PENDING) ? <TextLoader col='3' cssClass="flex-col gap-4 w-1/3 ml-0" /> : Object.keys(cats).length < 1 ? <h2 className="text-sm text-slate-600 text-center">Sorry, there are no categories.</h2> :
