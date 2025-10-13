@@ -7,7 +7,7 @@ type Props = {
 
 const GridLoader = ({col}: Props) => {
   return (
-    <Grids cssClass={`container mx-auto grid-cols-${parseInt(col)} grid gap-12`}>
+    <Grids cssClass={`container mx-auto md:grid-cols-${parseInt(col)} grid-cols-1 grid gap-12`}>
         {
             new Array(parseInt(col)).fill('*').map((_,i)=> <CardLoader key={i} cssClass='w-full' />)
         }

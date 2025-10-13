@@ -71,15 +71,15 @@ const ReviewTile = ({ review, refetchReview }: Props) => {
     return (
 
         <div className="wrapper border-b pb-6 mb-6">
-            <div className="grid grid-cols-16 items-start justify-between">
+            <div className="grid md:grid-cols-16 grid-cols-5 items-start justify-between">
 
-                <p className="col-span-1">
+                <p className=" col-span-1">
                     <span className='w-12 h-12 overflow-hidden rounded-full block'>
                     {avatar}
                     </span>
                 </p>
 
-                <div className='col-span-12'>
+                <div className='md:col-span-12 col-span-4 md:text-base text-sm'>
                     <div className="mb-2 capitalize">
                         <p>{firstName} {lastName}</p>
                     </div>
@@ -87,8 +87,8 @@ const ReviewTile = ({ review, refetchReview }: Props) => {
 
                 </div>
 
-                <div className="col-span-3">
-                    <div className='flex gap-1 justify-end'>
+                <div className="col-span-5">
+                    <div className='flex gap-1 md:justify-end'>
                         {new Array(review.rating as number).fill('*').map((_, i) =>
                             <StarIcon key={i} />
                         )}
@@ -96,13 +96,13 @@ const ReviewTile = ({ review, refetchReview }: Props) => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-16 items-start justify-between">
+            <div className="grid md:grid-cols-16 grid-cols-1 items-start justify-between">
 
-                <p className="col-span-1">
+                <p className="col-span-1 ">
                     &nbsp;
                 </p>
 
-                <p className="text-slate-600  text-sm col-span-12">
+                <p className="text-slate-600  md:text-sm text-xs col-span-12">
                     {review.review}
                 </p>
 

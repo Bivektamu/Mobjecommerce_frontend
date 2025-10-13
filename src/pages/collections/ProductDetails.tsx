@@ -79,7 +79,7 @@ const ProductComponent = () => {
 
   return (
     <PageWrapper>
-      <section id="breadcrums" className="bg-white">
+      <section id="breadcrums" className="bg-white px-4">
         <div className="py-8 container mx-auto">
           <BreadCrumbs rootLink="Ecommerce" />
         </div>
@@ -88,13 +88,13 @@ const ProductComponent = () => {
       <section className="bg-white">
         <div className="container mx-auto">
 
-          <div className="flex gap-12 mb-32">
-            <div className="basis-1/2 bg-cultured flex items-center justify-center">
+          <div className="flex gap-12 md:mb-32 mb-10 md:flex-row flex-col">
+            <div className="md:w-1/2 w-full  bg-cultured flex items-center justify-center">
               {!productItem ? <SquareLoader square={1} squareClass='w-full h-full' /> : <img src={productItem.imgs[0].url} alt="" className='w-3/5' />}
             </div>
 
-            <div className="basis-1/2">
-              <h2 className="text-3xl font-semibold mb-2">
+            <div className="md:w-1/2 w-full px-4">
+              <h2 className="md:text-3xl text-xl font-semibold mb-2">
                 {!productItem ? <TextLoader col='1' cssClass='w-2/5 h-12 ml-0' /> : productItem.title}
               </h2>
 
@@ -119,7 +119,7 @@ const ProductComponent = () => {
 
               </div>
 
-              <p className="text-xl font-semibold mb-8">${productItem?.price}</p>
+              <p className="md:text-xl text-lg font-semibold mb-8">${productItem?.price}</p>
               <AddToCartForm product={productItem} />
             </div>
           </div>
@@ -127,13 +127,13 @@ const ProductComponent = () => {
           <DetailsReviewsTab product={productItem} reviews={reviews} refetch={refetch} />
 
 
-          <div className="pb-32">
+          <div className="pb-32 px-4">
             <h2 className="text-2xl mb-3">You might also like</h2>
             <p className="text-sm uppercase mb-16 text-slate-400  text-wider font-medium">SIMILAR PRODUCTS</p>
 
             {(status === Status.PENDING) ? <GridLoader col='4' /> : similarProducts.length < 1 ? <h2 className="text-lg text-slate-600 text-center">Sorry, there are no products.</h2> :
 
-              <Grids cssClass='container mx-auto grid-cols-4 grid gap-x-12 gap-y-16'>
+              <Grids cssClass='container mx-auto grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid gap-x-12 gap-y-16'>
                 {
 
                   similarProducts.map(product =>

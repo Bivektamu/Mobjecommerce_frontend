@@ -75,12 +75,12 @@ const ProductReviews = ({ productId, reviews, refetch }: Props) => {
 
     return (
         <div id='reviews-tab'>
-            <p className="font-semibold mb-4">Reviews</p>
+            <p className="font-semibold mb-4 text-sm md:text-base">Reviews</p>
 
             <div className='flex gap-4 items-center mb-10'>
                 {reviews && reviews.length > 0 ?
                     <>
-                        <h2 className="text-3xl font-bold">
+                        <h2 className="md:text-3xl text-xl font-bold">
                             {getAverageRating(reviews.map(review => review.rating) as number[])}
 
                         </h2><span className="w-4 h-[2px] bg-slate-400"></span> <p className='text-slate-500 text-xs'>{reviews.length} Reviews</p>

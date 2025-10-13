@@ -206,9 +206,6 @@ function AddToCartForm({ product }: Props) {
         }
     }
 
-
-
-
     return (
         <form onSubmit={submitHandler}>
             <div className="mb-8">

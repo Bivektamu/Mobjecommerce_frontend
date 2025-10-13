@@ -15,15 +15,15 @@ const DetailsReviewsTab = ({ product, reviews, refetch }: Props) => {
 
     return (
 
-        <div className='flex gap-8  mb-32'>
-            <div className="basis-1/4 mt-12">
+        <div className='flex gap-8  md:mb-32 mb-10 px-4 flex-col md:flex-row'>
+            <div className="md:w-1/4 w-full mt-12 flex md:block">
                 <button className={`text-sm flex items-center w-full py-2 px-4 rounded gap-2 mb-2  font-semibold ${!isReview ? 'bg-cultured' : 'text-slate-600'} `} onClick={() => setIsReview(false)}>
                     <span className='relative bottom-1'>...</span> Details
                 </button>
                 <button className={`text-sm flex items-center w-full py-2 px-4 rounded gap-2  font-medium ${isReview ? 'bg-cultured' : 'text-slate-600'}`} onClick={() => setIsReview(true)}><StarIcon /> Reviews</button>
             </div>
 
-            <div className="basis-3/4">
+            <div className="md:w-3/4 w-full">
 
                 {
                     !isReview ?
@@ -31,7 +31,7 @@ const DetailsReviewsTab = ({ product, reviews, refetch }: Props) => {
                             <p className="font-semibold mb-6">Details</p>
                             {
                                 !product ? <ParagraphLoader col='1' /> :
-                                    <p className="text-sm text-slate-600">{product?.description}</p>
+                                    <p className="md:text-sm text-xs text-slate-600">{product?.description}</p>
                             }
 
                         </div>

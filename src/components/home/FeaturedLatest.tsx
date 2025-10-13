@@ -29,7 +29,7 @@ const FeaturedLatest = ({ products, status }: Props) => {
             </div>
 
             {(status === Status.PENDING) ? <GridLoader col='4' /> : products.length < 1 ? <h2 className="text-lg text-slate-600 text-center">Sorry, there are no products.</h2> :
-                <Grids cssClass='container mx-auto lg:grid-cols-4 md:grid-cols-1 grid gap-12'>
+                <Grids cssClass='container mx-auto lg:grid-cols-4 md:grid-cols-2 grid-cols-1 grid gap-12'>
                     {
                         sortProducts.map(product =>
                             <ProductCard key={product.id} item={product} />
