@@ -24,8 +24,8 @@ const Home = () => {
   return (
     <PageWrapper>
       <Hero />
-      <section className="bg-white pt-24 pb-36 px-4">
-        <Grids cssClass='container mx-auto md:grid-cols-1 lg:grid-cols-3  grid gap-24 mb-36'>
+      <section className="bg-white pt-12 pb-20 md:pt-24 md:pb-36 px-4">
+        <Grids cssClass='container mx-auto md:grid-cols-1 lg:grid-cols-3  grid gap-12 md:gap-24 mb-20 md:mb-36'>
           <div>
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="48" height="48" rx="24" fill="#F6F6F6" />
@@ -56,7 +56,7 @@ const Home = () => {
 
         {/* Best Selling Products */}
         <p className="text-slate-400 text-sm mb-4 text-center uppercase tracking-wide">Shop Now</p>
-        <h2 className="font-bold text-2xl mb-24 text-center">Best Selling</h2>
+        <h2 className="font-bold text-2xl mb-12 md:mb-24 text-center">Best Selling</h2>
 
         {(status === Status.PENDING) ? <GridLoader col='4' /> : products.length < 1 ? <h2 className="text-lg text-slate-600 text-center">Sorry, there are no products.</h2> :
 
@@ -72,14 +72,14 @@ const Home = () => {
         }
       </section>
 
-      <section className="bg-regal-white px-4">
-        <div className="container flex justify-between items-center mx-auto pb-12">
-          <div className="flex flex-col items-start ">
-            <h1 className='mb-4 text-4xl font-semibold'>Browse Our Fashion Paradise!</h1>
-            <span className='mb-14'>Step into a world of style and explore our diverse collection of clothing categories.</span>
+      <section className="bg-regal-white px-4 w-full">
+        <div className="container flex justify-between md:items-center mx-auto  md:pb-12">
+          <div className="flex flex-col items-start py-6 md:py-0">
+            <h1 className='mb-4 text-xl md:text-4xl font-semibold'>Browse Our Fashion Paradise!</h1>
+            <span className='mb-6 md:mb-14 text-xs md:text-base'>Step into a world of style and explore our diverse collection of clothing categories.</span>
             <Link to="/collections" className='bg-black text-white py-2 px-4 rounded text-center cursor-pointer text-sm flex gap-x-2 items-center'>Start Browsing <Arrow /></Link>
           </div>
-          <img src={HeroImg} alt="" className=' w-[225px]' />
+          <img src={HeroImg} alt="" className='w-[40%] md:w-[225px] max-h-fit' />
         </div>
       </section>
 

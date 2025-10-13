@@ -98,22 +98,22 @@ const ProductFilter = ({ products, status, setFilters, filters }: Props) => {
     }
 
     return (
-        <div id="filters" className="py-8 px-5 rounded-lg border shadow-lg w-full md:w-2/5 lg:w-1/4 md:sticky top-[85px] lg:static">
-            <div id="catgory-filter" className="mb-10">
-                <p className="text-sm font-bold mb-4">Categories</p>
+        <div id="filters" className="md:py-8 py-4 px-5 rounded-lg border shadow-lg w-full md:w-2/5 lg:w-1/4 md:sticky top-[75px] md:top-[85px] lg:static bg-white z-10">
+            <div id="catgory-filter" className="md:mb-10 mb-6 flex md:block flex-wrap gap-4">
+                <p className="text-sm font-bold md:mb-4 w-full">Categories</p>
                 {(status === Status.PENDING) ? <TextLoader col='3' cssClass="flex-col gap-4 w-1/3 ml-0" /> : Object.keys(cats).length < 1 ? <h2 className="text-sm text-slate-600 text-center">Sorry, there are no categories.</h2> :
 
                     Object.keys(cats).map((key, i) =>
-                        <div key={i} className="flex gap-2 border-b py-4">
+                        <div key={i} className="flex gap-2 md:border-b md:py-4">
                             <input type="checkbox" name='category' value={key} id={key} checked={cats[key]} onChange={changeHandler} />
-                            <label htmlFor={key} className="capitalize text-sm text-slate-600 font-medium">{key}</label>
+                            <label htmlFor={key} className="capitalize md:text-sm text-xs text-slate-600 font-medium">{key}</label>
                         </div>
                     )
                 }
             </div>
 
-            <div id="colour-filter" className="mb-10">
-                <p className="text-sm font-bold mb-6">Colour</p>
+            <div id="colour-filter" className="md:mb-10 mb-6">
+                <p className="text-sm font-bold md:mb-6 mb-4">Colour</p>
                 {(status === Status.PENDING) ? <CircleLoader /> : products.length < 1 ? <h2 className="text-sm text-slate-600 text-center">Sorry, there are no colors available.</h2> :
                     <div className="flex gap-3 items-center">
 
@@ -126,7 +126,7 @@ const ProductFilter = ({ products, status, setFilters, filters }: Props) => {
                                     <fieldset key={i}>
                                         <input type="checkbox" checked={colrs[color]} id={color} name="colors" value={color} onChange={changeHandler} className='appearance-none hidden ' />
 
-                                        <label htmlFor={color} className={`block w-8 h-8 rounded-full ${bgClass}  cursor-pointer relative after:content-[""] after:w-10 after:h-10 after:rounded-full  after:absolute after:top-0 after:bottom-0 after:-right-1  after:m-auto  ${colrs[color] ? `after:${borderClass} after:border-2` : ''}`}></label>
+                                        <label htmlFor={color} className={`block md:size-8 size-6 rounded-full ${bgClass}  cursor-pointer relative after:content-[""] md:after:size-10 after:size-8 after:rounded-full  after:absolute after:top-0 after:bottom-0 after:-right-1  after:m-auto  ${colrs[color] ? `after:${borderClass} after:border-2` : ''}`}></label>
                                     </fieldset>
                                 )
                             })
@@ -135,10 +135,10 @@ const ProductFilter = ({ products, status, setFilters, filters }: Props) => {
                 }
             </div>
 
-            <div id="size-filter" className="mb-10">
-                <p className="text-sm font-bold mb-6">Size</p>
-                {(status === Status.PENDING) ? <SquareLoader square={4} /> : products.length < 1 ? <h2 className="text-sm text-slate-600 text-center">Sorry, there are no sizes available.</h2> :
-                    <div className="flex gap-4 items-center">
+            <div id="size-filter" className="md:mb-10 mb-6">
+                <p className="text-sm font-bold md:mb-6 mb-4">Size</p>
+                {(status === Status.PENDING) ? <SquareLoader square={4} /> : products.length < 1 ? <h2 className="md:text-sm text-xs text-slate-600 text-center">Sorry, there are no sizes available.</h2> :
+                    <div className="flex md:gap-4 gap-2 items-center">
 
                         {
                             Object.keys(siz).map((size, i) => {
@@ -146,7 +146,7 @@ const ProductFilter = ({ products, status, setFilters, filters }: Props) => {
                                     <div key={i}>
                                         <input type="checkbox" checked={siz[size]} name="sizes" id={size} value={size} onChange={changeHandler} className='appearance-none hidden' />
 
-                                        <label htmlFor={size} className={`w-8 block flex items-center justify-center h-8 text-sm font-medium rounded cursor-pointer  ${siz[size] ? 'bg-cultured' : 'border-[1px]'} `}>{size}</label>
+                                        <label htmlFor={size} className={`size-6 md:size-8 block flex items-center justify-center md:text-sm text-xs font-medium rounded cursor-pointer  ${siz[size] ? 'bg-cultured' : 'border-[1px]'} `}>{size}</label>
                                     </div>
                                 )
                             })
@@ -155,18 +155,18 @@ const ProductFilter = ({ products, status, setFilters, filters }: Props) => {
                 }
             </div>
 
-            <div id="price-filter" className="mb-10">
-                <p className="text-sm font-bold mb-6">Price</p>
+            <div id="price-filter" className="md:mb-10 mb-0">
+                <p className="text-sm font-bold md:mb-6 mb-4">Price</p>
 
                 <div className="flex gap-4 items-center">
-                    {status === Status.PENDING ? <SquareLoader square={1} squareClass='min-w-12' /> :
+                    {status === Status.PENDING ? <SquareLoader square={1} squareClass='md:min-w-12 min-w-6' /> :
 
-                        <input type="number" name="min" placeholder='Min' className="min-w-12 text-center  items-center h-12  text-sm text-slate-600 font-medium rounded cursor-pointer border-[1px]" value={filters.price.min?filters.price.min: ''} onChange={priceHandler} />
+                        <input type="number" name="min" placeholder='Min' className="md:min-w-12 min-w-6 text-center  items-center md:h-12 h-8  md:text-sm text-xs text-slate-600 font-medium rounded cursor-pointer border-[1px]" value={filters.price.min?filters.price.min: ''} onChange={priceHandler} />
                     }
                     <span className="text-2xl font-medium text-slate-600" >-</span>
                     {status === Status.PENDING ? <SquareLoader square={1} squareClass='min-w-12' /> :
 
-                        <input type="number" name="max" placeholder="Max" className="min-w-12 text-center  items-center h-12  text-sm text-slate-600 font-medium rounded cursor-pointer border-[1px]" value={filters.price.max?filters.price.max:''} onChange={priceHandler} />
+                        <input type="number" name="max" placeholder="Max" className="md:min-w-12 min-w-6 text-center  items-center md:h-12 h-8 md:text-sm text-xs text-slate-600 font-medium rounded cursor-pointer border-[1px]" value={filters.price.max?filters.price.max:''} onChange={priceHandler} />
                     }
                 </div>
             </div>

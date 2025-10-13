@@ -22,8 +22,8 @@ const FeaturedLatest = ({ products, status }: Props) => {
     }, [isFeatured, products])
 
     return (
-        <section id="featured-latest" className="bg-white py-32 px-4">
-            <div className="flex justify-center gap-8 mb-16">
+        <section id="featured-latest" className="bg-white py-16 md:py-32 px-4">
+            <div className="flex justify-center gap-8 md:mb-16 mb-8">
                 <button className={`text-xs font-semibold flex items-center uppercase ${isFeatured ? 'bg-black text-white' : 'text-black border-slate-300'} border-[1px] py-[5px] px-6 rounded-[20px]`} onClick={() => setIsFeatured(true)}>Featured</button>
                 <button className={`text-xs font-semibold flex items-center uppercase ${!isFeatured ? 'bg-black text-white' : 'text-black border-slate-300'} border-[1px] py-[5px] px-6 rounded-[20px]`} onClick={() => setIsFeatured(false)}>Latest</button>
             </div>

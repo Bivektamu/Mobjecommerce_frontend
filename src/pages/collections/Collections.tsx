@@ -113,7 +113,7 @@ const Collections = () => {
   return (
     <PageWrapper>
       <section id="breadcrums" className="px-4">
-        <div className="py-8 container mx-auto">
+        <div className="md:py-8 py-4 container mx-auto">
           <BreadCrumbs rootLink="Ecommerce" />
         </div>
       </section>
@@ -121,7 +121,7 @@ const Collections = () => {
       <section className="bg-white px-4">
         <div className="container mx-auto py-8 flex flex-col md:flex-row gap-4 xl:gap-16 items-start">
           <ProductFilter products={products} status={status} setFilters={setFilters} filters={filters} />
-          <div id="filtered-products" className="py-8 md:pl-5 w-full md:w-3/5 lg:w-3/4 ">
+          <div id="filtered-products" className="md:py-8 py-4 md:pl-5 w-full md:w-3/5 lg:w-3/4 ">
             <p className="text-sm font-bold mb-4">Applied Filters:</p>
             <div className="flex gap-4 mb-8 flex-wrap">
               {

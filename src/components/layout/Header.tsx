@@ -68,7 +68,7 @@ const Header = () => {
         </div>
 
 
-        <div className="flex gap-x-6 items-center">
+        <div className="flex gap-x-2 md:gap-x-6 items-center">
 
           <div className="hidden md:block">
             <Search data={products} />
@@ -77,10 +77,6 @@ const Header = () => {
           <CustomNavLink to='/cart' cssClass="text-2xl">
             <GiShoppingCart />
           </CustomNavLink>
-
-          <button type="button" id='burger-menu' className={`lg:hidden ${isOpen?'active':''}`} onClick={()=>setIsOpen(!isOpen)}>
-            <span></span>
-          </button>
 
 
           <div className='relative group'>
@@ -112,6 +108,10 @@ const Header = () => {
 
             </div>
           </div>
+
+            <button type="button" id='burger-menu' className={`lg:hidden ${isOpen?'active':''}`} onClick={()=>setIsOpen(!isOpen)}>
+            <span></span>
+          </button>
 
         </div>
       </nav>
