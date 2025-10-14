@@ -151,46 +151,46 @@ const ShippingForm = () => {
     }
 
     return (
-        <form className="grid grid-cols-2 gap-x-20 gap-y-6" onSubmit={onSumbitHandler}>
-            <fieldset className="col-span-2">
-                <label htmlFor="street" className="capitalize font-medium text-slate-600 text-sm block mb-2 w-full">Street Address</label>
+        <form className="grid md:grid-cols-2 grid-cols-1 xl:gap-x-20 gap-x-10 gap-y-6" onSubmit={onSumbitHandler}>
+            <fieldset className="md:col-span-2 col-span-1">
+                <label htmlFor="street" className="capitalize font-medium text-slate-600 md:text-sm text-xs block mb-2 w-full">Street Address</label>
                 <input
                     onChange={e => onChangeHandler(e)}
-                    id="street" name="street" className="border-[1px] outline-none block px-4 py-2 rounded w-full" value={street} />
+                    id="street" name="street" className="border-[1px] outline-none block px-4 py-2 rounded w-full md:text-base text-sm" value={street} />
 
                 {formErrors.street && <span className='text-red-500 text-xs'>{formErrors.street}</span>}
             </fieldset>
 
             <fieldset className="">
-                <label htmlFor="city" className="capitalize font-medium text-slate-600 text-sm block mb-2 w-full">City</label>
+                <label htmlFor="city" className="capitalize font-medium text-slate-600 md:text-sm text-xs block mb-2 w-full">City</label>
                 <input
                     onChange={e => onChangeHandler(e)}
-                    type="text" id="city" name="city" className="border-[1px] outline-none block px-4 py-2 rounded w-full" value={city} />
+                    type="text" id="city" name="city" className="border-[1px] outline-none block px-4 py-2 rounded w-full md:text-base text-sm" value={city} />
                 {formErrors.city && <span className='text-red-500 text-xs'>{formErrors.city}</span>}
 
             </fieldset>
             <fieldset className="">
-                <label htmlFor="state" className=" font-medium text-slate-600 text-sm block mb-2 w-full">State</label>
+                <label htmlFor="state" className=" font-medium text-slate-600 md:text-sm text-xs block mb-2 w-full">State</label>
                 <input
                     onChange={e => onChangeHandler(e)}
-                    type="text" id="state" name="state" className="border-[1px] outline-none block px-4 py-2 rounded w-full" value={state} />
+                    type="text" id="state" name="state" className="border-[1px] outline-none block px-4 py-2 rounded w-full md:text-base text-sm" value={state} />
                 {formErrors.state && <span className='text-red-500 text-xs'>{formErrors.state}</span>}
 
             </fieldset>
             <fieldset className="">
-                <label htmlFor="postcode" className="capitalize font-medium text-slate-600 text-sm block mb-2 w-full">postcode</label>
+                <label htmlFor="postcode" className="capitalize font-medium text-slate-600 md:text-sm text-xs block mb-2 w-full">postcode</label>
                 <input
                     onChange={e => postCodeHandler(e)}
-                    type="string" id="postcode" name="postcode" className="border-[1px] outline-none block px-4 py-2 rounded w-full" value={postcode} />
+                    type="string" id="postcode" name="postcode" className="border-[1px] outline-none block px-4 py-2 rounded w-full md:text-base text-sm" value={postcode} />
                 {formErrors.postcode && <span className='text-red-500 text-xs'>{formErrors.postcode}</span>}
 
             </fieldset>
 
             <fieldset className="mb-4">
-                <label htmlFor="country" className="capitalize font-medium text-slate-600 text-sm block mb-2 w-full">country</label>
+                <label htmlFor="country" className="capitalize font-medium text-slate-600 md:text-sm text-xs block mb-2 w-full">country</label>
                 <input
                     onChange={e => onChangeHandler(e)}
-                    type="text" id="country" name="country" className="border-[1px] outline-none block px-4 py-2 rounded w-full" value={country} />
+                    type="text" id="country" name="country" className="border-[1px] outline-none block px-4 py-2 rounded w-full md:text-base text-sm" value={country} />
                 {formErrors.country && <span className='text-red-500 text-xs'>{formErrors.country}</span>}
 
             </fieldset>

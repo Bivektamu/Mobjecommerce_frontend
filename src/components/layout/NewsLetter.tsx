@@ -4,7 +4,7 @@ const NewsLetter = () => {
     return (
 
         <section id="newsletter" className='px-4'>
-            <div className="container flex flex-wrap gap-8 justify-between items-center mx-auto py-14">
+            <div className="container flex flex-wrap gap-8 justify-between items-center mx-auto md:py-14 py-6">
                 <div className="flex flex-col items-start ">
                     <h1 className='mb-4 text-2xl md:text-4xl font-semibold'>Join Our Newsletter</h1>
                     <p className='text-xs md:text-base text-slate-600'>We love to surprise our subscribers with occasional&nbsp;gifts.</p>

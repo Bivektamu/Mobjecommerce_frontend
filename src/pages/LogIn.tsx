@@ -123,15 +123,15 @@ const LogIn = () => {
 
   return (
     <PageWrapper>
-      <section id="breadcrums" className="">
-        <div className="py-14 container mx-auto">
+      <section id="breadcrums" className="px-4">
+        <div className="md:py-14 py-6 container mx-auto">
           <h2 className="text-2xl font-semibold mb-4">Login</h2>
           <BreadCrumbs rootLink="Ecommerce" />
         </div>
       </section>
 
       <section className='w-full bg-white flex justify-center items-center'>
-        <div className="w-[384px] max-w-full bg-white pt-8 pb-12 px-8 rounded-lg">
+        <div className="md:w-[384px] w-full  max-w-full bg-white pt-8 pb-12 md:px-8 px-4 rounded-lg">
 
 
           <form onSubmit={handleSubmit}>

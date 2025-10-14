@@ -115,9 +115,11 @@ const Checkout = () => {
   }
 
 
+  console.log(uniqueCartItems)
+  console.log(newOrder)
+
   if (preloaderFlag || !newOrder)
     return <Preloader />
-
 
   return (
     <PageWrapper>
@@ -125,57 +127,60 @@ const Checkout = () => {
         authStatus !== Status.FULFILLED && authUser?.role !== Role.CUSTOMER && <Preloader />
       }
 
-      <section id="breadcrums" className="">
-        <div className="py-14 container mx-auto">
-          <h2 className="text-2xl font-bold mb-4">Checkout</h2>
+      <section id="breadcrums" className="px-4">
+        <div className="lg:py-14 py-6 container mx-auto">
+          <h2 className="md:text-2xl text-lg font-bold md:mb-4 mb-2">Checkout</h2>
           <BreadCrumbs rootLink="Ecommerce" />
         </div>
       </section>
 
-      <section className='w-full bg-white flex justify-center items-center'>
-        <div className="container pt-16 pb-36 flex gap-28">
-          <div className="basis-2/3">
-            <p className="font-bold text-xl  border-slate-200 mb-24">Shipping Address</p>
+      <section className='w-full bg-white flex justify-center items-center px-4'>
+        <div className="container md:pt-16 pt-8 md:pb-36 pb-16 flex xl:gap-28 gap-10 md:flex-row flex-col">
+          <div className="xl:w-2/3 md:w-1/2 w-full">
+            <p className="font-bold md:text-xl text-lg  border-slate-200 lg:mb-24 md:mb-12 mb-6">Shipping Address</p>
 
             <ShippingForm />
 
           </div>
           {/* border-slate-200 border-[1px] */}
           {
-            Object.keys(newOrder).length < 1 ? <SquareLoader square={1} squareClass='basis-1/3 h-[400px]' /> : newOrder.total > 0 &&
-              <div className="basis-1/3 border-slate-200 border-l-[1px]  pl-16 pr-0">
-                <p className="font-bold text-xl mb-12">Order Summary</p>
-                <div className="flex justify-between mb-12">
+            Object.keys(newOrder).length < 1 ? <SquareLoader square={1} squareClass='xl:w-1/3 md:w-1/2 w-full h-[400px]' /> : newOrder.total > 0 &&
+              <div className="xl:w-1/3 md:w-1/2 w-full border-slate-200 border-[1px] md:border-[0] md:border-l-[1px]  md:pl-16 p-4 md:p-0">
+                <p className="font-bold md:text-xl text-lg md:mb-12 mb-4">Order Summary</p>
+                <div className="flex justify-between md:mb-12 mb-4">
                   <div className='flex'>
                     {
-                      uniqueCartItems.map((item, index) => <img key={index} className='w-8 mr-4' src={item.imgUrl} />)
+                      uniqueCartItems.slice(0,4).map((item, index) => <img key={index} className='w-8 mr-2' src={item.imgUrl} />)
                     }
                     {
-                      uniqueCartItems.length < newOrder.items.length && <span className='self-center text-sm italic font-medium text-slate-600 '>+ {newOrder.items.length - uniqueCartItems.length}</span>
+                      uniqueCartItems.length > 4 && <span className='self-center md:text-sm text-xs italic font-medium text-slate-600 '>+ {uniqueCartItems.length - 4}</span>
                     }
+                    {/* {
+                      uniqueCartItems.length < newOrder.items.length && <span className='self-center md:text-sm text-xs italic font-medium text-slate-600 '>+ {newOrder.items.length - uniqueCartItems.length}</span>
+                    } */}
 
                   </div>
-                  <Link to='/cart' className='text-sm  border-[1px] border-black w-28 justify-center flex items-center rounded'>Edit Cart</Link>
+                  <Link to='/cart' className='md:text-sm text-xs  border-[1px] border-black w-28 justify-center flex items-center rounded'>Edit Cart</Link>
                 </div>
-                <p className="flex justify-between mb-4">
+                <p className="flex justify-between md:text-base text-sm mb-4">
                   <span className=" text-gray-500 font-medium">Subtotal</span>
                   <span className='font-medium'>${newOrder.subTotal}</span>
                 </p>
-                <p className='flex justify-between mb-4'>
+                <p className='flex justify-between md:text-base text-sm mb-4'>
                   <span className="text-gray-500 font-medium">Shipping</span>
                   <span className='font-medium'>Free</span>
                 </p>
-                <p className='flex justify-between pb-8 mb-8 border-b-[1px] border-gray-200'>
+                <p className='flex justify-between md:text-base text-sm md:pb-8 pb-4 md:mb-8 mb-4 border-b-[1px] border-gray-200'>
                   <span className="text-gray-500 font-medium">Tax</span>
                   <span className='font-medium'>${newOrder.tax}</span>
                 </p>
 
-                <p className='flex justify-between mb-10 border-gray-200'>
+                <p className='flex justify-between md:text-base text-sm mb-10 border-gray-200'>
                   <span className="font-medium">Total</span>
                   <span className='font-medium'>${newOrder.total}</span>
                 </p>
 
-                <button className='bg-black text-white py-3 px-4 rounded text-center cursor-pointer text-sm w-full mb-8' onClick={placeHandler}>Place Order</button>
+                <button className='bg-black text-white py-3 px-4 rounded text-center cursor-pointer md:text-sm text-xs w-full md:mb-8 mb-4' onClick={placeHandler}>Place Order</button>
               </div>
           }
 

@@ -38,19 +38,19 @@ const Account = () => {
 
   return (
     <PageWrapper>
-      <section id="breadcrums" className="">
-        <div className="py-14 container mx-auto">
+      <section id="breadcrums" className="px-4">
+        <div className="md:py-14 py-6 container mx-auto">
           <h2 className="text-2xl font-bold mb-4">My Account</h2>
           <BreadCrumbs rootLink="Ecommerce" />
         </div>
       </section>
 
-      <section className='w-full bg-white  py-16'>
-        <div className="container mx-auto flex gap-x-16">
-          <div className='bg-white px-6 w-[250px] pt-24 '>
+      <section className='w-full bg-white px-4 md:py-16 py-8'>
+        <div className="container mx-auto flex md:gap-x-8 xl:gap-x-16">
+          <div className='bg-white xl:w-[250px] md:w-[200px] xl:pt-24 pt-14 '>
             <AccountSubNav />
           </div>
-          <div className=" px-8 rounded-lg basis-2/3 border-l pl-16">
+          <div className=" rounded-lg w-3/4 border-l xl:pl-16 pl-8">
             <Outlet />
           </div>
         </div>

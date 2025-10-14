@@ -75,29 +75,29 @@ const Cart = () => {
 
   return (
     <PageWrapper>
-      <section id="breadcrums" className="">
-        <div className="py-14 container mx-auto">
+      <section id="breadcrums" className="px-4">
+        <div className="lg:py-14 py-6 container mx-auto">
           <h2 className="text-2xl font-semibold mb-4">Cart</h2>
           <BreadCrumbs rootLink="Ecommerce" />
         </div>
       </section>
 
-      <section className='w-full bg-white flex justify-center items-center'>
-        <div className="container pt-16 pb-36 px-8 flex gap-28">
-          <div className="basis-2/3">
-            <p className="font-bold text-xl pb-4 border-b-[1px] border-slate-200 mb-12">Your Cart</p>
+      <section className='w-full bg-white flex justify-center items-center px-4'>
+        <div className="container pt-16 lg:pb-36 pb-16 flex lg:gap-28 gap-12 flex-col lg:flex-row">
+          <div className="lg:w-2/3 w-full">
+            <p className="font-bold md:text-xl text-lg pb-4 border-b-[1px] border-slate-200 md:mb-12 mb-6">Your Cart</p>
             {
               userCart.length < 1 ?
-                <p className='text-sm'>
+                <p className='md:text-sm text-xs'>
                   Ther are no items in your cart. Please add items to your shopping cart.</p>
                 : userCart.map((item) => (<CartItem key={item.id} cartItem={item} />))
             }
           </div>
 
           {
-            status !== Status.FULFILLED ? <SquareLoader square={1} squareClass='basis-1/3 h-[400px]' /> : newOrder && newOrder?.subTotal > 0 &&
-              <div className="basis-1/3 border-slate-200 border-[1px] p-6">
-                <p className="font-bold text-xl mb-12">Order Summary</p>
+            status !== Status.FULFILLED ? <SquareLoader square={1} squareClass='lg:w-1/3 w-full h-[400px]' /> : newOrder && newOrder?.subTotal > 0 &&
+              <div className="lg:w-1/3 w-full border-slate-200 border-[1px] p-6">
+                <p className="font-bold md:text-xl text-lg md:mb-12 mb-6">Order Summary</p>
                 <p className="flex justify-between mb-4">
                   <span className=" text-gray-500 font-medium">Subtotal</span>
                   <span className='font-medium'>${newOrder.subTotal}</span>
@@ -106,7 +106,7 @@ const Cart = () => {
                   <span className="text-gray-500 font-medium">Shipping</span>
                   <span className='font-medium'>Free</span>
                 </p>
-                <p className='flex justify-between pb-8 mb-8 border-b-[1px] border-gray-200'>
+                <p className='flex justify-between md:pb-8 pb-4 md:mb-8 mb-4 border-b-[1px] border-gray-200'>
                   <span className="text-gray-500 font-medium">Tax</span>
                   <span className='font-medium'>{newOrder.tax}</span>
                 </p>
@@ -126,17 +126,17 @@ const Cart = () => {
                           order: newOrder
                         }
                       }
-                      cssClass='bg-black text-white py-3 px-4 rounded text-center cursor-pointer text-sm w-full mb-8 block'>Checkout</CustomNavLink>
+                      cssClass='bg-black text-white py-3 px-4 rounded text-center cursor-pointer md:text-sm text-xs w-full mb-8 block'>Checkout</CustomNavLink>
                     :
                     <>
-                      <CustomNavLink to="/login?cart=true" cssClass='bg-black text-white py-3 px-4 rounded text-center cursor-pointer text-sm w-full mb-2 block'>Sign in to checkout</CustomNavLink>
-                      <p className="text-sm mb-8 text-center text-slate-500 italic">
+                      <CustomNavLink to="/login?cart=true" cssClass='bg-black text-white py-3 px-4 rounded text-center cursor-pointer md:text-sm text-xs w-full mb-2 block'>Sign in to checkout</CustomNavLink>
+                      <p className="md:text-sm text-xs mb-8 text-center text-slate-500 italic">
                         or <CustomNavLink to='/signup?cart=true' cssClass='font-semibold'>Sign up</CustomNavLink>
                       </p>
                     </>
                 }
                 <div className='block text-center'>
-                  <Link to='/collections' className='text-sm font-semibold border-b-[1px] border-black'>Continue Shopping</Link>
+                  <Link to='/collections' className='md:text-sm text-xs font-semibold border-b-[1px] border-black'>Continue Shopping</Link>
                 </div>
 
               </div>

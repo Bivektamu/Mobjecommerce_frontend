@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <footer>
       <section id="footer" className='bg-white px-4'>
-        <div className="container flex flex-wrap justify-between items-start mx-auto py-14 gap-8">
+        <div className="container flex flex-wrap justify-between items-start mx-auto md:py-14 py-8 gap-8">
           <div className="flex flex-col gap-8 ">
             <Link to='/'><Logo /></Link>
             <p className='text-slate-600 max-w-[300px]'>DevCut is a YouTube channel for practical project-based learning.</p>

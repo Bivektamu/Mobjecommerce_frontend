@@ -87,7 +87,7 @@ const CartItem = ({ cartItem }: Props) => {
 
         const content = (
             <div className='text-center'>
-                <p className="mb-6 font-medium text-sm">Are you sure you want to delete this product?</p>
+                <p className="mb-6 font-medium md:text-sm text-xs">Are you sure you want to delete this product?</p>
                 <div className="flex gap-x-4 justify-center">
                     <button className='bg-red-500 text-white px-4 py-2 rounded' onClick={e => closeModal(e)}>Cancel</button>
                     <button className='bg-green-500 text-white px-4 py-2 rounded' onClick={() => deleteCartItem(cartItem.id)}>Delete</button>
@@ -113,8 +113,8 @@ const CartItem = ({ cartItem }: Props) => {
     }
 
     return (
-        <div key={cartItem.id} className="flex items-center justify-between gap-x-12 gap-y-8 mb-8">
-            <div className="flex items-center gap-6">
+        <div key={cartItem.id} className="flex items-center justify-between gap-x-12 md:gap-y-8 gap-y-4 mb-8 md:flex-row flex-col">
+            <div className="flex items-center gap-6 w-full md:w-auto text-sm md:text-base">
                 {!product ? <SquareLoader square={1} squareClass='min-w-16 min-h-16' />
                     :
                     <div className='bg-cultured'>
@@ -122,7 +122,7 @@ const CartItem = ({ cartItem }: Props) => {
                     </div>
                 }
                 <div>
-                    <h3 className="font-semibold mb-2">{product ? product.title : <TextLoader col='1' cssClass='w-[80px] h-4' />}</h3>
+                    <h3 className="font-semibold mb-2 ">{product ? product.title : <TextLoader col='1' cssClass='w-[80px] h-4' />}</h3>
                     {!product ? <TextLoader col='1' cssClass='w-[80px] h-4' />
                         :
                         <p className='flex items-center text-xs gap-2'>Color: <span className={`w-4 h-4 rounded-full ${getClasses(cartItem.color as Colour).bgClass}`}></span> {cartItem.color} <span className="w-4 h-[2px] bg-slate-500"></span> Size: {cartItem.size}</p>
@@ -130,7 +130,7 @@ const CartItem = ({ cartItem }: Props) => {
                 </div>
             </div>
 
-            <div className='flex items-center gap-4'>
+            <div className='flex items-center gap-4 w-full md:w-auto text-sm md:text-base'>
 
                 {!product ? <TextLoader col='1' cssClass='w-8 h-8' /> : <p className='font-semibold mr-4'>$ {cartItem.price}</p>}
 

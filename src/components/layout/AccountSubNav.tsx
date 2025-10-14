@@ -19,7 +19,7 @@ const AccountSubNav = () => {
       }
 
     return (
-        <nav className='flex flex-col gap-y-8'>
+        <nav className='flex flex-col xl:gap-y-8 gap-y-4'>
             <NavLink className={({ isActive }) => (isActive ? 'font-semibold bg-regal-white' : 'text-slate-600') + ` text-sm px-6 py-2 rounded flex gap-x-4 items-center`} to="/account/orders"><BsCart4 className='w-5 h-5' /> Orders</NavLink>
 
             <NavLink className={({ isActive }) => (isActive ? 'font-semibold bg-regal-white' : 'text-slate-600') + ` text-sm px-6 py-2 rounded flex gap-x-4 items-center`} to="/account/wishlist"><FaRegHeart className='w-4 h-4' /> Wishlist</NavLink>
