@@ -39,7 +39,7 @@ const Account = () => {
   return (
     <PageWrapper>
       <section id="breadcrums" className="px-4">
-        <div className="md:py-14 py-6 container mx-auto">
+        <div className="lg:py-14 py-6 container mx-auto">
           <h2 className="text-2xl font-bold mb-4">My Account</h2>
           <BreadCrumbs rootLink="Ecommerce" />
         </div>

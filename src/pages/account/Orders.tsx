@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client"
 import { Link } from "react-router-dom"
-import {  GET_ORDERS_BY_USER_ID } from "../../data/query/orders.query"
-import {  useMemo } from "react"
+import { GET_ORDERS_BY_USER_ID } from "../../data/query/orders.query"
+import { useMemo } from "react"
 import { stripTypename } from "@apollo/client/utilities"
 import ProgressLoader from "../../components/ui/ProgressLoader"
 import { IoFileTrayOutline } from "react-icons/io5"
@@ -12,10 +12,10 @@ import { useAuth } from "../../store/slices/authSlice"
 
 const UserOrders = () => {
 
-  const {authUser} = useAuth()
+  const { authUser } = useAuth()
 
   const { data, loading, error } = useQuery(GET_ORDERS_BY_USER_ID, {
-    variables:{
+    variables: {
       userOrdersId: authUser?.id
     },
   })
@@ -61,7 +61,7 @@ const UserOrders = () => {
     return (
       <>
         <h2 className="font-bold xl:mb-16 mb-8">Orders</h2>
-        <div className="grid grid-cols-ui-table-order items-center gap-x-4 px-4 xl:py-4 py-2 border-t-[1px] border-b-[1px] mb-6">
+        <div className="hidden lg:grid grid-cols-ui-table-order items-center gap-x-4 px-4 py-2 xl:py-4  border-t-[1px] border-b-[1px] mb-6">
           <span className="xl:text-sm text-xs text-slate-500 font-semibold ">Order Number</span>
           <span className="xl:text-sm text-xs text-slate-500 font-semibold">Date</span>
           <span className="xl:text-sm text-xs text-slate-500 font-semibold ">Items</span>
@@ -72,13 +72,37 @@ const UserOrders = () => {
 
         {
           refinedData.map((order: Order) => (
-            <div key={order.id} className="grid grid-cols-ui-table-order items-center justify-between gap-x-4 px-4 xl:py-4 py-2 border-b-[1px] ">
-              <span className="xl:text-sm text-xs text-slate-500 ">{order.orderNumber}</span>
-              <span className="xl:text-sm text-xs text-slate-500">{new Date(order.orderPlaced).getDate() +' '+getMonth((new Date(order.orderPlaced).getMonth() + 1)) + ' ' + (new Date(order.orderPlaced).getFullYear())}</span>
-              <span className="xl:text-sm text-xs text-slate-500 ">{order.items.length}</span>
-              <span className="xl:text-sm text-xs text-slate-500">{order.total}</span>
-              <span className="xl:text-sm text-xs text-slate-500">{order.status}</span>
-              <Link to={`./${order.orderNumber}`} className="xl:text-sm text-xs text-slate-600 border-[1px] p-2  border-slate-600 font-medium w-[120px] text-center rounded" >View Details</Link>
+            <div key={order.id} className="grid grid-cols-1 lg:grid-cols-ui-table-order items-center justify-between gap-x-4 gap-y-2 px-4 xl:py-4 py-4 lg:py-2 border-b border-t lg:border-t-0 border-x lg:border-x-0 mb-4 lg:mb-0 rounded lg:rounded-none shadow lg:shadow-none">
+
+              <div className="flex justify-between">
+                <span className="xl:text-sm text-xs text-slate-500 font-semibold lg:hidden">Order Number</span>
+                <span className="xl:text-sm text-xs text-slate-500 ">
+                  {order.orderNumber}
+                </span>
+              </div>
+
+              <div className="flex justify-between">
+                <span className="xl:text-sm text-xs text-slate-500 font-semibold lg:hidden">Date</span>
+                <span className="xl:text-sm text-xs text-slate-500">{new Date(order.orderPlaced).getDate() + ' ' + getMonth((new Date(order.orderPlaced).getMonth() + 1)) + ' ' + (new Date(order.orderPlaced).getFullYear())}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span className="xl:text-sm text-xs text-slate-500 font-semibold lg:hidden">Items</span>
+                <span className="xl:text-sm text-xs text-slate-500 ">{order.items.length}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span className="xl:text-sm text-xs text-slate-500 font-semibold lg:hidden">Total</span>
+                <span className="xl:text-sm text-xs text-slate-500">{order.total}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span className="xl:text-sm text-xs text-slate-500 font-semibold lg:hidden">Status</span>
+                <span className="xl:text-sm text-xs text-slate-500">{order.status}</span>
+              </div>
+
+              <Link to={`./${order.orderNumber}`} className="xl:text-sm text-xs text-slate-600 border-[1px] p-2  border-slate-600 font-medium w-full lg:w-[120px] text-center rounded mt-4 lg:mt-0" >View Details</Link>
+
             </div>
           ))
         }
