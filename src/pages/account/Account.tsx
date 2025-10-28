@@ -47,10 +47,10 @@ const Account = () => {
 
       <section className='w-full bg-white px-4 md:py-16 py-8'>
         <div className="container mx-auto flex md:gap-x-8 xl:gap-x-16">
-          <div className='bg-white xl:w-[250px] md:w-[200px] xl:pt-24 pt-14 '>
+          <div className='bg-white xl:w-[250px] md:w-[180px] w-1/3 xl:pt-24 pt-14'>
             <AccountSubNav />
           </div>
-          <div className=" rounded-lg w-3/4 border-l xl:pl-16 pl-8">
+          <div className=" rounded-lg 2xl:w-2/3 w-4/5 border-l xl:pl-16 md:pl-8 pl-4">
             <Outlet />
           </div>
         </div>
