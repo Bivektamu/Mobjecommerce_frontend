@@ -52,7 +52,7 @@ const WishList = () => {
   return (
     <div>
       <h2 className="font-bold mb-8">Wishlist</h2>
-      <div className="mb-8 w-[620px]">
+      <div className="mb-8 w-full lg:w-[620px]">
 
         {
            Object.keys(wishList).length < 1 || wishList.products.length < 1 ?
