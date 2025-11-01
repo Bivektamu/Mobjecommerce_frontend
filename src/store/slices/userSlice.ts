@@ -73,7 +73,11 @@ export const updateAddress = createAsyncThunk('/user/updateaddress', async (form
 const userSlice = createSlice({
     name: 'users',
     initialState: initialState,
-    reducers: {},
+    reducers: {
+        resetUserAction:(state:UserSlice)=> {
+            state.action = null
+        }
+    },
     extraReducers: builder => {
         builder
             .addCase(getUser.fulfilled, (state, action) => {
@@ -126,9 +130,6 @@ const userSlice = createSlice({
                 state.error = action.error.message as string
                 state.status = Status.REJECTED
 
-                // console.log(action.error);
-
-
                 if (state.user) {
                     state.user.address = {} as Address
                 }
@@ -138,6 +139,6 @@ const userSlice = createSlice({
 
     }
 })
-
+export const {resetUserAction} = userSlice.actions
 export const useUser = () => useSelector((state: RootState) => state.user)
 export default userSlice.reducer;
