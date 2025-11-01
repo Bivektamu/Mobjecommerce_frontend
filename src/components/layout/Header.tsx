@@ -83,7 +83,7 @@ const Header = () => {
             <button className='block rounded-full w-8 h-8 overflow-hidden'>
               {avatar}
             </button>
-            <div className="absolute top-7 right-0 bg-white w-[70px] rounded shadow-md z-30 flex flex-col group-hover:visible invisible ">
+            <div className="absolute top-8 -left-2 md:left-0  bg-white w-max rounded shadow-md z-30 flex flex-col group-hover:visible invisible">
               {
                 isLoggedIn && authUser?.role !== Role.ADMIN ?
                   <>
@@ -96,11 +96,11 @@ const Header = () => {
                   </>
                   :
                   <>
-                    <CustomNavLink to='/login' cssClass='block min-w-full flex gap-2 text-xs font-normal text-left hover:bg-slate-100 slate-100 px-2 py-2 items-center justify-between'   >
+                    <CustomNavLink to='/login' cssClass='block min-w-full flex  text-xs font-normal text-left hover:bg-slate-100 slate-100 px-2 py-2 items-center justify-between'   >
                       Log in
                     </CustomNavLink>
 
-                    <CustomNavLink to='/signup' cssClass='block min-w-full flex gap-2 text-xs font-normal text-left hover:bg-slate-100 slate-100 px-2 py-2 items-center justify-between'   >
+                    <CustomNavLink to='/signup' cssClass='block min-w-full flex  text-xs font-normal text-left hover:bg-slate-100 slate-100 px-2 py-2 items-center justify-between'   >
                       Sign Up
                     </CustomNavLink>
                   </>

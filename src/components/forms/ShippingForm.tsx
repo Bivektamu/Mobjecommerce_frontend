@@ -194,7 +194,7 @@ const ShippingForm = () => {
                 {formErrors.country && <span className='text-red-500 text-xs'>{formErrors.country}</span>}
 
             </fieldset>
-            <button type="submit" id="add_product" className="w-[200px] bg-black text-white py-2 px-4 rounded text-center cursor-pointer">{edit ? 'Update' : 'Submit'} </button>
+            <button type="submit" id="add_product" className="w-full md:w-[200px] bg-black text-white py-2 px-4 rounded text-center cursor-pointer text-sm md:text-base">{edit ? 'Update' : 'Submit'} </button>
         </form>
     )
 }
