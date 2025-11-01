@@ -25,8 +25,8 @@ const AccountDetails = () => {
 
   return (
     <>
-      <h2 className="font-bold mb-16">Account Details</h2>
-      <div className="mb-8 w-[320px]">
+      <h2 className="font-bold mb-8 md:mb-16">Account Details</h2>
+      <div className="mb-8 w-full md:w-[320px]">
         <AccountDetailsForm user={userDetails} refetchQuery= {refetch} />
       </div>
     </>)

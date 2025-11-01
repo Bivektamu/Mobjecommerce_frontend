@@ -136,11 +136,11 @@ const { currentPassword, newPassword, confirmNewPassword } = formData
 return (
     <form onSubmit={handleSubmit}>
         <fieldset className="mb-8">
-            <label htmlFor="currentPassword" className="capitalize font-medium text-slate-600 text-sm block mb-2 w-full">Current Password</label>
+            <label htmlFor="currentPassword" className="capitalize font-medium text-slate-600 text-xs md:text-sm block mb-2 w-full">Current Password</label>
             <input
                 id="currentPassword"
                 name="currentPassword"
-                className="border-[1px] outline-none block px-4 py-2 rounded w-full"
+                className="border-[1px] outline-none block px-4 py-2 rounded w-full text-sm md:text-base"
                 type="password"
                 value={currentPassword}
                 onChange={onChange}
@@ -150,11 +150,11 @@ return (
         </fieldset>
 
         <fieldset className="mb-8 relative">
-            <label htmlFor="newPassword" className="capitalize font-medium text-slate-600 text-sm block mb-2 w-full">New Password</label>
+            <label htmlFor="newPassword" className="capitalize font-medium text-slate-600 text-xs md:text-sm block mb-2 w-full">New Password</label>
             <input
                 id="newPassword"
                 name="newPassword"
-                className="border-[1px] outline-none block px-4 py-2 rounded w-full"
+                className="border-[1px] outline-none block px-4 py-2 rounded w-full text-sm md:text-base"
                 type={`${showPass ? 'text' : 'password'}`}
                 value={newPassword}
                 onChange={onChange}
@@ -167,11 +167,11 @@ return (
         </fieldset>
 
         <fieldset className="mb-8">
-            <label htmlFor="confirmNewPassword" className="capitalize font-medium text-slate-600 text-sm block mb-2 w-full">Confirm New Password</label>
+            <label htmlFor="confirmNewPassword" className="capitalize font-medium text-slate-600 text-xs md:text-sm block mb-2 w-full">Confirm New Password</label>
             <input
                 id="confirmNewPassword"
                 name="confirmNewPassword"
-                className="border-[1px] outline-none block px-4 py-2 rounded w-full"
+                className="border-[1px] outline-none block px-4 py-2 rounded w-full text-sm md:text-base"
                 type="password"
                 value={confirmNewPassword}
                 onChange={onChange}
@@ -180,7 +180,7 @@ return (
 
         </fieldset>
 
-        <button type='submit' className={`py-2 px-4 text-white rounded text-center  text-sm ${!loading ? 'bg-black  cursor-pointer' : 'pointer-events-none bg-slate-400 '}  `}>{loading ? 'Changing..' : 'Change Password'}</button>
+        <button type='submit' className={`py-2 px-4 text-white rounded text-center w-full md:w-max  text-sm ${!loading ? 'bg-black  cursor-pointer' : 'pointer-events-none bg-slate-400 '}  `}>{loading ? 'Changing..' : 'Change Password'}</button>
     </form>
 )
 }

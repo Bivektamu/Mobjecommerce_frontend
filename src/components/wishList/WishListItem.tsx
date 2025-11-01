@@ -4,7 +4,6 @@ import { useStoreDispatch } from '../../store'
 import { getProducts, useProduct } from '../../store/slices/productSlice'
 import getMonth from '../../utils/getMonth'
 import SquareLoader from '../ui/SquareLoader'
-import ParagraphLoader from '../ui/ParagraphLoader'
 
 type Props = {
     item: LikedProduct,
