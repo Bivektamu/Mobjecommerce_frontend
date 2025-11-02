@@ -53,7 +53,7 @@ const OrderDetails = ({ order }: Props) => {
 
             <div className="flex items-center justify-between ">
                 <span className="text-sm font-medium text-slate-500">Status:</span>
-                <span className="text-sm font-medium capitalize">{order.status.toLocaleLowerCase()}</span>
+                <span className={`text-sm font-medium capitalize ${order.status.toLowerCase()}`}>{order.status.toLocaleLowerCase()}</span>
             </div>
 
             <p className="font-medium text-slate-900 mt-10 mb-6 pb-2 border-b-[1px] text-lg">User</p>

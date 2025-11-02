@@ -35,5 +35,15 @@ export default {
      
     },
   },
+  // This tells Tailwind: “Keep these classes even if they don’t appear in files.”
+   safelist: [
+    'refunded',
+    'processing',
+    'pending',
+    'completed',
+    'cancelled',
+    'failed',
+    'shipped',
+  ],
   plugins: [],
 };

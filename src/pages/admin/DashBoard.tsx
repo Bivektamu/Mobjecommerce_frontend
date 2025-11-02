@@ -36,7 +36,7 @@ const DashBoard = () => {
 
   return (
     <section className="container mx-auto ">
-      <div className="grid-cols-4 grid gap-6 mb-6">
+      <div className="xl:grid-cols-4 md:grid-cols-2 grid gap-6 mb-6">
 
         <TotalSales />
         <TotalOrders />
@@ -58,9 +58,9 @@ const DashBoard = () => {
         }
       </div>
 
-      <div className="grid-cols-7 grid gap-6 mb-6">
+      <div className="xl:grid-cols-7 grid-cols-1 grid gap-6 mb-6">
         <SalesOverTime />
-        <div className="col-span-3 bg-white rounded-xl">
+        <div className="lg:col-span-3 col-span-full bg-white rounded-xl">
           <p className="font-medium flex justify-between items-center p-4 ">
             <span className='text-sm'>Orders by category</span>
             <span className="text-xs text-slate-400">
@@ -71,12 +71,12 @@ const DashBoard = () => {
         </div>
       </div>
 
-      <div className="grid-cols-4 grid gap-6 mb-6">
-        <div className='bg-white  rounded-xl text-sm col-span-3'>
+      <div className="flex gap-6 mb-6 flex-col xl:flex-row">
+        <div className='bg-white  rounded-xl text-sm xl:basis-2/3 basis-full'>
           <RecentOrders />
         </div>
 
-        <div className='bg-white  rounded-xl text-sm'>
+        <div className='bg-white  rounded-xl text-sm xl:basis-1/3 basis-full'>
           {
             loading ? <Preloader /> :
               <LowStockProducts lowProducts={lowStockProducts} />

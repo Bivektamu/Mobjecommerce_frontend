@@ -362,7 +362,7 @@ export interface WishList {
 
 
 export interface LowStockProduct {
-    id: string,
+    _id: string,
     heroImg: string,
     title: string,
     price: number,

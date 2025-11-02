@@ -51,7 +51,6 @@ const OrderTile = ({ order, refetchOrders }: Props) => {
 
             <span className='text-sm text-slate-500'>
                 {
-
                     (new Date(order.orderPlaced)).getDate() + ' ' + getMonth((new Date(order.orderPlaced)).getMonth() + 1) + ' ' + (new Date(order.orderPlaced).getFullYear())
                 }
             </span>
@@ -60,7 +59,7 @@ const OrderTile = ({ order, refetchOrders }: Props) => {
                 $ {order.total}
             </span>
 
-            <span className='text-sm text-slate-500 capitalize'>
+            <span className={`text-sm rounded-full font-medium w-max px-4 py-1 capitalize ${order.status.toLowerCase()}`}>
                 {order.status.toLocaleLowerCase()}
             </span>
 
@@ -68,9 +67,6 @@ const OrderTile = ({ order, refetchOrders }: Props) => {
                 View Details
             </button>
 
-            {/* <span className='text-sm text-slate-500 flex items-center'>
-                <Close classN='w-4 h-4' />
-            </span> */}
 
             <div className='text-lg text-slate-500 font-semibold relative flex items-center justify-center pb-2'>
                 <button onClick={() => setActionId('id1')} >...</button>

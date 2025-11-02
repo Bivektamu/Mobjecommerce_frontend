@@ -59,7 +59,7 @@ const Header = () => {
     <header className='bg-white p-4 fixed lg:static w-full h-[75px] z-30'>
       <nav className="container mx-auto  flex justify-between flex-wrap items-center">
         <Logo />
-        <div className={`flex h-[100%] text-3xl lg:text-base items-center justify-center pb-[75px]  gap-6 fixed lg:static flex-col lg:flex-row w-full lg:w-fit bg-white  left-0 p-4 lg:p-0 z-20 transition-all duration-700 ease-in-out top-[75px] origin-top lg:translate-x-0 ${isOpen?'translate-x-0':'-translate-x-[100%]'}`}>
+        <div className={`flex h-[100%] text-3xl lg:text-base items-center justify-center pb-[75px]  gap-6 fixed lg:static flex-col lg:flex-row w-full lg:w-fit bg-white lg:bg-none  left-0 p-4 lg:p-0 z-20 transition-all duration-700 ease-in-out top-[75px] origin-top lg:translate-x-0 ${isOpen?'translate-x-0':'-translate-x-[100%]'}`}>
           {/* dynamically add active class */}
           <CustomNavLink isNavLink={true} cssClass='flex items-center hover:font-bold' to="/">Home</CustomNavLink>
           <CustomNavLink isNavLink={true} cssClass='flex items-center hover:font-bold' to="/collections">Collections</CustomNavLink>

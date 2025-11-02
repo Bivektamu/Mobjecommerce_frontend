@@ -69,7 +69,7 @@ const PrivateRoute = () => {
             }
 
             <Sidebar />
-            <section className="w-full pl-[340px] pb-12 pr-12 pt-8">
+            <section className="w-full lg:pl-[340px] pl-[200px] pb-12 lg:pr-12 pr-4 pt-8">
                 <div className="h-[72px] flex items-center mb-12 justify-between">
                     <BreadCrumbs />
                     <button onClick={logOutHandler}>

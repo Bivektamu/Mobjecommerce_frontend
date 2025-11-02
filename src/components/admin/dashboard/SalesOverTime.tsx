@@ -31,7 +31,7 @@ const dispatch = useStoreDispatch()
     const salesOverTime = stripTypename(data?.salesOverTime)
 
     return (
-        <div className="col-span-4 bg-white rounded-xl">
+        <div className="lg:col-span-4 col-span-full bg-white rounded-xl">
             <p className="font-medium flex justify-between mb-4 items-center p-4 ">
                 <span className='text-sm'>Sales Over Time</span>
                 <span className="text-xs text-slate-400">
