@@ -6,7 +6,6 @@ import { getProducts, useProduct } from '../../store/slices/productSlice'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Product, ReviewUserOnly, Status } from '../../store/types'
 import StarIcon from '../../components/ui/StarIcon'
-import Grids from '../../components/ui/Grids'
 import GridLoader from '../../components/ui/GridLoader'
 import AddToCartForm from '../../components/forms/AddToCartForm'
 import DetailsReviewsTab from '../../components/product/DetailsReviewsTab'
@@ -133,14 +132,14 @@ const ProductComponent = () => {
 
             {(status === Status.PENDING) ? <GridLoader col='4' /> : similarProducts.length < 1 ? <h2 className="text-lg text-slate-600 text-center">Sorry, there are no products.</h2> :
 
-              <Grids cssClass='container mx-auto grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid gap-x-12 gap-y-16'>
+              <div className='container mx-auto grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid gap-x-12 gap-y-16'>
                 {
 
                   similarProducts.map(product =>
                     <ProductCard key={product.id} item={product} />
                   )
                 }
-              </Grids>
+              </div>
             }
 
           </div>

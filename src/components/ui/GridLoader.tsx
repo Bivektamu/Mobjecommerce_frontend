@@ -1,4 +1,3 @@
-import Grids from './Grids'
 import CardLoader from './CardLoader'
 
 type Props = {
@@ -7,11 +6,11 @@ type Props = {
 
 const GridLoader = ({col}: Props) => {
   return (
-    <Grids cssClass={`container mx-auto md:grid-cols-${parseInt(col)} grid-cols-1 grid gap-12`}>
+    <div className={`container mx-auto grid-cols-${1} md:grid-cols-${2} lg:grid-cols-${col}  grid gap-12`}>
         {
             new Array(parseInt(col)).fill('*').map((_,i)=> <CardLoader key={i} cssClass='w-full' />)
         }
-    </Grids>
+    </div>
     
   )
 }

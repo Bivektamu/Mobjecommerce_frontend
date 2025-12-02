@@ -1,5 +1,4 @@
 
-import Grids from "../../components/ui/Grids"
 import { getProducts, useProduct } from "../../store/slices/productSlice"
 import { MouseEvent, useEffect, useState } from "react"
 import { useStoreDispatch } from "../../store"
@@ -193,13 +192,13 @@ const Collections = () => {
 
               {(status === Status.PENDING) ? <GridLoader col='3' /> : filteredProducts.length < 1 ? <h2 className="text-lg text-slate-600 text-center">Sorry, there are no products for given filters.</h2> :
 
-                <Grids cssClass='container mx-auto grid-cols-1 lg:grid-cols-3  grid gap-x-12 gap-y-16'>
+                <div className='container mx-auto grid-cols-1 lg:grid-cols-3  grid gap-x-12 gap-y-16'>
                   {
                     filteredProducts.map(product =>
                       <ProductCard key={product.id} item={product} />
                     )
                   }
-                </Grids>
+                </div>
               }
             </div>
 

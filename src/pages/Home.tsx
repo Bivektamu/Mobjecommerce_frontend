@@ -1,5 +1,4 @@
 import Hero from "../components/home/Hero"
-import Grids from "../components/ui/Grids"
 import { getProducts, useProduct } from "../store/slices/productSlice"
 import { useEffect } from "react"
 import { useStoreDispatch } from "../store"
@@ -25,7 +24,7 @@ const Home = () => {
     <PageWrapper>
       <Hero />
       <section className="bg-white pt-12 pb-20 md:pt-24 md:pb-36 px-4">
-        <Grids cssClass='container mx-auto md:grid-cols-2 lg:grid-cols-3  grid gap-12 md:gap-24 mb-20 md:mb-36'>
+        <div className='container mx-auto md:grid-cols-2 lg:grid-cols-3  grid gap-12 md:gap-24 mb-20 md:mb-36'>
           <div>
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="48" height="48" rx="24" fill="#F6F6F6" />
@@ -51,23 +50,23 @@ const Home = () => {
             <p className="mt-8 mb-4 font-semibold">Secure Payment</p>
             <p className="text-slate-600">Your security is our priority. Your payments are secure with&nbsp;us.</p>
           </div>
-        </Grids>
+        </div>
 
 
         {/* Best Selling Products */}
         <p className="text-slate-400 text-sm mb-4 text-center uppercase tracking-wide">Shop Now</p>
         <h2 className="font-bold text-2xl mb-12 md:mb-24 text-center">Best Selling</h2>
+        {
+          (status === Status.PENDING) ? <GridLoader col='4' /> : products.length < 1 ? <h2 className="text-lg text-slate-600 text-center">Sorry, there are no products.</h2> :
 
-        {(status === Status.PENDING) ? <GridLoader col='4' /> : products.length < 1 ? <h2 className="text-lg text-slate-600 text-center">Sorry, there are no products.</h2> :
+            <div className='container mx-auto lg:grid-cols-4 grid-cols-1 md:grid-cols-2 grid gap-12'>
 
-          <Grids cssClass='container mx-auto lg:grid-cols-4 grid-cols-1 md:grid-cols-2 grid gap-12'>
-
-            {
-              products.slice(0, 4).map(product =>
-                <ProductCard key={product.id} item={product} />
-              )
-            }
-          </Grids>
+              {
+                products.slice(0, 4).map(product =>
+                  <ProductCard key={product.id} item={product} />
+                )
+              }
+            </div>
 
         }
       </section>

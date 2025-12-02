@@ -15,6 +15,7 @@ import { v4 } from 'uuid'
 import { addToast } from '../../store/slices/toastSlice'
 import Preloader from '../../components/ui/Preloader'
 import SalesOverTime from '../../components/admin/dashboard/SalesOverTime'
+import ProgressLoader from '../../components/ui/ProgressLoader'
 
 const DashBoard = () => {
 
@@ -43,7 +44,7 @@ const DashBoard = () => {
         <ActiveCustomer />
 
         {
-          loading ? <Preloader /> :
+          loading ? <ProgressLoader /> :
 
             <div className='bg-white p-4 rounded-xl text-sm'>
               <p className="font-medium text-slate-600 flex justify-between mb-4 items-center">
