@@ -12,10 +12,6 @@ const Orders = () => {
 
     const { data, loading, refetch } = useQuery(GET_ORDERS)
 
-    // if(error) {
-    //     console.log(error)
-    // }
-
     const orders = stripTypename(data?.orders)
     const { filteredData, setParams, params } = useSearch(orders)
 
@@ -24,8 +20,6 @@ const Orders = () => {
         return <ProgressLoader />
     }
 
-
-    // const [actionId, setActionId] = useState('')
 
     return (
 

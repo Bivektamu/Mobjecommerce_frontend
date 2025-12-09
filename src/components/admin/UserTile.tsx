@@ -104,7 +104,7 @@ const UserTile = ({ user, refetchUsers }: Props) => {
                     {user.firstName + ' ' + user.lastName}
                 </span>
 
-                <span className='text-sm text-slate-500'>
+                <span className='text-sm text-slate-500 break-all'>
                     {user.email}
                 </span>
 

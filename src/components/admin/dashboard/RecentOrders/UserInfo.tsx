@@ -32,7 +32,7 @@ const UserInfo = ({ id }: Props) => {
     }
 
     return (
-        <div className="text-xs text-slate-500 col-span-2 flex items-center gap-2">
+        <div className="text-xs text-slate-500 flex items-center gap-2">
             <span className="rounded-full w-8 h-8 overflow-hidden">
                 {avatar}
             </span>

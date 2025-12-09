@@ -9,7 +9,7 @@ import ProgressLoader from '../../ui/ProgressLoader'
 import { stripTypename } from '@apollo/client/utilities'
 
 const SalesOverTime = () => {
-const dispatch = useStoreDispatch()
+    const dispatch = useStoreDispatch()
     const { data, error, loading } = useQuery(GET_SALES_OVER_TIME, {
         fetchPolicy: 'network-only'
     })
@@ -23,22 +23,24 @@ const dispatch = useStoreDispatch()
         dispatch(addToast(newToast))
     }
 
-     if (loading) {
+    if (loading) {
         return <ProgressLoader />
     }
 
-    
     const salesOverTime = stripTypename(data?.salesOverTime)
 
     return (
-        <div className="lg:col-span-4 col-span-full bg-white rounded-xl">
+        <div className="xl:col-span-4 col-span-full bg-white rounded-xl">
             <p className="font-medium flex justify-between mb-4 items-center p-4 ">
                 <span className='text-sm'>Sales Over Time</span>
                 <span className="text-xs text-slate-400">
                     Sales (AUD)
                 </span>
             </p>
-            <SalesChart data={salesOverTime} />
+            {
+                salesOverTime.length < 1 ? <div className='mb-4 text-slate-400 p-4 italic'>Sorry, no sales has been made yet over 30 days</div> :
+                    <SalesChart data={salesOverTime} />
+            }
         </div>
     )
 }

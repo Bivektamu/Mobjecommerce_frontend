@@ -61,7 +61,7 @@ const DashBoard = () => {
 
       <div className="xl:grid-cols-7 grid-cols-1 grid gap-6 mb-6">
         <SalesOverTime />
-        <div className="lg:col-span-3 col-span-full bg-white rounded-xl">
+        <div className="xl:col-span-3 col-span-full bg-white rounded-xl">
           <p className="font-medium flex justify-between items-center p-4 ">
             <span className='text-sm'>Orders by category</span>
             <span className="text-xs text-slate-400">

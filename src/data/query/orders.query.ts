@@ -2,8 +2,8 @@ import { gql } from "@apollo/client"
 
 
 export const GET_ORDERS = gql`
-query Orders {
-  orders {
+query Orders($limit: Int) {
+  orders(limit: $limit) {
     id
     orderNumber
     userId

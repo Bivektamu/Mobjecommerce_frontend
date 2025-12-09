@@ -40,7 +40,6 @@ const Header = () => {
 
 
   useEffect(() => {
-    console.log(user)
     if (user) {
       setAvatarEmail(user.email)
     }
