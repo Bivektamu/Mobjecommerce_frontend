@@ -17,9 +17,9 @@ const SignIn = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
+    if(status === Status.IDLE)
     dispatch(getAuthStatus())
-
-  }, [])
+  }, [status])
 
   const [email, setEmail] = useState('admin@gmail.com')
   const [password, setPassword] = useState('password123')

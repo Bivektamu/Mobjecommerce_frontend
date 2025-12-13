@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Action, Toast, Toast_Vairant, Role } from '../store/types'
+import { Action, Toast, Toast_Vairant, Role, Status } from '../store/types'
 import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid';
 import { useStoreDispatch } from '../store'
@@ -18,14 +18,15 @@ const SignUp = () => {
 
 
   const dispatch = useStoreDispatch()
-  const { isLoggedIn, authUser } = useAuth()
+  const { isLoggedIn, authUser, status } = useAuth()
 
   const { user, error: userError, action } = useUser()
 
 
   useEffect(() => {
-    dispatch(getAuthStatus())
-  }, [])
+    if (status === Status.IDLE)
+      dispatch(getAuthStatus())
+  }, [status])
 
   useEffect(() => {
     if (user && action === Action.ADD) {

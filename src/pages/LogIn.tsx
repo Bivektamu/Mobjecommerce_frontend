@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Cart, Role } from '../store/types'
+import { Cart, Role, Status } from '../store/types'
 import { useStoreDispatch } from '../store/index'
 import { useAuth, getAuthStatus } from '../store/slices/authSlice'
 
@@ -15,15 +15,16 @@ const LogIn = () => {
   const navigate = useNavigate()
 
   const dispatch = useStoreDispatch()
-  const { isLoggedIn, authUser } = useAuth()
+  const { isLoggedIn, authUser, status } = useAuth()
   const { cart } = useCart()
 
 
 
 
   useEffect(() => {
-    dispatch(getAuthStatus())
-  }, [])
+    if (status === Status.IDLE)
+      dispatch(getAuthStatus())
+  }, [status])
 
   useEffect(() => {
     if (isLoggedIn && authUser?.role === Role.CUSTOMER)
