@@ -21,8 +21,8 @@ export default {
         'regal-white': '#F6F6F6'
       },
       gridTemplateColumns: {
-        'table': '1fr 3fr 1.5fr 1.5fr 1.5fr 2fr 1fr 1fr',
-        'table-order': '3fr 1fr 1.5fr 1.5fr 1.5fr 2fr  1fr',
+        'table': '1fr 3.5fr 1.5fr 1.5fr 2fr 1fr 1fr 1fr',
+        'table-order': '3fr 1fr 3fr 2fr 2fr  1fr',
         'ui-table-order': '2.5fr 2.5fr 1fr 1fr 2.5fr 2.5fr',
         // 'ui-table-order': '2.5fr 2.5fr 1.5fr 1.5fr 1.5fr 2.5fr',
         'table-users': '1fr 1fr 2.5fr 3.5fr 2fr  1fr  1fr',

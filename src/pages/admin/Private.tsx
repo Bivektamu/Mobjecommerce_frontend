@@ -23,13 +23,14 @@ const PrivateRoute = () => {
     const auth = useAuth()
     const { isLoggedIn, status, authUser } = auth
     const dispatch = useStoreDispatch()
-    const location = useLocation()
+    const { pathname } = useLocation()
 
     const [isOpen, setIsOpen] = useState(false)
 
     useEffect(() => {
         dispatch(getAuthStatus())
     }, [])
+
 
     useEffect(() => {
         if (status === Status.FULFILLED && !isLoggedIn) {
@@ -49,13 +50,15 @@ const PrivateRoute = () => {
     }, [authUser])
 
     useEffect(() => {
-        if (location.pathname === '/admin' || location.pathname === '/admin/') {
+        setIsOpen(false)
+
+        if (pathname === '/admin' || pathname === '/admin/') {
             return navigate('/admin/dashboard')
         }
-    }, [location.pathname])
+    }, [pathname])
 
 
-    if (status === Status.PENDING || !isLoggedIn || authUser?.role !== Role.ADMIN) {
+    if (status === Status.PENDING || !isLoggedIn || authUser?.role !== Role.ADMIN || pathname === '/admin' || pathname === '/admin/') {
         return <Preloader />
     }
 
@@ -74,7 +77,7 @@ const PrivateRoute = () => {
 
             <Sidebar isOpen={isOpen} />
 
-            <section className="w-full pl-4  md:pl-[200px] lg:pl-[340px] pb- 4 md:pb-12 lg:pr-12 pr-4 pt-8">
+            <section className="w-full pl-4  md:pl-[200px] lg:pl-[240px] xl:pl-[340px] pb-4 lg:pb-12 xl:pr-12 pr-4 pt-8">
                 <div className="h-[72px] flex items-center mb-12 justify-between">
                     <BreadCrumbs />
                 </div>

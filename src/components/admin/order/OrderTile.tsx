@@ -63,9 +63,7 @@ const OrderTile = ({ order, refetchOrders }: Props) => {
                 {order.status.toLocaleLowerCase()}
             </span>
 
-            <button onClick={detailsHandler} className='text-sm text-slate-600 border-[1px] p-2  border-slate-600 font-medium w-[130px] rounded'>
-                View Details
-            </button>
+
 
 
             <div className='text-lg text-slate-500 font-semibold relative flex items-center justify-center pb-2'>
@@ -73,6 +71,9 @@ const OrderTile = ({ order, refetchOrders }: Props) => {
                 {actionId === 'id1' &&
                     <div className='absolute  bg-white border-[1px] rounded-lg shadow w-[140px]  -translate-x-[75px] translate-y-[35px] after:content-[""] after:w-7 after:h-7  after:absolute after:z-10 after:-right-5 after:-top-4' onMouseLeave={() => setActionId('')}>
                         <button onClick={statusHandler} className='block w-full text-sm font-normal text-left hover:bg-slate-100 px-4 py-4'>Change Status</button>
+                        <button onClick={detailsHandler} className='block w-full text-sm font-normal text-left hover:bg-slate-100 px-4 py-4'>
+                            View Details
+                        </button>
                     </div>
                 }
             </div>

@@ -65,7 +65,7 @@ const Products = () => {
 
   }, [action])
 
-  useEffect(() => {  
+  useEffect(() => {
     if (error) {
       const newToast: Toast = {
         id: uuidv4(),
@@ -89,58 +89,54 @@ const Products = () => {
 
   return (
 
-    <div className='bg-white rounded-lg'>
-      <div className="flex justify-between p-8 items-center">
+    <div className=' rounded-lg'>
+      <div className="flex justify-between p-4 xl:p-8 items-center relative bg-regal-white">
         <p className="font-semibold">Products</p>
-        <div className="flex gap-x-4 ">
+        <div className="flex gap-x-4 absolute md:static -top-10  justify-between w-full md:w-auto  left-0">
 
-          <div className='relative'>
+          <div className='relative '>
             <SearchIcon />
 
             <input
               type='text'
-              className='text-black py-2 px-4 rounded cursor-pointer border-slate-400 border-[1px] text-sm text-left outline-none pl-10'
+              className='text-black py-2 px-4 rounded cursor-pointer border-slate-400 border-[1px] text-xs xl:text-sm text-left outline-none pl-10'
               value={params}
               placeholder='Search products'
               onChange={(e) => setParams(e.target.value)}
             />
           </div>
 
-          <Link to="./add" className='bg-black text-white py-2 px-4 rounded text-center cursor-pointer text-sm'>Add Product</Link>
+          <Link to="./add" className='bg-black text-white py-2 px-4 rounded text-center cursor-pointer text-xs xl:text-sm'>Add Product</Link>
         </div>
       </div>
 
-      <div className='grid grid-cols-table gap-x-8 px-8 py-4 border-t-[1px] border-b-[1px] mb-6'>
+      <div className='hidden xl:grid grid-cols-table gap-x-4 px-8 py-4 border-t-[1px] border-b-[1px]  bg-white'>
         <button>
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M1 3.3087L3.37549 1.00035M3.37549 1.00035L5.75246 3.30726M3.37549 1.00035L3.37935 13M13 10.692L10.6238 12.9997M10.6238 12.9997L8.24754 10.692M10.6238 12.9997V1" stroke="#474B57" strokeWidth="1.14286" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
-        <span className='text-sm text-slate-500 font-medium'>
+        <span className='text-xs xl:text-sm text-slate-500 font-medium'>
           Name
         </span>
-        <span className='text-sm text-slate-500 font-medium'>
+        <span className='text-xs xl:text-sm text-slate-500 font-medium'>
           SKU
         </span>
 
-        <span className='text-sm text-slate-500 font-medium'>
+        <span className='text-xs xl:text-sm text-slate-500 font-medium'>
           Price
         </span>
-
-        <span className='text-sm text-slate-500 font-medium'>
-          Stock
-        </span>
-
-        <span className='text-sm text-slate-500 font-medium'>
+        <span className='text-xs xl:text-sm text-slate-500 font-medium'>
           Categories
         </span>
-
-
-        <span className='text-sm text-slate-500 font-medium'>
+        <span className='text-xs xl:text-sm text-slate-500 font-medium'>
+          Stock
+        </span>
+        <span className='text-xs xl:text-sm text-slate-500 font-medium'>
           Featured
         </span>
 
-        <span className='text-sm text-slate-500 font-medium'>
+        <span className='text-xs xl:text-sm text-slate-500 font-medium'>
           Action
         </span>
       </div>
@@ -150,7 +146,7 @@ const Products = () => {
         <p className='px-8 py-8 text-slate-500'>There are no products. Please add new product.</p>
       }
 
-      <div className="w-full">
+      <div className="w-full bg-regal-white lg:bg-whtie  xl:pt-0 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-1 gap-4 xl:gap-0">
 
         {filteredData && filteredData.length > 0 && (filteredData as Product[]).map(product =>
           <ProductTile key={product.id} product={product} />

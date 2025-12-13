@@ -67,10 +67,6 @@ const Orders = () => {
                 </span>
 
                 <span className='text-sm text-slate-500 font-medium'>
-                    Details
-                </span>
-
-                <span className='text-sm text-slate-500 font-medium'>
                     Action
                 </span>
             </div>

@@ -43,7 +43,6 @@ const Header = () => {
     if (user) {
       setAvatarEmail(user.email)
     }
-
   }, [user])
 
   const logOutHandler = (e: MouseEvent<HTMLButtonElement>) => {
