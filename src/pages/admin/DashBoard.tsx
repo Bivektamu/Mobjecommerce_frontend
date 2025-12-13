@@ -13,7 +13,6 @@ import { GET_LOW_STOCK_PRODUCTS } from '../../data/query/analytics.query'
 import { Toast, Toast_Vairant } from '../../store/types'
 import { v4 } from 'uuid'
 import { addToast } from '../../store/slices/toastSlice'
-import Preloader from '../../components/ui/Preloader'
 import SalesOverTime from '../../components/admin/dashboard/SalesOverTime'
 import ProgressLoader from '../../components/ui/ProgressLoader'
 
@@ -79,7 +78,7 @@ const DashBoard = () => {
 
         <div className='bg-white  rounded-xl text-sm xl:basis-1/3 basis-full'>
           {
-            loading ? <Preloader /> :
+            loading ? <ProgressLoader /> :
               <LowStockProducts lowProducts={lowStockProducts} />
           }
         </div>

@@ -14,6 +14,7 @@ import Preloader from '../../components/ui/Preloader'
 import AdminLogo from '../../components/ui/AdminLogo'
 
 const PrivateRoute = () => {
+    console.log('hdhdhdhdhd')
 
 
     const navigate = useNavigate()
@@ -28,15 +29,13 @@ const PrivateRoute = () => {
     const [isOpen, setIsOpen] = useState(false)
 
     useEffect(() => {
-        dispatch(getAuthStatus())
-    }, [])
+        if (status === Status.IDLE)
+            dispatch(getAuthStatus())
+    }, [status])
 
 
     useEffect(() => {
-        if (status === Status.FULFILLED && !isLoggedIn) {
-            navigate('/admin/login')
-        }
-        else if (status === Status.REJECTED) {
+        if ((status === Status.FULFILLED && !isLoggedIn) || status === Status.REJECTED) {
             navigate('/admin/login')
         }
 
@@ -57,40 +56,39 @@ const PrivateRoute = () => {
         }
     }, [pathname])
 
+    if (status === Status.FULFILLED && isLoggedIn && authUser?.role === Role.ADMIN) {
 
-    if (status === Status.PENDING || !isLoggedIn || authUser?.role !== Role.ADMIN || pathname === '/admin' || pathname === '/admin/') {
-        return <Preloader />
-    }
-
-    return (
-        <div className='admin-wrapper pt-12 md:pt-0'>
-
-            {
-                allToasts?.length > 0 && <ToastComponent toasts={allToasts} />
-            }
-            <header className='px-4 py-2 flex items-center justify-between md:hidden fixed top-0 left-0 w-full bg-white z-10'>
-                <AdminLogo />
-                <button type="button" id='burger-menu' className={`lg:hidden ${isOpen ? 'active' : ''}`} onClick={() => setIsOpen(!isOpen)}>
-                    <span></span>
-                </button>
-            </header>
-
-            <Sidebar isOpen={isOpen} />
-
-            <section className="w-full pl-4  md:pl-[200px] lg:pl-[240px] xl:pl-[340px] pb-4 lg:pb-12 xl:pr-12 pr-4 pt-8">
-                <div className="h-[72px] flex items-center mb-12 justify-between">
-                    <BreadCrumbs />
-                </div>
+        return (
+            <div className='admin-wrapper pt-12 md:pt-0'>
 
                 {
-                    status !== Status.FULFILLED ? <ProgressLoader cssClass='mt-32' /> : <Outlet />
+                    allToasts?.length > 0 && <ToastComponent toasts={allToasts} />
                 }
+                <header className='px-4 py-2 flex items-center justify-between md:hidden fixed top-0 left-0 w-full bg-white z-10'>
+                    <AdminLogo />
+                    <button type="button" id='burger-menu' className={`lg:hidden ${isOpen ? 'active' : ''}`} onClick={() => setIsOpen(!isOpen)}>
+                        <span></span>
+                    </button>
+                </header>
+
+                <Sidebar isOpen={isOpen} />
+
+                <section className="w-full pl-4  md:pl-[200px] lg:pl-[240px] xl:pl-[340px] pb-4 lg:pb-12 xl:pr-12 pr-4 pt-8">
+                    <div className="h-[72px] flex items-center mb-12 justify-between">
+                        <BreadCrumbs />
+                    </div>
+
+                    {
+                        status !== Status.FULFILLED ? <ProgressLoader cssClass='mt-32' /> : <Outlet />
+                    }
 
 
-            </section>
+                </section>
 
-        </div>
-    )
+            </div>
+        )
+    }
+    else return <Preloader />
 }
 
 export default PrivateRoute
