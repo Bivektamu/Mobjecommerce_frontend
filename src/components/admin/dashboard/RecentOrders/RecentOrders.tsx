@@ -32,14 +32,14 @@ const RecentOrders = () => {
 
   return (
     <div>
-      <p className="font-semibold p-4 text-slate-600 flex justify-between items-center">
+      <p className="font-semibold p-4 text-slate-600 flex justify-between items-center bg-regal-white lg:bg-inherit">
         <span>Recent Orders</span>
-        <NavLink to='/admin/orders' className="bg-cultured p-2 text-xs rounded-full px-4">
+        <NavLink to='/admin/orders' className="bg-cultured p-2 text-xs rounded border border-slate-600 px-4">
           View All
         </NavLink>
       </p>
 
-      <div className="grid grid-cols-9 gap-x-4 p-4 border-t-[1px] border-b-[1px]">
+      <div className="lg:grid grid-cols-9 gap-x-4 p-4 border-t-[1px] border-b-[1px] hidden ">
         <span className='text-xs text-slate-500 font-medium col-span-2'>
           Order Number
         </span>

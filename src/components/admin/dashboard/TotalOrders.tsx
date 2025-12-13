@@ -28,7 +28,7 @@ const TotalOrders = () => {
     const orderAnalytics = data.orderAnalytics
 
     return (
-        <div className='bg-white p-4 rounded-xl text-sm'>
+        <div className='bg-white p-4 rounded-xl text-sm shadow'>
             <p className="font-medium text-slate-600 flex justify-between mb-4 items-center">
                 <span>Total Orders</span>
                 <span className="bg-slate-500 p-2 rounded-lg text-white">

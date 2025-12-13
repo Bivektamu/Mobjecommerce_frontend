@@ -14,13 +14,8 @@ import Preloader from '../../components/ui/Preloader'
 import AdminLogo from '../../components/ui/AdminLogo'
 
 const PrivateRoute = () => {
-    console.log('hdhdhdhdhd')
-
-
     const navigate = useNavigate()
-
     const allToasts = useToasts()
-
     const auth = useAuth()
     const { isLoggedIn, status, authUser } = auth
     const dispatch = useStoreDispatch()

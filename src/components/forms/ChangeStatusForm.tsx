@@ -76,11 +76,11 @@ const ChangeStatusForm = ({ id, refetch, closeModal }: Props) => {
         <div className='text-left'>
             <p className="mb-6 font-medium text-sm">Change the order status to:</p>
             <div className="grid grid-cols-3 items-center justify-between  gap-6">
-                <select name="status" id="status" className='py-2 col-span-2 px-4 border-[1px] border-slate-600 text-sm rounded outline-none appearance-none' onChange={e => { e.preventDefault(), e.stopPropagation(), setNewStatus(e.target.value as Order_Status) }}>
-                    <option value="" hidden>Choose a new status</option>
+                <select name="status" id="status" className='py-2 col-span-2 px-4 border-[1px] border-slate-600 rounded outline-none appearance-none capitalize text-xs lg:text-sm' onChange={e => { e.preventDefault(), e.stopPropagation(), setNewStatus(e.target.value as Order_Status) }}>
+                    <option className='' value="" hidden>Choose a new status</option>
                     {
                         Object.keys(Order_Status).map(key =>
-                            <option key={key} value={key}>{key}</option>
+                            <option className='' key={key} value={key}>{key.toLowerCase()}</option>
                         )
                     }
                 </select>

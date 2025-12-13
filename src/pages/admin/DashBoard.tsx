@@ -45,7 +45,7 @@ const DashBoard = () => {
         {
           loading ? <ProgressLoader /> :
 
-            <div className='bg-white p-4 rounded-xl text-sm'>
+            <div className='bg-white p-4 rounded-xl text-sm shadow'>
               <p className="font-medium text-slate-600 flex justify-between mb-4 items-center">
                 <span>Low Stock Alerts</span>
                 <span className="bg-slate-500 p-2 rounded-lg text-white">
@@ -60,7 +60,7 @@ const DashBoard = () => {
 
       <div className="xl:grid-cols-7 grid-cols-1 grid gap-6 mb-6">
         <SalesOverTime />
-        <div className="xl:col-span-3 col-span-full bg-white rounded-xl">
+        <div className="xl:col-span-3 col-span-full bg-white rounded-xl shadow">
           <p className="font-medium flex justify-between items-center p-4 ">
             <span className='text-sm'>Orders by category</span>
             <span className="text-xs text-slate-400">
@@ -72,7 +72,7 @@ const DashBoard = () => {
       </div>
 
       <div className="flex gap-6 mb-6 flex-col xl:flex-row">
-        <div className='bg-white  rounded-xl text-sm xl:basis-2/3 basis-full'>
+        <div className='bg-white  rounded-xl text-sm xl:basis-2/3 basis-full shadow'>
           <RecentOrders />
         </div>
 

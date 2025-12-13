@@ -30,7 +30,7 @@ const SalesOverTime = () => {
     const salesOverTime = stripTypename(data?.salesOverTime)
 
     return (
-        <div className="xl:col-span-4 col-span-full bg-white rounded-xl">
+        <div className="xl:col-span-4 col-span-full bg-white rounded-xl shadow">
             <p className="font-medium flex justify-between mb-4 items-center p-4 ">
                 <span className='text-sm'>Sales Over Time</span>
                 <span className="text-xs text-slate-400">

@@ -90,7 +90,7 @@ const Products = () => {
   return (
 
     <div className=' rounded-lg'>
-      <div className="flex justify-between p-4 xl:p-8 items-center relative bg-regal-white">
+      <div className="flex justify-between px-4 pb-4 pt-0 xl:p-8 items-center relative bg-regal-white">
         <p className="font-semibold">Products</p>
         <div className="flex gap-x-4 absolute md:static -top-10  justify-between w-full md:w-auto  left-0">
 

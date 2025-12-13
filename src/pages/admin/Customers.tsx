@@ -34,47 +34,47 @@ const Customers = () => {
     return (
 
         <div className='bg-white rounded-lg'>
-            <div className="flex justify-between p-8 items-center">
+            <div className="flex justify-between p-4 pt-0 lg:p-8 items-center bg-regal-white lg:bg-inherit">
                 <p className="font-semibold">Customers</p>
                 <div className='relative'>
                     <SearchIcon />
                     <input
                         type='text'
-                        className='text-black py-2 px-4 rounded cursor-pointer border-slate-400 border-[1px] text-sm text-left outline-none pl-10 w-[260px]'
+                        className='text-black py-2 px-4 rounded cursor-pointer border-slate-400 border-[1px] text-xs md:text-sm text-left outline-none pl-10 w-[230px] md:w-[260px]'
                         value={params}
                         placeholder='Search user by name or email'
                         onChange={(e) => setParams(e.target.value)}
                     />                </div>
             </div>
 
-            <div className='grid grid-cols-table-users gap-x-8 px-8 py-4 border-t-[1px] border-b-[1px] mb-6'>
+            <div className='grid-cols-table-users gap-x-4 px-8 py-4 border-t-[1px] border-b-[1px] mb-6 hidden lg:grid'>
                 <button>
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1 3.3087L3.37549 1.00035M3.37549 1.00035L5.75246 3.30726M3.37549 1.00035L3.37935 13M13 10.692L10.6238 12.9997M10.6238 12.9997L8.24754 10.692M10.6238 12.9997V1" stroke="#474B57" strokeWidth="1.14286" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 </button>
-                <span className='text-sm text-slate-500 font-medium '>
+                <span className='text-xs md:text-sm text-slate-500 font-medium '>
                     Name
                 </span>
 
-                <span className='text-sm text-slate-500 font-medium'>
+                <span className='text-xs md:text-sm text-slate-500 font-medium'>
                     Email
                 </span>
 
-                <span className='text-sm text-slate-500 font-medium'>
+                <span className='text-xs md:text-sm text-slate-500 font-medium'>
                     Shipping Address
                 </span>
 
-                <span className='text-sm text-slate-500 font-medium'>
+                <span className='text-xs md:text-sm text-slate-500 font-medium'>
                     Registered at
                 </span>
 
 
-                <span className='text-sm text-slate-500 font-medium'>
+                {/* <span className='text-xs md:text-sm text-slate-500 font-medium'>
                     Verified
-                </span>
+                </span> */}
 
-                <span className='text-sm text-slate-500 font-medium'>
+                <span className='text-xs md:text-sm text-slate-500 font-medium'>
                     Action
                 </span>
             </div>
@@ -83,7 +83,7 @@ const Customers = () => {
                 users.length < 1 ?
                     <p className='px-8 py-8 text-slate-500'>There are no customers yet.</p>
                     :
-                    <div className="w-full">
+                    <div className="w-full grid grid-cols-1 gap-y-4 lg:gap-y-0 bg-regal-white">
                         {
                             users.map(user =>
                                 <UserTile key={user.id} user={user} refetchUsers={refetch} />

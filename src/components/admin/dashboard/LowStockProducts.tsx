@@ -5,7 +5,7 @@ type Props = {
 }
 const LowStockProducts = ({ lowProducts }: Props) => {
     return (
-        <div>
+        <div className="">
             <p className="font-semibold p-4 text-slate-600">
                 Low Stock Products
             </p>
