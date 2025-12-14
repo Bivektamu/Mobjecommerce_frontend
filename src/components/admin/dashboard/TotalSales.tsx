@@ -25,8 +25,8 @@ const TotalSales = () => {
      if (loading) {
         return <ProgressLoader />
     }
-    
     const salesAnalytics = data?.salesAnalytics
+    
 
     return (
         <div className='bg-white p-4 rounded-xl text-sm shadow'>
@@ -36,8 +36,8 @@ const TotalSales = () => {
                     <FaDollarSign />
                 </span>
             </p>
-            <p className="font-semibold text-xl mb-2">$ {salesAnalytics.sales}</p>
-            <p className='text-slate-400 text-xs'>{salesAnalytics.changeInSales}% vs last month</p>
+            <p className="font-semibold text-xl mb-2">$ {salesAnalytics?.sales}</p>
+            <p className='text-slate-400 text-xs'>{salesAnalytics?.changeInSales}% vs last month</p>
         </div>
     )
 }

@@ -40,7 +40,7 @@ const MobjePieChart = () => {
         return <ProgressLoader />
     }
 
-    const ordersByCategory = data.ordersByCategory
+    const ordersByCategory = data?.ordersByCategory
 
     if (ordersByCategory.length < 1) {
         return <div className='italic text-slate-400 mb-4 p-4'>Sorry, no orders has been made yet over 30 days</div>

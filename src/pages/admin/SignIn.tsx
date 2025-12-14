@@ -28,9 +28,13 @@ const SignIn = () => {
   useEffect(() => {
     if (status === Status.IDLE) {
       dispatch(getAuthStatus())
+      return
+
     }
-    else if (status === Status.FULFILLED && isLoggedIn && authUser?.role === Role.ADMIN) {
-      navigate('/admin/dashboard')
+    if (status === Status.FULFILLED) {
+      if (isLoggedIn && authUser?.role === Role.ADMIN)
+        navigate('/admin/dashboard')
+      return
     }
   }, [status, isLoggedIn, authUser, dispatch, navigate])
 
@@ -74,7 +78,7 @@ const SignIn = () => {
       })
   }
 
-  if (status === Status.PENDING) return <Preloader />
+  if (status === Status.PENDING || isLoggedIn ) return <Preloader />
   return (
     <section className='w-full h-screen flex justify-center items-center px-4'>
       <div className="w-[384px] max-w-full bg-white pt-8 pb-12 px-4 md:px-8 rounded-lg">

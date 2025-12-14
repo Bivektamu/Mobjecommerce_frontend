@@ -1,4 +1,3 @@
-import { useLayoutEffect } from 'react'
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 type SaleData = {
     date: Date,
@@ -10,19 +9,12 @@ type Props = {
 }
 const SalesChart = ({ data }: Props) => {
 
-
-    useLayoutEffect(()=> {
-        console.log(window.innerWidth)
-    }, [])
-
-    const salesData = data.map(({date, sales}) => {
-        return { date:new Date(date).toISOString().split('T')[0], sales }
-    }
-
-    )
+    const salesData = data.map(({ date, sales }) => {
+        return { date: new Date(date).toISOString().split('T')[0], sales }
+    })
 
     return (
-        <ResponsiveContainer width="100%" height={window.innerWidth > 600?400:300}>
+        <ResponsiveContainer width="100%" height={window.innerWidth > 600 ? 400 : 300}>
             <LineChart data={salesData} >
                 <CartesianGrid strokeDasharray={"1 1"} />
                 <XAxis

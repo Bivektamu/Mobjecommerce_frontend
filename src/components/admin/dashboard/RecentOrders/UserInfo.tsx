@@ -16,20 +16,21 @@ const UserInfo = ({ id }: Props) => {
         }
     })
 
-    const user = data?.user
 
     useEffect(() => {
-        if (user) {
-            setAvatarEmail(user.email)
+        if (data?.user) {
+            setAvatarEmail(data.user.email)
         }
 
-    }, [user])
+    }, [data, setAvatarEmail])
 
 
 
     if (loading) {
         return <ProgressLoader />
     }
+
+    const user = data?.user
 
     return (
         <div className="text-xs text-slate-500 flex items-center gap-2">

@@ -21,11 +21,11 @@ const TotalOrders = () => {
         dispatch(addToast(newToast))
     }
 
+
     if (loading) {
         return <ProgressLoader />
     }
-
-    const orderAnalytics = data.orderAnalytics
+    const orderAnalytics = data?.orderAnalytics
 
     return (
         <div className='bg-white p-4 rounded-xl text-sm shadow'>
@@ -35,8 +35,8 @@ const TotalOrders = () => {
                     <FaShoppingCart />
                 </span>
             </p>
-            <p className="font-semibold text-xl mb-2">{orderAnalytics.orders}</p>
-            <p className='text-slate-400 text-xs'>{orderAnalytics.changeInOrders}% vs last month</p>
+            <p className="font-semibold text-xl mb-2">{orderAnalytics?.orders}</p>
+            <p className='text-slate-400 text-xs'>{orderAnalytics?.changeInOrders}% vs last month</p>
         </div>
     )
 }

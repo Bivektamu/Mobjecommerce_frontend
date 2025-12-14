@@ -10,24 +10,23 @@ import ProgressLoader from '../../ui/ProgressLoader'
 const ActiveCustomer = () => {
 
     const dispatch = useStoreDispatch()
-        const { data, error, loading } = useQuery(GET_USERS_ANALYTICS, {
-            fetchPolicy: 'network-only'
-        })
+    const { data, error, loading } = useQuery(GET_USERS_ANALYTICS, {
+        fetchPolicy: 'network-only'
+    })
 
-        if (error) {
-            const newToast: Toast = {
-                id: v4(),
-                variant: Toast_Vairant.WARNING,
-                msg: error.message
-            }
-            dispatch(addToast(newToast))
+    if (error) {
+        const newToast: Toast = {
+            id: v4(),
+            variant: Toast_Vairant.WARNING,
+            msg: error.message
         }
-    
-        if (loading) {
-            return <ProgressLoader />
-        }
-    
-        const userAnalytics = data.userAnalytics
+        dispatch(addToast(newToast))
+    }
+
+    if (loading) {
+        return <ProgressLoader />
+    }
+    const userAnalytics = data?.userAnalytics
 
     return (
         <div className='bg-white p-4 rounded-xl text-sm shadow'>
@@ -37,8 +36,8 @@ const ActiveCustomer = () => {
                     <IoPeople />
                 </span>
             </p>
-            <p className="font-semibold text-xl mb-2">{userAnalytics.users}</p>
-            <p className='text-slate-400 text-xs'>{userAnalytics.changeInUsers}% MoM</p>
+            <p className="font-semibold text-xl mb-2">{userAnalytics?.users}</p>
+            <p className='text-slate-400 text-xs'>{userAnalytics?.changeInUsers}% MoM</p>
         </div>
     )
 }

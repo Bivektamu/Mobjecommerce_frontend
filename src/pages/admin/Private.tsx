@@ -40,7 +40,7 @@ const PrivateRoute = () => {
     useEffect(() => {
         setIsOpen(false)
         if (pathname === '/admin' || pathname === '/admin/') {
-            return navigate('/admin/dashboard', { replace: true })
+            return navigate('/admin/dashboard')
         }
     }, [pathname, navigate])
 

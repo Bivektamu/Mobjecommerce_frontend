@@ -59,17 +59,16 @@ export const logInUser = createAsyncThunk<LoginResponse, LoginInput>(
     })
 
 
-export const getAuthStatus = createAsyncThunk('/admin/getAuth', async () => {
+export const getAuthStatus = createAsyncThunk('/getAuth', async () => {
 
     try {
         const response = await client.query({
             query: GET_AUTH,
         })
-        const isLoggedIn = response.data.getAuthStatus.isLoggedIn
-        const user = response.data.getAuthStatus.user
+
+        return response.data.getAuthStatus
 
 
-        return { isLoggedIn, user }
     } catch (error) {
         if (error instanceof Error)
             throw error

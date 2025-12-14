@@ -28,7 +28,7 @@ const RecentOrders = () => {
     return <ProgressLoader />
   }
 
-  const orders = data.orders
+  const orders = data?.orders
 
   return (
     <div>
