@@ -19,7 +19,7 @@ const AdminSidebar = ({isOpen}:Props) => {
     dispatch(logOut())
   }
   return (
-    <section className={`w-[180px] lg:w-[220px] z-20  bg-white h-screen lg:px-6 px-4 fixed left-0 top-0 pt-8  md:-translate-x-0 transition-all duration-700 ease-in-out ${!isOpen?'-translate-x-[180px]':'translate-x-0 '}`}>
+    <section className={`w-[180px] lg:w-[220px] z-20  bg-white h-dvh lg:px-6 px-4 fixed left-0 top-0 pt-8  md:-translate-x-0 transition-all duration-700 ease-in-out ${!isOpen?'-translate-x-[180px]':'translate-x-0 '}`}>
       <div className="h-[72px] w-full flex items-center justify-center mb-12">
         <AdminLogo />
       </div>

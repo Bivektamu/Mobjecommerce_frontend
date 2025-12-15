@@ -1,4 +1,4 @@
-import {  ReactNode } from 'react'
+import {  ReactNode, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import Close from '../ui/Close'
 
@@ -11,11 +11,20 @@ type Props = {
 const Modal = ({ children, close, isOpen }: Props) => {
     const portalRoot = document.getElementById('root')
 
+    useEffect(()=> {
+        if(isOpen) {
+            document.body.style.overflow = 'hidden'
+        }
+        else {
+            document.body.style.overflow = 'initial'
+        }
+    }, [isOpen])
+
     if (!portalRoot || !isOpen) return null
     return createPortal(
-        <section className='w-full h-screen fixed top-0 left-0 bg-black/30 z-20 flex items-center justify-center px-4'>
-            <div className='p-12 bg-white rounded-lg w-[500px] max-w-full text-center relative'>
-                <button className='w-6 h-6 absolute right-4 top-4' onClick={close}>
+        <section className='w-full h-dvh fixed top-0 left-0 bg-black/30 z-50 flex items-center justify-center px-4 py-8 '>
+            <div className='px-4 py-8 md:p-12 bg-white rounded-lg w-full md:w-[500px] max-w-full text-center relative max-h-full overflow-auto'>
+                <button className='size-3 md:size-6 absolute right-2 md:right-4 top-4' onClick={close}>
                     <Close classN='bg-black w-full' />
                 </button>
                 {children}

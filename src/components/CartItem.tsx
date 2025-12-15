@@ -89,8 +89,8 @@ const CartItem = ({ cartItem }: Props) => {
             <div className='text-center'>
                 <p className="mb-6 font-medium md:text-sm text-xs">Are you sure you want to delete this product?</p>
                 <div className="flex gap-x-4 justify-center">
-                    <button className='bg-red-500 text-white px-4 py-2 rounded' onClick={e => closeModal(e)}>Cancel</button>
-                    <button className='bg-green-500 text-white px-4 py-2 rounded' onClick={() => deleteCartItem(cartItem.id)}>Delete</button>
+                    <button className='bg-black text-white px-4 py-2 rounded' onClick={e => closeModal(e)}>Cancel</button>
+                    <button className='border-slate-600 border px-4 py-2 rounded' onClick={() => deleteCartItem(cartItem.id)}>Delete</button>
                 </div>
             </div>
         )

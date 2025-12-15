@@ -179,8 +179,8 @@ const UserTile = ({ user, refetchUsers }: Props) => {
                 <div className='text-center'>
                     <p className="mb-6 font-medium text-xs md:text-sm">Are you sure you want to delete  {user.firstName} {user.lastName} ?</p>
                     <div className="flex gap-x-4 justify-center">
-                        <button className='bg-red-500 text-white px-4 py-2 rounded' onClick={() => setShowModal(false)}>Cancel</button>
-                        <button className='bg-green-500 text-white px-4 py-2 rounded' onClick={deleteHandler}>Delete</button>
+                        <button className='border-slate-600 border px-4 text-sm lg:text-base py-2 rounded' onClick={() => setShowModal(false)}>Cancel</button>
+                        <button className='bg-black text-white px-4 text-sm lg:text-base py-2 rounded' onClick={deleteHandler}>Delete</button>
                     </div>
                 </div>
             </Modal>

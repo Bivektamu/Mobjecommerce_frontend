@@ -35,8 +35,8 @@ const Reviews = () => {
         return <ProgressLoader />
     return (
 
-        <div className='bg-white rounded-lg'>
-            <div className="flex justify-between p-8 items-center">
+        <div className='bg-white lg:rounded-lg'>
+            <div className="flex justify-between p-4 pt-0 lg:p-8 items-center bg-regal-white lg:bg-inherit">
                 <p className="font-semibold">Reviews</p>
                 <div className='relative'>
                     <SearchIcon />
@@ -49,7 +49,7 @@ const Reviews = () => {
                     />                </div>
             </div>
 
-            <div className='grid grid-cols-table-reviews gap-x-8 px-8 py-4 border-t-[1px] border-b-[1px] mb-6'>
+            <div className='hidden lg:grid  grid-cols-table-reviews gap-x-8 px-8 py-4 border-t-[1px] border-b-[1px] mb-6'>
                 <button>
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1 3.3087L3.37549 1.00035M3.37549 1.00035L5.75246 3.30726M3.37549 1.00035L3.37935 13M13 10.692L10.6238 12.9997M10.6238 12.9997L8.24754 10.692M10.6238 12.9997V1" stroke="#474B57" strokeWidth="1.14286" strokeLinecap="round" strokeLinejoin="round" />
@@ -70,9 +70,7 @@ const Reviews = () => {
                 <span className='text-sm text-slate-500 font-medium'>
                     Submitted at
                 </span>
-                <span className='text-sm text-slate-500 font-medium'>
-                    Details
-                </span>
+              
 
                 <span className='text-sm text-slate-500 font-medium'>
                     Action
@@ -81,9 +79,9 @@ const Reviews = () => {
 
             {
                 reviews.length < 1 ?
-                    <p className='px-8 py-8 text-slate-500'>There are no reviews yet.</p>
+                    <p className='px-4 xl:px-8 py-8 text-slate-500'>There are no reviews yet.</p>
                     :
-                    <div className=''>
+                    <div className='w-full grid grid-cols-1 gap-y-4 lg:gap-y-0 bg-regal-white'>
                         {
                             reviews.map(review =>
                                 <>

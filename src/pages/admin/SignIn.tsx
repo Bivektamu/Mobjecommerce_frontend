@@ -80,7 +80,7 @@ const SignIn = () => {
 
   if (status === Status.PENDING || isLoggedIn ) return <Preloader />
   return (
-    <section className='w-full h-screen flex justify-center items-center px-4'>
+    <section className='w-full h-dvh flex justify-center items-center px-4'>
       <div className="w-[384px] max-w-full bg-white pt-8 pb-12 px-4 md:px-8 rounded-lg">
         <svg id="logo" className='mx-auto mb-8 md:mb-16' width="116" height="40" viewBox="0 0 116 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g clipPath="url(#clip0_1524_896)">

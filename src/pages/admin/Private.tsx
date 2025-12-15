@@ -25,13 +25,16 @@ const PrivateRoute = () => {
     useEffect(() => {
         if (status === Status.IDLE) {
             dispatch(getAuthStatus())
+            return
         }
-        else if (status === Status.REJECTED) {
+        if (status === Status.REJECTED) {
             navigate('/admin/login')
+            return
         }
-        else if (status === Status.FULFILLED) {
+        if (status === Status.FULFILLED) {
             if (!isLoggedIn || (isLoggedIn && authUser?.role !== Role.ADMIN)) {
                 navigate('/admin/login')
+                return
             }
         }
     }, [status, dispatch, navigate, isLoggedIn, authUser])

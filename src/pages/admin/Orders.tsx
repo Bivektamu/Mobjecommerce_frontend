@@ -20,9 +20,7 @@ const Orders = () => {
         return <ProgressLoader />
     }
 
-
     return (
-
         <div className='bg-white rounded-lg'>
             <div className="flex justify-between p-4 pt-0 lg:p-8 items-center bg-regal-white lg:bg-inherit">
                 <p className="font-semibold ">Orders</p>
