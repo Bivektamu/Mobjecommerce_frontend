@@ -78,6 +78,8 @@ const SignIn = () => {
       })
   }
 
+  console.log('sign in')
+
   if (status === Status.PENDING || isLoggedIn ) return <Preloader />
   return (
     <section className='w-full h-dvh flex justify-center items-center px-4'>
