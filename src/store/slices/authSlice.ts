@@ -97,20 +97,25 @@ const authSlice = createSlice({
                 state.status = Status.PENDING
             })
             .addCase(loginAdmin.fulfilled, (state: Auth, action) => {
-                client.resetStore()
-                localStorage.setItem('token', action.payload)
-                state.status = Status.FULFILLED
-                state.error = null
 
-                const authUser: AuthUser = {
-                    role: Role.ADMIN,
-                    id: ''
+                const decode_user = jwtDecode<CustomJwtPayload>(action.payload)
+                if (decode_user) {
+                    client.resetStore()
+                    localStorage.setItem('token', action.payload)
+                    state.status = Status.FULFILLED
+                    state.error = null
+
+                    const authUser: AuthUser = {
+                        role: Role.ADMIN,
+                        id: ''
+                    }
+                    state.authUser = authUser
+                    state.isLoggedIn = true
                 }
-                state.authUser = authUser
-                state.isLoggedIn = true
 
             })
             .addCase(loginAdmin.rejected, (state: Auth, action) => {
+                client.resetStore()
                 localStorage.setItem('token', '')
                 state.status = Status.REJECTED
                 state.isLoggedIn = false
@@ -125,10 +130,10 @@ const authSlice = createSlice({
             })
             .addCase(logInUser.fulfilled, (state: Auth, action) => {
 
-                client.resetStore()
 
                 const decode_user = jwtDecode<CustomJwtPayload>(action.payload)
                 if (decode_user) {
+                    client.resetStore()
 
                     localStorage.setItem('token', action.payload)
                     state.status = Status.FULFILLED
@@ -145,6 +150,9 @@ const authSlice = createSlice({
 
             })
             .addCase(logInUser.rejected, (state: Auth, action) => {
+                client.resetStore()
+                localStorage.setItem('token', '')
+
                 state.status = Status.REJECTED
                 state.isLoggedIn = false
                 state.authUser = null
@@ -164,7 +172,6 @@ const authSlice = createSlice({
                     state.isLoggedIn = action.payload?.isLoggedIn
                     state.authUser = stripTypename(action.payload?.user)
                     state.error = null
-
                 }
                 else {
                     state.isLoggedIn = false
@@ -176,6 +183,9 @@ const authSlice = createSlice({
 
             })
             .addCase(getAuthStatus.rejected, (state: Auth, action) => {
+                client.resetStore()
+                localStorage.setItem('token', '')
+
                 state.status = Status.REJECTED
                 state.isLoggedIn = false
                 state.authUser = null

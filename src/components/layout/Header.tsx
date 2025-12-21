@@ -14,8 +14,8 @@ import { GiShoppingCart } from 'react-icons/gi'
 
 
 const Header = () => {
-      const { pathname } = useLocation();
-  
+  const { pathname } = useLocation();
+
   const { products } = useProduct()
   const { isLoggedIn, authUser } = useAuth()
   const { setAvatarEmail, avatar } = useAvatar()
@@ -32,9 +32,12 @@ const Header = () => {
 
       dispatch(getUser(authUser.id))
     }
-  }, [authUser])
+    else {
+      setAvatarEmail('')
+    }
+  }, [authUser, dispatch, setAvatarEmail])
 
-  useEffect(()=> {
+  useEffect(() => {
     setIsOpen(false)
   }, [pathname])
 
@@ -43,21 +46,20 @@ const Header = () => {
     if (user) {
       setAvatarEmail(user.email)
     }
-  }, [user])
+  }, [user, setAvatarEmail])
 
   const logOutHandler = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     e.stopPropagation()
 
     dispatch(logOut())
-    setAvatarEmail('')
   }
 
   return (
     <header className='bg-white p-4 fixed lg:static w-full h-[75px] z-30'>
       <nav className="container mx-auto  flex justify-between flex-wrap items-center">
         <Logo />
-        <div className={`flex h-[100%] text-3xl lg:text-base items-center justify-center pb-[75px]  gap-6 fixed lg:static flex-col lg:flex-row w-full lg:w-fit bg-white lg:bg-none  left-0 p-4 lg:p-0 z-20 transition-all duration-700 ease-in-out top-[75px] origin-top lg:translate-x-0 ${isOpen?'translate-x-0':'-translate-x-[100%]'}`}>
+        <div className={`flex h-[100%] text-3xl lg:text-base items-center justify-center pb-[75px]  gap-6 fixed lg:static flex-col lg:flex-row w-full lg:w-fit bg-white lg:bg-none  left-0 p-4 lg:p-0 z-20 transition-all duration-700 ease-in-out top-[75px] origin-top lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-[100%]'}`}>
           {/* dynamically add active class */}
           <CustomNavLink isNavLink={true} cssClass='flex items-center hover:font-bold' to="/">Home</CustomNavLink>
           <CustomNavLink isNavLink={true} cssClass='flex items-center hover:font-bold' to="/collections">Collections</CustomNavLink>
@@ -107,7 +109,7 @@ const Header = () => {
             </div>
           </div>
 
-            <button type="button" id='burger-menu' className={`lg:hidden ${isOpen?'active':''}`} onClick={()=>setIsOpen(!isOpen)}>
+          <button type="button" id='burger-menu' className={`lg:hidden ${isOpen ? 'active' : ''}`} onClick={() => setIsOpen(!isOpen)}>
             <span></span>
           </button>
 
