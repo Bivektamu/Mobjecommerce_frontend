@@ -1,24 +1,25 @@
 import { useEffect } from 'react'
-import { Role, Status, Toast, Toast_Vairant } from '../store/types'
+import { Cart, Role, Status, Toast, Toast_Vairant } from '../store/types'
 import { useStoreDispatch } from '../store/index'
 import { useAuth, getAuthStatus, logInGoogleUser } from '../store/slices/authSlice'
 
 import BreadCrumbs from '../components/layout/BreadCrumbs'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import CustomNavLink from '../components/CustomNavLink'
-// import { upDateCart, useCart } from '../store/slices/cartSlice'
+import { upDateCart, useCart } from '../store/slices/cartSlice'
 import PageWrapper from '../components/ui/PageWrapper'
 import LoginForm from '../components/forms/LoginForm';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google'
 import { addToast } from '../store/slices/toastSlice'
 import { v4 } from 'uuid'
+import { map } from 'framer-motion/client'
 const LogIn = () => {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
 
   const dispatch = useStoreDispatch()
   const { isLoggedIn, authUser, status } = useAuth()
-  // const { cart } = useCart()
+  const { cart } = useCart()
 
   useEffect(() => {
     if (status === Status.IDLE) {
@@ -27,17 +28,38 @@ const LogIn = () => {
     }
     if (status === Status.FULFILLED) {
       if (isLoggedIn && authUser?.role === Role.CUSTOMER) {
-        return navigate('/')
+        // return navigate('/')
 
-        // if (searchParams.get('cart')) {
-        // console.log('cart')
-        // const cartItems = cart.map((item: Cart) => ({ ...item, customerId: item.userId || authUser?.id }))
-        // dispatch(upDateCart(cartItems))
-        // return navigate('/cart')
-        // }
+        if (searchParams.get('cart')) {
+          const guestCartItems = cart.filter(item => !item.userId)
+          if (guestCartItems.length > 0) {
+            const userCartItems = cart.filter(item => item.userId === authUser.id)
+
+              const mapCart = new Map<string, Cart>()
+              for (const item of userCartItems) {
+                mapCart.set(item.id, { ...item })
+              }
+              for (const item of guestCartItems) {
+                const currItem = mapCart.get(item.id)
+                if (currItem?.color === item.color && currItem?.size === item.size) {
+                  mapCart.set(item.id, { ...currItem, quantity: currItem.quantity + item.quantity })
+                }
+                else {
+                  mapCart.set(item.id, {...item, userId: authUser.id})
+                }
+              }
+
+              const newCart = Array.from(mapCart.values())
+
+              console.log(newCart)
+            
+            dispatch(upDateCart(newCart))
+            return navigate('/cart')
+          }
+        }
       }
     }
-  }, [status, dispatch, isLoggedIn, authUser, navigate])
+  }, [status, dispatch, isLoggedIn, authUser, navigate, cart, searchParams])
 
 
   const googleLoginHandler = (credentialResponse: CredentialResponse) => {

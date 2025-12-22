@@ -26,7 +26,7 @@ function AddToCartForm({ product }: Props) {
     const { action, cart } = useCart()
 
     const [formData, setFormData] = useState<Cart>({
-        id: uuidv4(),
+        id: '',
         userId: null,
         productId: product?.id || '',
         color: null,
@@ -43,7 +43,7 @@ function AddToCartForm({ product }: Props) {
 
     useEffect(() => {
         if (product && Object.keys(product).length > 0) {
-            setFormData({ ...formData, productId: product?.id, price: product?.price, imgUrl: product?.imgs[0].url })
+            setFormData({ ...formData, id: product?.id, productId: product?.id, price: product?.price, imgUrl: product?.imgs[0].url })
         }
     }, [product])
 
@@ -106,6 +106,10 @@ function AddToCartForm({ product }: Props) {
 
     useEffect(() => {
 
+        if(color && size) {
+            setFormData(prev=>({...prev, id:product?.id+'_'+color+'_'+size}))
+        }
+       
         if (userCart.length > 0 && color && size) {
 
             const itemExistsOrNot = (userCart.filter(item => item.color === color && item.size === size))
@@ -187,6 +191,8 @@ function AddToCartForm({ product }: Props) {
         if (Object.keys(errors).length > 0) {
             return setFormErrors(prev => ({ ...prev, ...errors }))
         }
+
+        
 
         if (userCart.length > 0) {
             const itemExistsOrNot = (userCart.filter(item => item.color === color && item.size === size))
