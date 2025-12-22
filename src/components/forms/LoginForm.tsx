@@ -74,12 +74,14 @@ const LoginForm = () => {
         dispatch(logInUser(formData))
             .unwrap()
             .then(() => {
+                console.log('success')
                 dispatch(addToast(toast))
 
             })
             .catch((error) => {
+                console.log(error)
                 toast.variant = Toast_Vairant.WARNING
-                toast.msg = error.message.replaceAll('_', ' ')
+                toast.msg = error
                 dispatch(addToast(toast))
             })
     }

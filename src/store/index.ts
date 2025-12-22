@@ -16,6 +16,5 @@ export const Store = configureStore ({
     }
 })
 
-type StoreDisptach = typeof Store.dispatch
-type StoreDisptachCallback = () => StoreDisptach
-export const useStoreDispatch:StoreDisptachCallback = useDispatch
+type StoreDispatch = typeof Store.dispatch
+export const useStoreDispatch = () => useDispatch<StoreDispatch>()

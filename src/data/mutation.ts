@@ -17,6 +17,14 @@ export const LOGIN_USER = gql`
   }
 `
 
+export const LOGIN_GOOGLE_USER = gql`
+  mutation LogInGoogleUser($credential: String!) {
+    logInGoogleUser(credential: $credential) {
+      token
+    }
+  }
+`
+
 export const CREATE_USER = gql`
   mutation Mutation($input: UserInput) {
     createUser(input: $input) {

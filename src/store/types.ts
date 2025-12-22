@@ -75,7 +75,7 @@ export enum ErrorCode {
 
 export interface CustomError {
     msg: string,
-    code?: ErrorCode
+    code?: number
 }
 export interface Auth {
     isLoggedIn: boolean,
@@ -343,6 +343,10 @@ export interface LoginInput {
     email:string,
     password:string
 }
+export interface GoogleLoginInput {
+    credential:string
+}
+
 
 export type LoginResponse = string
 

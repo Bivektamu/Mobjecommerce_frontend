@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Auth, Status, RootState, Role, ErrorCode, LoginResponse, LoginInput, CustomJwtPayload, AuthUser } from "../types";
+import { Auth, Status, RootState, ErrorCode, LoginResponse, LoginInput, CustomJwtPayload, AuthUser } from "../types";
 import client from "../../data/client";
-import { LOGIN_ADMIN, LOGIN_USER } from "../../data/mutation";
+import { LOGIN_ADMIN, LOGIN_GOOGLE_USER, LOGIN_USER } from "../../data/mutation";
 import { GET_AUTH } from "../../data/query";
 import { jwtDecode } from "jwt-decode";
 import { stripTypename } from "@apollo/client/utilities";
@@ -14,28 +14,48 @@ const initialState: Auth = {
     error: null,
 }
 
-export const loginAdmin = createAsyncThunk('/admin/login', async ({ email, password }: Partial<Pick<LoginInput, 'email' | 'password'>>) => {
 
-    try {
-        const response = await client.mutate({
-            mutation: LOGIN_ADMIN,
-            variables: { input: { email, password } }
-        })
+const clearSession = () => {
+    localStorage.setItem('token', '')
+    client.resetStore()
+}
 
-        const token = response.data.logInAdmin.token
-        if (token) {
+const setSession = (token: string) => {
+    localStorage.setItem('token', token)
+    client.resetStore()
+}
+
+
+export const loginAdmin = createAsyncThunk(
+    '/admin/login',
+    async ({ email, password }: Partial<Pick<LoginInput, 'email' | 'password'>>, { rejectWithValue }) => {
+
+        try {
+            const response = await client.mutate({
+                mutation: LOGIN_ADMIN,
+                variables: { input: { email, password } }
+            })
+
+            const token = response.data?.logInAdmin?.token
+
+            if (!token) {
+                clearSession()
+                return rejectWithValue(ErrorCode.BAD_CREDENTIALS)
+            }
+            setSession(token)
             return token
+        } catch (error) {
+            if (error instanceof Error) {
+                clearSession()
+                return rejectWithValue(error.message || ErrorCode.INTERNAL_SERVER_ERROR)
+            }
         }
-    } catch (error) {
-        if (error instanceof Error)
-            throw error
-    }
-})
+    })
 
 
 export const logInUser = createAsyncThunk<LoginResponse, LoginInput>(
     '/user/login',
-    async ({ email, password }) => {
+    async ({ email, password }, { rejectWithValue }) => {
 
         try {
             const response = await client.mutate({
@@ -44,34 +64,70 @@ export const logInUser = createAsyncThunk<LoginResponse, LoginInput>(
             })
 
             const token = response.data?.logInUser?.token
-            // console.log(token)
-            if (token) {
-                return token
+            if (!token) {
+                clearSession()
+                return rejectWithValue(ErrorCode.BAD_CREDENTIALS)
             }
+            setSession(token)
+            return token
         } catch (error) {
-            localStorage.setItem('token', '')
-
             if (error instanceof Error) {
-                throw error
+                clearSession()
+                return rejectWithValue(error.message)
             }
+            return rejectWithValue(ErrorCode.INTERNAL_SERVER_ERROR)
+
+        }
+
+    })
+
+export const logInGoogleUser = createAsyncThunk<LoginResponse, string>(
+    '/googleUser/login',
+    async (credential, { rejectWithValue }) => {
+
+        try {
+            const response = await client.mutate({
+                mutation: LOGIN_GOOGLE_USER,
+                variables: { credential }
+            })
+
+            const token = response.data?.logInGoogleUser?.token
+            if (!token) {
+                clearSession()
+                return rejectWithValue(ErrorCode.BAD_CREDENTIALS)
+            }
+            setSession(token)
+            return token
+        } catch (error) {
+            if (error instanceof Error) {
+                clearSession()
+                return rejectWithValue(error.message)
+            }
+
+            return rejectWithValue(ErrorCode.INTERNAL_SERVER_ERROR)
         }
 
     })
 
 
-export const getAuthStatus = createAsyncThunk('/getAuth', async () => {
+export const getAuthStatus = createAsyncThunk('/getAuth', async (
+    _,
+    { rejectWithValue }
+) => {
 
     try {
         const response = await client.query({
             query: GET_AUTH,
         })
 
-        return response.data.getAuthStatus
+        return response.data?.getAuthStatus || null
 
 
     } catch (error) {
-        if (error instanceof Error)
-            throw error
+        if (error instanceof Error) {
+            return rejectWithValue(error.message || ErrorCode.INTERNAL_SERVER_ERROR)
+        }
+
     }
 })
 
@@ -82,115 +138,100 @@ const authSlice = createSlice({
     reducers: {
         logOut: (state) => {
             state.status = Status.IDLE
-
-            client.resetStore()
-            localStorage.setItem('token', '')
+            clearSession()
             state.isLoggedIn = false
             state.authUser = null
-            state.status = Status.FULFILLED
-
         },
     },
     extraReducers: builder => {
         builder
             .addCase(loginAdmin.pending, (state: Auth) => {
                 state.status = Status.PENDING
+                state.error = null
             })
             .addCase(loginAdmin.fulfilled, (state: Auth, action) => {
-
-                const decode_user = jwtDecode<CustomJwtPayload>(action.payload)
-                if (decode_user) {
-                    client.resetStore()
-                    localStorage.setItem('token', action.payload)
-                    state.status = Status.FULFILLED
-                    state.error = null
-
-                    const authUser: AuthUser = {
-                        role: Role.ADMIN,
-                        id: ''
-                    }
-                    state.authUser = authUser
-                    state.isLoggedIn = true
+                const decoded_user = jwtDecode<CustomJwtPayload>(action.payload)
+                state.status = Status.FULFILLED
+                state.error = null
+                const authUser: AuthUser = {
+                    role: decoded_user.role,
+                    id: decoded_user.id
                 }
-
+                state.authUser = authUser
+                state.isLoggedIn = true
             })
             .addCase(loginAdmin.rejected, (state: Auth, action) => {
-                client.resetStore()
-                localStorage.setItem('token', '')
                 state.status = Status.REJECTED
                 state.isLoggedIn = false
                 state.authUser = null
                 state.error = {
-                    msg: action.error.message as string
+                    msg: action.payload as string
                 }
             })
 
             .addCase(logInUser.pending, (state: Auth) => {
                 state.status = Status.PENDING
+                state.error = null
             })
             .addCase(logInUser.fulfilled, (state: Auth, action) => {
-
-
-                const decode_user = jwtDecode<CustomJwtPayload>(action.payload)
-                if (decode_user) {
-                    client.resetStore()
-
-                    localStorage.setItem('token', action.payload)
-                    state.status = Status.FULFILLED
-                    state.isLoggedIn = true
-                    const authUser: AuthUser = {
-                        role: decode_user.role,
-                        id: decode_user.id
-                    }
-                    state.authUser = authUser
-                    state.error = null
-
+                const decoded_user = jwtDecode<CustomJwtPayload>(action.payload)
+                state.status = Status.FULFILLED
+                state.isLoggedIn = true
+                const authUser: AuthUser = {
+                    role: decoded_user.role,
+                    id: decoded_user.id
                 }
-
-
+                state.authUser = authUser
+                state.error = null
             })
             .addCase(logInUser.rejected, (state: Auth, action) => {
-                client.resetStore()
-                localStorage.setItem('token', '')
-
                 state.status = Status.REJECTED
                 state.isLoggedIn = false
                 state.authUser = null
                 state.error = {
-                    msg: action.error.message as string
+                    msg: action.payload as string,
+                }
+            })
+            .addCase(logInGoogleUser.pending, (state: Auth) => {
+                state.status = Status.PENDING
+                state.error = null
+            })
+            .addCase(logInGoogleUser.fulfilled, (state: Auth, action) => {
+                const decoded_user = jwtDecode<CustomJwtPayload>(action.payload)
+                state.status = Status.FULFILLED
+                state.isLoggedIn = true
+                const authUser: AuthUser = {
+                    role: decoded_user.role,
+                    id: decoded_user.id
+                }
+                state.authUser = authUser
+                state.error = null
+            })
+            .addCase(logInGoogleUser.rejected, (state: Auth, action) => {
+                state.status = Status.REJECTED
+                state.isLoggedIn = false
+                state.authUser = null
+                state.error = {
+                    msg: action.payload as string,
                 }
             })
 
             .addCase(getAuthStatus.pending, (state: Auth) => {
                 state.status = Status.PENDING
+                state.error = null
             })
             .addCase(getAuthStatus.fulfilled, (state: Auth, action) => {
-
                 state.status = Status.FULFILLED
-
-                if (action.payload?.isLoggedIn) {
-                    state.isLoggedIn = action.payload?.isLoggedIn
-                    state.authUser = stripTypename(action.payload?.user)
-                    state.error = null
-                }
-                else {
-                    state.isLoggedIn = false
-                    state.error = {
-                        msg: ErrorCode.BAD_CREDENTIALS as string
-                    }
-
-                }
-
+                state.isLoggedIn = action.payload.isLoggedIn
+                state.authUser = stripTypename(action.payload.user)
+                state.error = null
             })
             .addCase(getAuthStatus.rejected, (state: Auth, action) => {
-                client.resetStore()
-                localStorage.setItem('token', '')
-
                 state.status = Status.REJECTED
                 state.isLoggedIn = false
                 state.authUser = null
                 state.error = {
-                    msg: action.error as string
+                    msg: action.payload as string
                 }
 
             })

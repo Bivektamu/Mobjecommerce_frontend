@@ -23,6 +23,13 @@ const PrivateRoute = () => {
     const [isOpen, setIsOpen] = useState(false)
 
     useEffect(() => {
+        setIsOpen(false)
+        if (pathname === '/admin' || pathname === '/admin/') {
+            return navigate('/admin/dashboard')
+        }
+    }, [pathname, navigate])
+
+    useEffect(() => {
         if (status === Status.IDLE) {
             dispatch(getAuthStatus())
             return
@@ -40,12 +47,7 @@ const PrivateRoute = () => {
     }, [status, dispatch, navigate, isLoggedIn, authUser])
 
 
-    useEffect(() => {
-        setIsOpen(false)
-        if (pathname === '/admin' || pathname === '/admin/') {
-            return navigate('/admin/dashboard')
-        }
-    }, [pathname, navigate])
+
 
     if (status !== Status.FULFILLED) return <Preloader />
 
