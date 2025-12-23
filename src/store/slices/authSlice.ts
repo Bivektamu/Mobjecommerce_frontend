@@ -137,7 +137,7 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         logOut: (state) => {
-            state.status = Status.IDLE
+            // state.status = Status.IDLE
             clearSession()
             state.isLoggedIn = false
             state.authUser = null

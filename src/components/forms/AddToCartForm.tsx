@@ -102,14 +102,14 @@ function AddToCartForm({ product }: Props) {
         }
     }, [action])
 
-    const { color, size, quantity } = formData
+    const { color, size, quantity, productId } = formData
 
     useEffect(() => {
 
-        if(color && size) {
-            setFormData(prev=>({...prev, id:product?.id+'_'+color+'_'+size}))
+        if (color && size) {
+            setFormData(prev => ({ ...prev, id: product?.id + '_' + color + '_' + size }))
         }
-       
+
         if (userCart.length > 0 && color && size) {
 
             const itemExistsOrNot = (userCart.filter(item => item.color === color && item.size === size))
@@ -192,8 +192,6 @@ function AddToCartForm({ product }: Props) {
             return setFormErrors(prev => ({ ...prev, ...errors }))
         }
 
-        
-
         if (userCart.length > 0) {
             const itemExistsOrNot = (userCart.filter(item => item.color === color && item.size === size))
 
@@ -202,13 +200,13 @@ function AddToCartForm({ product }: Props) {
                 dispatch(updateCartQuantity(productToAdd))
             }
             else {
-                const productToAdd = { ...formData, id: uuidv4() }
+                const productToAdd = { ...formData, id: (authUser?.id||'') + productId +  color + size }
                 dispatch(addToCart(productToAdd))
             }
         }
         else {
-            const productToAdd = { ...formData, id: uuidv4() }
-            dispatch(addToCart(productToAdd))
+            const productToAdd = { ...formData, id: (authUser?.id||'') + productId +  color + size }
+            dispatch(addToCart({ ...productToAdd }))
         }
     }
 

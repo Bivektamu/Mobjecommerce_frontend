@@ -6,12 +6,8 @@ import { v4 } from 'uuid';
 import { useStoreDispatch } from '../../store';
 import { logInUser } from '../../store/slices/authSlice';
 import { addToast } from '../../store/slices/toastSlice';
-import { useSearchParams } from 'react-router-dom';
 
 const LoginForm = () => {
-
-    const [searchParams] = useSearchParams()
-
 
     const dispatch = useStoreDispatch()
 

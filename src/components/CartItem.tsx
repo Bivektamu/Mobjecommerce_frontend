@@ -1,5 +1,5 @@
 import { ChangeEvent, MouseEvent, ReactElement, useEffect, useState } from 'react'
-import { Cart, Colour, Product } from '../store/types'
+import { Cart, Colour, Product, Toast, Toast_Vairant } from '../store/types'
 import { getProducts, useProduct } from '../store/slices/productSlice'
 import { useStoreDispatch } from '../store'
 import SquareLoader from './ui/SquareLoader'
@@ -8,6 +8,8 @@ import Close from './ui/Close'
 import getClasses from '../utils/getClasses'
 import { deleteCart, updateCartQuantity } from '../store/slices/cartSlice'
 import Modal from './layout/Modal'
+import { v4 } from 'uuid'
+import { addToast } from '../store/slices/toastSlice'
 
 type Props = {
     cartItem: Cart,
@@ -104,6 +106,12 @@ const CartItem = ({ cartItem }: Props) => {
         setShowModal(false)
         setModalContent(null)
         dispatch(deleteCart(id))
+        const toast: Toast = {
+            id: v4(),
+            variant: Toast_Vairant.SUCCESS,
+            msg: `Item removed from your cart`
+        }
+        dispatch(addToast(toast))
     }
 
     const closeModal = (e: MouseEvent<HTMLButtonElement>) => {

@@ -2,12 +2,12 @@ import { useEffect, useMemo } from 'react'
 import { useStoreDispatch } from '../store/index'
 import { useAuth, getAuthStatus } from '../store/slices/authSlice'
 import BreadCrumbs from '../components/layout/BreadCrumbs'
-import { useCart } from '../store/slices/cartSlice'
-import { Order_Status, Status, OrderInput, OrderItemInput, Colour, Size, Address } from '../store/types'
+import { upDateCart, useCart } from '../store/slices/cartSlice'
+import { Order_Status, Status, OrderInput, OrderItemInput, Colour, Size, Address, Cart as CartItemType } from '../store/types'
 import CartItem from '../components/CartItem'
 import SquareLoader from '../components/ui/SquareLoader'
 import { getProducts, useProduct } from '../store/slices/productSlice'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import CustomNavLink from '../components/CustomNavLink'
 import PageWrapper from '../components/ui/PageWrapper'
 
@@ -16,22 +16,57 @@ const TAX_RATE: number = 0.1
 
 const Cart = () => {
 
+  const location = useLocation()
+  const mergeCart = location?.state?.mergeCart
   const dispatch = useStoreDispatch()
   const { authUser, status: userStatus } = useAuth()
   const { cart: carts } = useCart()
   const { status } = useProduct()
   useEffect(() => {
-    dispatch(getProducts())
-  }, [])
+    if (status === Status.IDLE)
+      dispatch(getProducts())
+  }, [status, dispatch])
 
   useEffect(() => {
     if (userStatus === Status.IDLE)
       dispatch(getAuthStatus())
-  }, [userStatus])
+  }, [userStatus, dispatch])
+
+  useEffect(() => {
+    if (mergeCart && authUser) {
+
+      const guestCartItems = structuredClone(carts.filter(item => !item.userId))
+
+      if (guestCartItems.length > 0) {
+        const userCartItems = carts.filter(item => item.userId === authUser.id)
+        for (const item of guestCartItems) {
+          item.id = authUser.id + item.id
+        }
+        const mapCart = new Map<string, CartItemType>()
+        for (const item of userCartItems) {
+          mapCart.set(item.id, { ...item })
+        }
+        for (const item of guestCartItems) {
+          if (mapCart.has(item.id)) {
+            const itemInMap = mapCart.get(item.id) as CartItemType
+            mapCart.set(item.id, ({ ...item, quantity: itemInMap.quantity + item.quantity }))
+          }
+          else {
+            mapCart.set(item.id, { ...item, userId: authUser.id })
+          }
+        }
+
+        const newCart = [...Array.from(mapCart.values()), ...carts.filter(item => item.userId && item.userId !== authUser.id)]
+        console.log(newCart)
+        dispatch(upDateCart(newCart))
+      }
+    }
+  }, [mergeCart, carts, authUser, dispatch])
 
   const userCart = useMemo(() => {
 
     if (carts.length > 0) {
+
       if (authUser) {
         return [...carts.filter(cart => cart.userId === authUser?.id)]
       }
@@ -129,7 +164,14 @@ const Cart = () => {
                       cssClass='bg-black text-white py-3 px-4 rounded text-center cursor-pointer md:text-sm text-xs w-full mb-8 block'>Checkout</CustomNavLink>
                     :
                     <>
-                      <CustomNavLink to="/login?cart=true" cssClass='bg-black text-white py-3 px-4 rounded text-center cursor-pointer md:text-sm text-xs w-full mb-2 block'>Sign in to checkout</CustomNavLink>
+                      <CustomNavLink
+                        to="/login"
+                        state={
+                          {
+                            mergeCart: true
+                          }
+                        }
+                        cssClass='bg-black text-white py-3 px-4 rounded text-center cursor-pointer md:text-sm text-xs w-full mb-2 block'>Sign in to checkout</CustomNavLink>
                       <p className="md:text-sm text-xs mb-8 text-center text-slate-500 italic">
                         or <CustomNavLink to='/signup?cart=true' cssClass='font-semibold'>Sign up</CustomNavLink>
                       </p>
