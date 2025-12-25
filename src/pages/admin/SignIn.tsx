@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react'
-import { CreateUserForm, Status, Role, Toast, Toast_Vairant } from '../../store/types'
+import { CreateUserForm, Status, Role, Toast, Toast_Vairant, LoginInput } from '../../store/types'
 import { useNavigate } from 'react-router-dom'
 import { useStoreDispatch } from '../../store'
 import { useAuth, loginAdmin, getAuthStatus } from '../../store/slices/authSlice'
@@ -21,7 +21,7 @@ const SignIn = () => {
       dispatch(getAuthStatus())
   }, [status])
 
-  const [email, setEmail] = useState('admin@gmail.com')
+  const [email, setEmail] = useState('xadmin@gmail.com')
   const [password, setPassword] = useState('password123')
   const [errors, setErrors] = useState<Partial<Pick<CreateUserForm, 'email' | 'password'>>>({})
 
@@ -31,7 +31,7 @@ const SignIn = () => {
       return
 
     }
-    if (status === Status.FULFILLED) {
+    else if (status === Status.FULFILLED) {
       if (isLoggedIn && authUser?.role === Role.ADMIN)
         navigate('/admin/dashboard')
       return
@@ -55,7 +55,7 @@ const SignIn = () => {
     if (Object.keys(newErrors).length > 0) {
       return setErrors({ ...newErrors })
     }
-    const data: Partial<Pick<CreateUserForm, 'email' | 'password'>> = {
+    const data: LoginInput = {
       email,
       password
     }
@@ -73,14 +73,12 @@ const SignIn = () => {
       })
       .catch((error) => {
         toast.variant = Toast_Vairant.WARNING
-        toast.msg = error.message.replaceAll('_', ' ')
+        toast.msg = error.message
         dispatch(addToast(toast))
       })
   }
+  if (status === Status.PENDING || isLoggedIn && authUser?.role !== Role.CUSTOMER) return <Preloader />
 
-  console.log('sign in')
-
-  if (status === Status.PENDING || isLoggedIn ) return <Preloader />
   return (
     <section className='w-full h-dvh flex justify-center items-center px-4'>
       <div className="w-[384px] max-w-full bg-white pt-8 pb-12 px-4 md:px-8 rounded-lg">

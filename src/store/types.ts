@@ -70,18 +70,27 @@ export enum ErrorCode {
     USER_NOT_FOUND = 'USER_NOT_FOUND',
     BAD_CREDENTIALS = 'BAD_CREDENTIALS',
     INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
-    INPUT_ERROR = "INPUT_ERROR"
+    INPUT_ERROR = "INPUT_ERROR",
+    NETWORK_ERROR = "NETWORK_ERROR"
 } 
 
+export interface ErrorPayload {
+    message: string,
+    code: ErrorCode,
+    extras?: Record<string, string>
+}
+
+
 export interface CustomError {
-    msg: string,
-    code?: number
+    message: string,
+    code?: number,
+    extras?:Record<string, string>
 }
 export interface Auth {
     isLoggedIn: boolean,
     authUser: AuthUser | null,
     status: Status,
-    error: CustomError | null,
+    error: ErrorPayload | null,
 }
 
 export enum Action {

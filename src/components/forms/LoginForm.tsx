@@ -80,7 +80,7 @@ const LoginForm = () => {
             .catch((error) => {
                 console.log(error)
                 toast.variant = Toast_Vairant.WARNING
-                toast.msg = error
+                toast.msg = error.message
                 dispatch(addToast(toast))
             })
     }

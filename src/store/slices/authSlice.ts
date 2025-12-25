@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Auth, Status, RootState, ErrorCode, LoginResponse, LoginInput, CustomJwtPayload, AuthUser } from "../types";
+import { Auth, Status, RootState, ErrorCode, LoginResponse, LoginInput, CustomJwtPayload, AuthUser, ErrorPayload, CustomError } from "../types";
 import client from "../../data/client";
 import { LOGIN_ADMIN, LOGIN_GOOGLE_USER, LOGIN_USER } from "../../data/mutation";
 import { GET_AUTH } from "../../data/query";
 import { jwtDecode } from "jwt-decode";
 import { stripTypename } from "@apollo/client/utilities";
 import { useSelector } from "react-redux";
+import { GraphQLError } from "graphql";
+import { ApolloError } from "@apollo/client";
 
 const initialState: Auth = {
     isLoggedIn: false,
@@ -26,9 +28,13 @@ const setSession = (token: string) => {
 }
 
 
-export const loginAdmin = createAsyncThunk(
+export const loginAdmin = createAsyncThunk<
+    LoginResponse,
+    LoginInput,
+    { rejectValue: ErrorPayload }
+>(
     '/admin/login',
-    async ({ email, password }: Partial<Pick<LoginInput, 'email' | 'password'>>, { rejectWithValue }) => {
+    async ({ email, password }, { rejectWithValue }) => {
 
         try {
             const response = await client.mutate({
@@ -40,46 +46,93 @@ export const loginAdmin = createAsyncThunk(
 
             if (!token) {
                 clearSession()
-                return rejectWithValue(ErrorCode.BAD_CREDENTIALS)
+                return rejectWithValue({
+                    message: 'Token Missing from response',
+                    code: ErrorCode.INTERNAL_SERVER_ERROR
+                })
             }
             setSession(token)
             return token
-        } catch (error) {
-            if (error instanceof Error) {
-                clearSession()
-                return rejectWithValue(error.message || ErrorCode.INTERNAL_SERVER_ERROR)
+        } catch (err) {
+            clearSession()
+
+            if (err instanceof ApolloError) {
+                const error = err.graphQLErrors[0]
+                if (error) {
+                    return rejectWithValue({
+                        message: error.message,
+                        code: error.extensions.code as ErrorCode,
+                        extras: error.extensions.extras as Record<string, string>
+                    })
+                }
+                if (err.networkError) {
+                    return rejectWithValue({
+                        message: 'Network Error',
+                        code: ErrorCode.NETWORK_ERROR,
+                    })
+                }
             }
-        }
-    })
 
-
-export const logInUser = createAsyncThunk<LoginResponse, LoginInput>(
-    '/user/login',
-    async ({ email, password }, { rejectWithValue }) => {
-
-        try {
-            const response = await client.mutate({
-                mutation: LOGIN_USER,
-                variables: { input: { email, password } }
+            return rejectWithValue({
+                message: 'Unknown Error',
+                code: ErrorCode.INTERNAL_SERVER_ERROR,
             })
-
-            const token = response.data?.logInUser?.token
-            if (!token) {
-                clearSession()
-                return rejectWithValue(ErrorCode.BAD_CREDENTIALS)
-            }
-            setSession(token)
-            return token
-        } catch (error) {
-            if (error instanceof Error) {
-                clearSession()
-                return rejectWithValue(error.message)
-            }
-            return rejectWithValue(ErrorCode.INTERNAL_SERVER_ERROR)
-
         }
-
     })
+
+
+export const logInUser = createAsyncThunk<
+    LoginResponse,
+    LoginInput,
+    { rejectValue: ErrorPayload }>(
+        '/user/login',
+        async ({ email, password }, { rejectWithValue }) => {
+
+            try {
+                const response = await client.mutate({
+                    mutation: LOGIN_USER,
+                    variables: { input: { email, password } }
+                })
+
+                const token = response.data?.logInUser?.token
+                if (!token) {
+                    clearSession()
+                    return rejectWithValue({
+                        message: 'Token missing from response',
+                        code: ErrorCode.INTERNAL_SERVER_ERROR
+                    })
+                }
+                setSession(token)
+                return token
+            }
+            catch (err) {
+                clearSession()
+
+                if (err instanceof ApolloError) {
+                    const error = err.graphQLErrors[0]
+                    if (error) {
+                        return rejectWithValue({
+                            message: error.message as string,
+                            code: error.extensions.code as ErrorCode,
+                            extras: error.extensions.extras as Record<string, string>
+                        })
+                    }
+
+                    if (err.networkError) {
+
+                        return rejectWithValue({
+                            message: 'Network Error',
+                            code: ErrorCode.NETWORK_ERROR,
+                        })
+                    }
+                }
+
+                return rejectWithValue({
+                    message: 'Unexpected Error',
+                    code: ErrorCode.INTERNAL_SERVER_ERROR
+                })
+            }
+        })
 
 export const logInGoogleUser = createAsyncThunk<LoginResponse, string>(
     '/googleUser/login',
@@ -164,9 +217,7 @@ const authSlice = createSlice({
                 state.status = Status.REJECTED
                 state.isLoggedIn = false
                 state.authUser = null
-                state.error = {
-                    msg: action.payload as string
-                }
+                state.error = action.payload as ErrorPayload
             })
 
             .addCase(logInUser.pending, (state: Auth) => {
@@ -188,9 +239,8 @@ const authSlice = createSlice({
                 state.status = Status.REJECTED
                 state.isLoggedIn = false
                 state.authUser = null
-                state.error = {
-                    msg: action.payload as string,
-                }
+                console.log(action.payload)
+                state.error = action.payload as ErrorPayload
             })
             .addCase(logInGoogleUser.pending, (state: Auth) => {
                 state.status = Status.PENDING
