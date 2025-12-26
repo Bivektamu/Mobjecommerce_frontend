@@ -22,7 +22,8 @@ const ToastCard = ({ toast }: Props) => {
 
         return (() => clearTimeout(timer))
 
-    }, [])
+    }, [dispatch, toast.id])
+
     const clickHandler = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         dispatch(removeToast(toast.id))
@@ -42,7 +43,7 @@ const ToastCard = ({ toast }: Props) => {
             break;
 
         case Toast_Vairant.WARNING:
-            csName = 'text-orange-600 bg-blue-100'
+            csName = 'text-orange-600 bg-orange-100'
             spanC = 'bg-orange-600'
             logo = <InfoSvg />
             break;

@@ -69,12 +69,21 @@ export interface AuthUser {
 export enum ErrorCode {
     USER_NOT_FOUND = 'USER_NOT_FOUND',
     BAD_CREDENTIALS = 'BAD_CREDENTIALS',
+    SHIPPING_ADDRESS_ERROR = 'SHIPPING_ADDRESS_ERROR',
     INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
-    INPUT_ERROR = "INPUT_ERROR",
-    NETWORK_ERROR = "NETWORK_ERROR"
-} 
+    NOT_AUTHENTICATED = 'NOT_AUTHENTICATED',
+    WRONG_USER_TYPE = 'WRONG_USER_TYPE',
+    VALIDATION_ERROR = 'VALIDATION_ERROR',
+    INPUT_ERROR = 'INPUT_ERROR',
+    NOT_FOUND = 'NOT_FOUND',
+    JWT_TOKEN_EXPIRED = 'JWT_TOKEN_EXPIRED',
+    JWT_TOKEN_INVALID = 'JWT_TOKEN_INVALID',
+    JWT_TOKEN_MISSING = 'JWT_TOKEN_MISSING',
+    GOOGLE_ERROR = 'GOOGLE_ERROR',
+    NETWORK_ERROR = 'NETWORK_ERROR'
+}
 
-export interface ErrorPayload {
+export interface ResponseError {
     message: string,
     code: ErrorCode,
     extras?: Record<string, string>
@@ -84,14 +93,34 @@ export interface ErrorPayload {
 export interface CustomError {
     message: string,
     code?: number,
-    extras?:Record<string, string>
+    extras?: Record<string, string>
 }
 export interface Auth {
     isLoggedIn: boolean,
     authUser: AuthUser | null,
     status: Status,
-    error: ErrorPayload | null,
+    error: ResponseError | null,
 }
+
+
+export interface LoginInput {
+    email: string,
+    password: string
+}
+export interface GoogleLoginInput {
+    credential: string
+}
+
+
+export type LoginResponse = string
+
+export interface AuthStatusResponse {
+    isLoggedIn: boolean,
+    user: AuthUser
+}
+
+export interface CustomJwtPayload extends AuthUser, JwtPayload { }
+
 
 export enum Action {
     FETCH = 'FETCH',
@@ -270,7 +299,7 @@ export interface OrderItem {
     imgUrl: string
 }
 
-export type OrderItemInput  = Omit<OrderItem, 'id'>
+export type OrderItemInput = Omit<OrderItem, 'id'>
 
 export interface Order {
     id: string,
@@ -278,14 +307,14 @@ export interface Order {
     userId: string,
     items: OrderItem[],
     status: Order_Status,
-    subTotal:number,
+    subTotal: number,
     total: number,
-    tax:number,
+    tax: number,
     shippingAddress: Address,
-    orderPlaced:Date
+    orderPlaced: Date
 }
 
-export interface OrderInput  extends Omit<Order, 'id' | 'items' | 'orderNumber' | 'orderPlaced'> {
+export interface OrderInput extends Omit<Order, 'id' | 'items' | 'orderNumber' | 'orderPlaced'> {
     items: OrderItemInput[]
 }
 
@@ -317,9 +346,9 @@ export interface UserDetailsForReview {
     email: string,
 }
 
-export interface DetailedReview extends Omit<Review, 'productId'| 'userId'> {
+export interface DetailedReview extends Omit<Review, 'productId' | 'userId'> {
     productId: ProductDetailsForReview,
-    userId:UserDetailsForReview
+    userId: UserDetailsForReview
 }
 
 export interface ReviewUserOnly extends Omit<DetailedReview, 'productId'> {
@@ -347,19 +376,6 @@ export interface ReviewSlice {
     action: Action | null
 }
 
-
-export interface LoginInput {
-    email:string,
-    password:string
-}
-export interface GoogleLoginInput {
-    credential:string
-}
-
-
-export type LoginResponse = string
-
-export interface CustomJwtPayload extends AuthUser, JwtPayload  {}
 
 export interface LikedProduct {
     id: ProductId,

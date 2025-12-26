@@ -13,10 +13,6 @@ const Layout = () => {
 
   const location = useLocation()
 
-  if (location.pathname.includes("admin")) {
-    return <Outlet />
-  }
-
   return (
     <>
 
@@ -24,16 +20,23 @@ const Layout = () => {
         allToasts?.length > 0 && <ToastComponent toasts={allToasts} />
       }
 
-      <Header />
-      <AnimatePresence mode="wait">
+      {
+        location.pathname.includes("admin") ? <Outlet /> :
+          <>
+            <Header />
+            <AnimatePresence mode="wait">
 
-        <main id="main" key={location.pathname}>
+              <main id="main" key={location.pathname}>
 
-          <Outlet />
-        </main>
-      </AnimatePresence >
-      <NewsLetter />
-      <Footer />
+                <Outlet />
+              </main>
+            </AnimatePresence >
+            <NewsLetter />
+            <Footer />
+          </>
+
+      }
+
     </>
 
 

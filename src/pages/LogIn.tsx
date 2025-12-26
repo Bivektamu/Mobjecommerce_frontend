@@ -12,6 +12,7 @@ import LoginForm from '../components/forms/LoginForm';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google'
 import { addToast } from '../store/slices/toastSlice'
 import { v4 } from 'uuid'
+import { getToastVariant } from '../utils/helpers'
 const LogIn = () => {
   const location = useLocation()
   const mergeCart = location?.state?.mergeCart
@@ -61,8 +62,8 @@ const LogIn = () => {
       })
       .catch((error) => {
         console.log(error)
-        toast.variant = Toast_Vairant.WARNING
-        toast.msg = error
+        toast.msg = error.message
+        toast.variant = getToastVariant(error.code)
         dispatch(addToast(toast))
       })
   }
@@ -70,7 +71,7 @@ const LogIn = () => {
   const googleErrorHandler = () => {
     const toast: Toast = {
       id: v4(),
-      variant: Toast_Vairant.WARNING,
+      variant: Toast_Vairant.DANGER,
       msg: 'Google sign in error'
     }
     dispatch(addToast(toast))

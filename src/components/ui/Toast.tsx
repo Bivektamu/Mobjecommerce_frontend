@@ -7,6 +7,8 @@ type Props = {
 
 const ToastComponent = ({ toasts }: Props) => {
 
+    console.log('toast')
+
     return (
         <div className=' fixed top-10 right-0 z-10 flex flex-col gap-4 items-center justify-center z-20'>
             {

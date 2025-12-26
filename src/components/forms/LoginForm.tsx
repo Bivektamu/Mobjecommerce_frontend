@@ -6,6 +6,7 @@ import { v4 } from 'uuid';
 import { useStoreDispatch } from '../../store';
 import { logInUser } from '../../store/slices/authSlice';
 import { addToast } from '../../store/slices/toastSlice';
+import { getToastVariant } from '../../utils/helpers';
 
 const LoginForm = () => {
 
@@ -79,7 +80,7 @@ const LoginForm = () => {
             })
             .catch((error) => {
                 console.log(error)
-                toast.variant = Toast_Vairant.WARNING
+                toast.variant = getToastVariant(error.code)
                 toast.msg = error.message
                 dispatch(addToast(toast))
             })

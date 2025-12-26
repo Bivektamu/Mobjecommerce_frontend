@@ -6,6 +6,7 @@ import { useAuth, loginAdmin, getAuthStatus } from '../../store/slices/authSlice
 import Preloader from '../../components/ui/Preloader'
 import { v4 as uuidv4 } from 'uuid';
 import { addToast } from '../../store/slices/toastSlice'
+import { getToastVariant } from '../../utils/helpers'
 
 
 const SignIn = () => {
@@ -19,9 +20,9 @@ const SignIn = () => {
   useEffect(() => {
     if (status === Status.IDLE)
       dispatch(getAuthStatus())
-  }, [status])
+  }, [status, dispatch])
 
-  const [email, setEmail] = useState('xadmin@gmail.com')
+  const [email, setEmail] = useState('admin@gmail.com')
   const [password, setPassword] = useState('password123')
   const [errors, setErrors] = useState<Partial<Pick<CreateUserForm, 'email' | 'password'>>>({})
 
@@ -72,7 +73,7 @@ const SignIn = () => {
         dispatch(addToast(toast))
       })
       .catch((error) => {
-        toast.variant = Toast_Vairant.WARNING
+        toast.variant = getToastVariant(error.code)
         toast.msg = error.message
         dispatch(addToast(toast))
       })
