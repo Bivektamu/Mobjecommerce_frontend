@@ -241,7 +241,6 @@ export const getAuthStatus = createAsyncThunk<
         return authStatus
     } catch (err) {
         if (err instanceof ApolloError) {
-            console.log(err)
             const error = err.graphQLErrors[0]
             if (error) {
                 if (error.extensions.code === ErrorCode.NOT_AUTHENTICATED) {

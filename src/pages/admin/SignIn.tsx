@@ -23,7 +23,7 @@ const SignIn = () => {
   }, [status, dispatch])
 
   const [email, setEmail] = useState('admin@gmail.com')
-  const [password, setPassword] = useState('password123')
+  const [password, setPassword] = useState('Password@123')
   const [errors, setErrors] = useState<Partial<Pick<CreateUserForm, 'email' | 'password'>>>({})
 
   useEffect(() => {
