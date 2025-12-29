@@ -4,7 +4,7 @@ import { CiDeliveryTruck } from 'react-icons/ci'
 import { RiKey2Line } from 'react-icons/ri'
 import { BsCart4 } from 'react-icons/bs'
 import { useStoreDispatch } from '../../store'
-import { logOut } from '../../store/slices/authSlice'
+import { logOutUser } from '../../store/slices/authSlice'
 import { MouseEvent } from 'react'
 import { TbLogout } from 'react-icons/tb'
 
@@ -15,7 +15,7 @@ const AccountSubNav = () => {
     const logOutHandler = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         e.stopPropagation()
-        dispatch(logOut())
+        dispatch(logOutUser())
       }
 
     return (

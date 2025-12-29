@@ -11,7 +11,7 @@ const Account = () => {
 
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const { isLoggedIn, authUser, status } = useAuth()
+  const { isLoggedIn, user, status } = useAuth()
 
   useEffect(() => {
 
@@ -22,7 +22,7 @@ const Account = () => {
       navigate('/login')
 
     }
-    else if (isLoggedIn && authUser && authUser.role !== Role.CUSTOMER) {
+    else if (isLoggedIn && user && user.role !== Role.CUSTOMER) {
       navigate('/login')
     }
     else if (pathname === '/account' || pathname === '/account/') {
@@ -30,7 +30,7 @@ const Account = () => {
     }
 
 
-  }, [authUser, isLoggedIn, status, pathname])
+  }, [user, isLoggedIn, status, pathname])
 
   if(!isLoggedIn) {
     return <Preloader />

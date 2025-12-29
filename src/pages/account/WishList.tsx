@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client"
-import { GET_WISH_LIST_BY_USER_ID } from "../../data/query"
+import { GET_WISH_LIST_BY_USER_ID } from "../../data/query/reviews.query"
 import { useAuth } from "../../store/slices/authSlice"
 import ProgressLoader from "../../components/ui/ProgressLoader"
 import { MouseEvent, useMemo } from "react"
@@ -8,14 +8,14 @@ import { Link } from "react-router-dom"
 import Arrow from "../../components/ui/Arrow"
 import WishListItem from "../../components/wishList/WishListItem"
 import { LikedProduct, WishList as WishListType } from "../../store/types"
-import { ADD_TO_WISH_LIST } from "../../data/mutation"
+import { ADD_TO_WISH_LIST } from "../../data/mutation/reviews.mutation"
 
 const WishList = () => {
-  const { authUser } = useAuth()
+  const { user } = useAuth()
 
   const { data, loading } = useQuery(GET_WISH_LIST_BY_USER_ID, {
     variables: {
-      userId: authUser?.id
+      userId: user?.id
     }
   })
 

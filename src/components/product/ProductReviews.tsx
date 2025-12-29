@@ -14,7 +14,7 @@ type Props = {
 }
 const ProductReviews = ({ productId, reviews, refetch }: Props) => {
 
-    const { authUser } = useAuth()
+    const { user } = useAuth()
 
     const REVIEWS_PER_PAGE = 3
 
@@ -91,7 +91,7 @@ const ProductReviews = ({ productId, reviews, refetch }: Props) => {
 
             </div>
             {
-                authUser?.role === Role.CUSTOMER && <button onClick={() => setShowModal(true)} className="border-[1px] border-slate-600 py-2 px-4 rounded text-center cursor-pointer text-sm font-medium mb-2">Write a review</button>
+                user?.role === Role.CUSTOMER && <button onClick={() => setShowModal(true)} className="border-[1px] border-slate-600 py-2 px-4 rounded text-center cursor-pointer text-sm font-medium mb-2">Write a review</button>
             }
 
             {

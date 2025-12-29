@@ -18,7 +18,7 @@ const SignUp = () => {
 
 
   const dispatch = useStoreDispatch()
-  const { isLoggedIn, authUser, status } = useAuth()
+  const { isLoggedIn, user, status } = useAuth()
 
   const { user, error: userError, action } = useUser()
 
@@ -65,7 +65,7 @@ const SignUp = () => {
     return <Navigate to="/checkout" />
   }
 
-  if (isLoggedIn && authUser?.role === Role.CUSTOMER) {
+  if (isLoggedIn && user?.role === Role.CUSTOMER) {
     return <Navigate to="/" />
   }
 

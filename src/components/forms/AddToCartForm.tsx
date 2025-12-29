@@ -22,7 +22,7 @@ const ALL_SIZES = [Size.SMALL, Size.MEDIUM, Size.LARGE, Size.EXTRA_LARGE]
 
 function AddToCartForm({ product }: Props) {
     const dispatch = useStoreDispatch()
-    const { authUser } = useAuth()
+    const { user } = useAuth()
     const { action, cart } = useCart()
 
     const [formData, setFormData] = useState<Cart>({
@@ -49,23 +49,23 @@ function AddToCartForm({ product }: Props) {
 
     // code to set userId in cart items
     useEffect(() => {
-        if (authUser && authUser.role === Role.CUSTOMER) {
-            setFormData({ ...formData, userId: authUser.id })
+        if (user && user.role === Role.CUSTOMER) {
+            setFormData({ ...formData, userId: user.id })
         }
-    }, [authUser])
+    }, [user])
 
     //code to filter cart items specific to current user
     useEffect(() => {
         if (cart.length > 0) {
-            if (authUser) {
-                setUserCart(cart.filter(cartItem => cartItem.userId === authUser.id && cartItem.productId === formData.productId))
+            if (user) {
+                setUserCart(cart.filter(cartItem => cartItem.userId === user.id && cartItem.productId === formData.productId))
             }
             else {
                 setUserCart(cart.filter(CartItem => !CartItem.userId && CartItem.productId === formData.productId))
             }
 
         }
-    }, [authUser, cart, formData.productId])
+    }, [user, cart, formData.productId])
 
     // code to remove error info when fields are typed
     useEffect(() => {
@@ -200,12 +200,12 @@ function AddToCartForm({ product }: Props) {
                 dispatch(updateCartQuantity(productToAdd))
             }
             else {
-                const productToAdd = { ...formData, id: (authUser?.id||'') + productId +  color + size }
+                const productToAdd = { ...formData, id: (user?.id||'') + productId +  color + size }
                 dispatch(addToCart(productToAdd))
             }
         }
         else {
-            const productToAdd = { ...formData, id: (authUser?.id||'') + productId +  color + size }
+            const productToAdd = { ...formData, id: (user?.id||'') + productId +  color + size }
             dispatch(addToCart({ ...productToAdd }))
         }
     }

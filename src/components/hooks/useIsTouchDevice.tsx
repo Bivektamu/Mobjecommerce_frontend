@@ -5,7 +5,6 @@ const useIsTouchDevice = () => {
 
     useEffect(()=> {
         const media = window.matchMedia('(pointer:coarse)')
-        console.log(media)
         setIsTouch(media.matches)
     }, [])
 

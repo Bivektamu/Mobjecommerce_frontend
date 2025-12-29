@@ -12,11 +12,11 @@ import { useAuth } from "../../store/slices/authSlice"
 
 const UserOrders = () => {
 
-  const { authUser } = useAuth()
+  const { user } = useAuth()
 
   const { data, loading, error } = useQuery(GET_ORDERS_BY_USER_ID, {
     variables: {
-      userOrdersId: authUser?.id
+      userOrdersId: user?.id
     },
   })
   const refinedData = useMemo(() => {

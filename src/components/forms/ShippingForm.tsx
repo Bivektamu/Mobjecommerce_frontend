@@ -12,7 +12,7 @@ import { GET_USER_ADDRESS } from "../../data/query/user.query";
 
 const ShippingForm = () => {
 
-    const { authUser } = useAuth()
+    const { user } = useAuth()
     const {action} = useUser()
     const dispatch = useStoreDispatch()
 
@@ -31,15 +31,15 @@ const ShippingForm = () => {
 
     useEffect(() => {
 
-        if (authUser && authUser.id) {
+        if (user && user.id) {
             fetchAddress({
                 variables: {
-                    userId: authUser.id
+                    userId: user.id
                 }
             })
         }
 
-    }, [authUser, fetchAddress])
+    }, [user, fetchAddress])
 
     useEffect(() => {
         if (data && data.user && data.user.address) {

@@ -16,7 +16,7 @@ import ProductCard from '../../components/ui/ProductCard'
 import { getAverageRating } from '../../utils/helpers'
 import PageWrapper from '../../components/ui/PageWrapper'
 import { useLazyQuery } from '@apollo/client'
-import { GET_REVIEWS_BY_PRODUCT_ID } from '../../data/query'
+import { GET_REVIEWS_BY_PRODUCT_ID } from '../../data/query/reviews.query'
 import { stripTypename } from '@apollo/client/utilities'
 
 const ProductComponent = () => {

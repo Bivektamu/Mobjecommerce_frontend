@@ -3,7 +3,7 @@ import { Order_Status, Toast, Toast_Vairant } from '../../store/types'
 import { v4 as uuidv4 } from 'uuid';
 import { addToast } from '../../store/slices/toastSlice';
 import { useMutation } from '@apollo/client';
-import { UPDATE_ORDER_STATUS } from '../../data/mutation';
+import { UPDATE_ORDER_STATUS } from '../../data/mutation/orders.mutation';
 import { useStoreDispatch } from '../../store';
 
 type Props = {
@@ -21,9 +21,6 @@ const ChangeStatusForm = ({ id, refetch, closeModal }: Props) => {
 
     const saveHandler = async (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
-
-        console.log(newStatus, id)
-
         if (!newStatus) {
             const newToast: Toast = {
                 id: uuidv4(),

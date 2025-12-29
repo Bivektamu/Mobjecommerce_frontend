@@ -3,7 +3,7 @@ import Search from './Search'
 
 import { useProduct } from '../../store/slices/productSlice'
 import { Role } from '../../store/types'
-import { logOut, useAuth } from '../../store/slices/authSlice'
+import { logOutUser, useAuth } from '../../store/slices/authSlice'
 import { MouseEvent, useEffect, useState } from 'react'
 import { useStoreDispatch } from '../../store'
 import { getUser, useUser } from '../../store/slices/userSlice'
@@ -17,7 +17,7 @@ const Header = () => {
   const { pathname } = useLocation();
 
   const { products } = useProduct()
-  const { isLoggedIn, authUser } = useAuth()
+  const { isLoggedIn, user:authUser } = useAuth()
   const { setAvatarEmail, avatar } = useAvatar()
   const { user } = useUser()
 
@@ -52,7 +52,7 @@ const Header = () => {
     e.preventDefault()
     e.stopPropagation()
 
-    dispatch(logOut())
+    dispatch(logOutUser())
   }
 
   return (
@@ -85,7 +85,7 @@ const Header = () => {
             </button>
             <div className="absolute top-8 -left-2 md:left-0  bg-white w-max rounded shadow-md z-30 flex flex-col group-hover:visible invisible">
               {
-                isLoggedIn && authUser?.role !== Role.ADMIN ?
+                isLoggedIn && user?.role !== Role.ADMIN ?
                   <>
                     <NavLink to={'/account'} className='block min-w-full flex gap-2 text-xs font-normal text-left hover:bg-slate-100 px-2 py-2 items-center justify-between'   >
                       My Account

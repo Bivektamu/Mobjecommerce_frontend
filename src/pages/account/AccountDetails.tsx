@@ -7,11 +7,11 @@ import { stripTypename } from "@apollo/client/utilities"
 
 const AccountDetails = () => {
 
-  const {authUser} = useAuth()
+  const {user} = useAuth()
 
   const {data, loading, refetch} = useQuery(GET_USER, {
     variables: {
-      userId: authUser?.id
+      userId: user?.id
     }
   })
 

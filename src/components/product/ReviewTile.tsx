@@ -10,7 +10,7 @@ import Modal from '../layout/Modal'
 import EditReviewForm from '../forms/EditReviewForm'
 import { MouseEvent, useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
-import { DELETE_REVIEW } from '../../data/mutation'
+import { DELETE_REVIEW } from '../../data/mutation/reviews.mutation'
 import { v4 } from 'uuid'
 import { useStoreDispatch } from '../../store'
 import { addToast } from '../../store/slices/toastSlice'
@@ -23,9 +23,9 @@ type Props = {
 }
 
 const ReviewTile = ({ review, refetchReview }: Props) => {
-    const {avatar, setAvatarEmail} = useAvatar()
+    const { avatar, setAvatarEmail } = useAvatar()
     const dispatch = useStoreDispatch()
-    const { authUser } = useAuth()
+    const { user } = useAuth()
     const [deleteReview] = useMutation(DELETE_REVIEW, {
         onCompleted: () => {
             refetchReview?.()
@@ -60,13 +60,11 @@ const ReviewTile = ({ review, refetchReview }: Props) => {
         })
     }
 
-    const {firstName, lastName, email} = review.userId
+    const { firstName, lastName, email } = review.userId
 
-    useEffect(()=> {
-        if(email) {
-            setAvatarEmail(email)
-        }
-    }, [email])
+    useEffect(() => {
+        setAvatarEmail(email)
+    }, [email, setAvatarEmail])
 
     return (
 
@@ -75,7 +73,7 @@ const ReviewTile = ({ review, refetchReview }: Props) => {
 
                 <p className=" col-span-1">
                     <span className='w-12 h-12 overflow-hidden rounded-full block'>
-                    {avatar}
+                        {avatar}
                     </span>
                 </p>
 
@@ -107,7 +105,7 @@ const ReviewTile = ({ review, refetchReview }: Props) => {
                 </p>
 
                 {
-                    authUser?.id === review.userId._id &&
+                    user?.id === review.userId._id &&
                     (
                         <div className="col-span-3 place-self-end flex gap-4">
                             <button type="button" onClick={() => setShowModal({ flag: true, content: 'edit' })}><FaRegEdit /></button>

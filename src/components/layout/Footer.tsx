@@ -11,34 +11,34 @@ const Footer = () => {
         <div className="container flex flex-wrap justify-between items-start mx-auto md:py-14 py-8 gap-8">
           <div className="flex flex-col gap-8 ">
             <Link to='/'><Logo /></Link>
-            <p className='text-slate-600 max-w-[300px]'>DevCut is a YouTube channel for practical project-based learning.</p>
+         
             <div className="flex gap-4">
-              <Link to=''><GithubIcon /></Link>
-              <Link to=''><InstagramIcon /></Link>
-              <Link to=''><YoutubeIcon /></Link>
+              <Link className='pointer-events-none' to=''><GithubIcon /></Link>
+              <Link className='pointer-events-none' to=''><InstagramIcon /></Link>
+              <Link className='pointer-events-none' to=''><YoutubeIcon /></Link>
             </div>
           </div>
 
           <div className="flex justify-center gap-8 md:gap-16">
             <div className='flex flex-col gap-2 md:gap-6 text-xs md:text-base'>
               <p className="text-slate-500 uppercase mb-4 md:mb-6 font-medium">support</p>
-              <Link to='' className=''>FAQ</Link>
-              <Link to='' className=''>Terms of use</Link>
-              <Link to='' className=''>Privacy Policy</Link>
+              <Link to='' className='pointer-events-none'>FAQ</Link>
+              <Link to='' className='pointer-events-none'>Terms of use</Link>
+              <Link to='' className='pointer-events-none'>Privacy Policy</Link>
             </div>
 
             <div className='flex flex-col gap-2 md:gap-6 text-xs md:text-base'>
               <p className="text-slate-500 uppercase mb-4 md:mb-6 font-medium">COMPANY</p>
-              <Link to='' className=''>About us</Link>
-              <Link to='' className=''>Contact</Link>
-              <Link to='' className=''>Careers</Link>
+              <Link to='' className='pointer-events-none'>About us</Link>
+              <Link to='/contact' className=''>Contact</Link>
+              <Link to='' className='pointer-events-none'>Careers</Link>
             </div>
 
             <div className='flex flex-col gap-2 md:gap-6 text-xs md:text-base'>
               <p className="text-slate-500 uppercase mb-4 md:mb-6 font-medium">SHOP</p>
-              <Link to='' className=''>My Account</Link>
-              <Link to='' className=''>Checkout</Link>
-              <Link to='' className=''>Cart</Link>
+              <Link to='/account' className=''>My Account</Link>
+              {/* <Link to='/checkout' className=''>Checkout</Link> */}
+              <Link to='/cart' className=''>Cart</Link>
             </div>
           </div>
 

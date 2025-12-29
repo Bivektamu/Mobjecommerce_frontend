@@ -5,7 +5,7 @@ import validateForm from '../../utils/validate'
 import { v4 as uuidv4 } from 'uuid';
 import { useStoreDispatch } from '../../store'
 import { useMutation } from '@apollo/client'
-import { EDIT_REVIEW } from '../../data/mutation'
+import { EDIT_REVIEW } from '../../data/mutation/reviews.mutation'
 import { addToast } from '../../store/slices/toastSlice'
 
 type Props = {

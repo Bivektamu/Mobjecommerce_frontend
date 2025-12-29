@@ -3,7 +3,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import validateForm from '../../utils/validate'
 import { ErrorCode, FormError, Toast, Toast_Vairant, ValidateSchema } from '../../store/types'
 import { useMutation } from '@apollo/client'
-import { CHANGE_PASSWORD } from '../../data/mutation'
+import { CHANGE_PASSWORD } from '../../data/mutation/users.mutation'
 import { useAuth } from '../../store/slices/authSlice'
 import { v4 as uuidv4 } from 'uuid';
 import { addToast } from '../../store/slices/toastSlice'
@@ -24,7 +24,7 @@ const INIT_FORM: FormData = {
 
 function ChangePasswordForm() {
 
-    const { authUser } = useAuth()
+    const { user } = useAuth()
     const dispatch = useStoreDispatch()
 
 
@@ -123,7 +123,7 @@ const handleSubmit = (e: FormEvent) => {
     changePasword({
         variables: {
             input: {
-                id: authUser?.id,
+                id: user?.id,
                 currentPassword,
                 newPassword
             }

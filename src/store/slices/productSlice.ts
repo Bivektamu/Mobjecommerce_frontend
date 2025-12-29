@@ -1,19 +1,27 @@
-import { ProductInput, ProductSlice, Status, RootState, Action, ProductEditInput, Product } from "../types";
+import { ProductInput, ProductSlice, Status, RootState, Action, ProductEditInput, Product, ErrorCode, ResponseError, ProductId } from "../types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { CREATE_PRODUCT, DELETE_PRODUCT, EDIT_PRODUCT } from "../../data/mutation";
+import { CREATE_PRODUCT, DELETE_PRODUCT, EDIT_PRODUCT } from "../../data/mutation/products.mutation";
 import client from "../../data/client";
-import { GET_PRODUCTS } from "../../data/query";
+import { GET_PRODUCTS } from "../../data/query/products.query";
 import { useSelector } from "react-redux";
 import { stripTypename } from "@apollo/client/utilities";
+import { ApolloError } from "@apollo/client";
 
+interface DeleteProductResponse {
+    success: boolean
+}
 const initialState: ProductSlice = {
     status: Status.IDLE,
-    error: '',
+    error: null,
     products: [],
     action: null
 }
 
-export const addProduct = createAsyncThunk('/admin/product/add', async (formData: ProductInput) => {
+export const addProduct = createAsyncThunk<
+    Product,
+    ProductInput,
+    { rejectValue: ResponseError }
+>('/admin/product/add', async (formData, { rejectWithValue }) => {
 
     try {
         const response = await client.mutate({
@@ -24,16 +32,37 @@ export const addProduct = createAsyncThunk('/admin/product/add', async (formData
 
         return response.data.createProduct
 
-    } catch (error) {
+    } catch (err) {
+        if (err instanceof ApolloError) {
+            const error = err.graphQLErrors[0]
+            if (error) {
+                return rejectWithValue({
+                    message: error.message as string,
+                    code: error.extensions.code as ErrorCode,
+                    extras: error.extensions.extras as Record<string, string>
+                })
+            }
 
-        if (error instanceof Error) {
-
-            throw error
+            if (err.networkError) {
+                return rejectWithValue({
+                    message: 'Network Error',
+                    code: ErrorCode.NETWORK_ERROR,
+                })
+            }
         }
+
+        return rejectWithValue({
+            message: 'Unexpected Error',
+            code: ErrorCode.INTERNAL_SERVER_ERROR
+        })
     }
 })
 
-export const editProduct = createAsyncThunk('/admin/product/edit', async (formData: ProductEditInput) => {
+export const editProduct = createAsyncThunk<
+    Product,
+    ProductEditInput,
+    { rejectValue: ResponseError }
+>('/admin/product/edit', async (formData, { rejectWithValue }) => {
 
     try {
         const response = await client.mutate({
@@ -44,15 +73,38 @@ export const editProduct = createAsyncThunk('/admin/product/edit', async (formDa
 
         return response.data.editProduct
 
-    } catch (error) {
+    } catch (err) {
+        if (err instanceof ApolloError) {
+            const error = err.graphQLErrors[0]
+            if (error) {
+                return rejectWithValue({
+                    message: error.message as string,
+                    code: error.extensions.code as ErrorCode,
+                    extras: error.extensions.extras as Record<string, string>
+                })
+            }
 
-        if (error instanceof Error) {
-            throw error
+            if (err.networkError) {
+                return rejectWithValue({
+                    message: 'Network Error',
+                    code: ErrorCode.NETWORK_ERROR,
+                })
+            }
         }
+
+        return rejectWithValue({
+            message: 'Unexpected Error',
+            code: ErrorCode.INTERNAL_SERVER_ERROR
+        })
     }
 })
 
-export const deleteProduct = createAsyncThunk('/admin/product/delete', async (id: string) => {
+export const deleteProduct = createAsyncThunk<
+    DeleteProductResponse,
+    ProductId,
+    { rejectValue: ResponseError }
+
+>('/admin/product/delete', async (id, { rejectWithValue }) => {
 
     try {
         const response = await client.mutate({
@@ -62,16 +114,39 @@ export const deleteProduct = createAsyncThunk('/admin/product/delete', async (id
 
         return response.data.deleteProduct
 
-    } catch (error) {
+    } catch (err) {
+        if (err instanceof ApolloError) {
+            const error = err.graphQLErrors[0]
+            if (error) {
+                return rejectWithValue({
+                    message: error.message as string,
+                    code: error.extensions.code as ErrorCode,
+                    extras: error.extensions.extras as Record<string, string>
+                })
+            }
 
-        if (error instanceof Error) {
-            throw error
+            if (err.networkError) {
+                return rejectWithValue({
+                    message: 'Network Error',
+                    code: ErrorCode.NETWORK_ERROR,
+                })
+            }
         }
+
+        return rejectWithValue({
+            message: 'Unexpected Error',
+            code: ErrorCode.INTERNAL_SERVER_ERROR
+        })
     }
 })
 
 
-export const getProducts = createAsyncThunk('/admin/products', async () => {
+export const getProducts = createAsyncThunk<
+    Product[],
+    void,
+    { rejectValue: ResponseError }
+
+>('/admin/products', async (_, { rejectWithValue }) => {
 
     try {
 
@@ -82,11 +157,29 @@ export const getProducts = createAsyncThunk('/admin/products', async () => {
 
         return response.data.products
 
-    } catch (error) {
+    } catch (err) {
+        if (err instanceof ApolloError) {
+            const error = err.graphQLErrors[0]
+            if (error) {
+                return rejectWithValue({
+                    message: error.message as string,
+                    code: error.extensions.code as ErrorCode,
+                    extras: error.extensions.extras as Record<string, string>
+                })
+            }
 
-        if (error instanceof Error) {
-            throw error
+            if (err.networkError) {
+                return rejectWithValue({
+                    message: 'Network Error',
+                    code: ErrorCode.NETWORK_ERROR,
+                })
+            }
         }
+
+        return rejectWithValue({
+            message: 'Unexpected Error',
+            code: ErrorCode.INTERNAL_SERVER_ERROR
+        })
     }
 })
 
@@ -104,13 +197,12 @@ const productSlice = createSlice({
             .addCase(getProducts.fulfilled, (state: ProductSlice, action) => {
                 state.status = Status.FULFILLED
                 state.action = Action.FETCH
-                // const products:Product[]  = action.payload.map(({ __typename, imgs, ...rest }: QueriedProduct) => ({ imgs: imgs.map(({__typename, ...imgRest}):QueriedProductImage=>imgRest), ...rest }))
                 const products: Product[] = stripTypename(action.payload)
                 state.products = products
             })
             .addCase(getProducts.rejected, (state: ProductSlice, action) => {
                 state.status = Status.REJECTED
-                state.error = action.error.message as string
+                state.error = action.payload as ResponseError
             })
             .addCase(addProduct.pending, (state: ProductSlice) => {
                 state.status = Status.PENDING
@@ -123,7 +215,7 @@ const productSlice = createSlice({
             })
             .addCase(addProduct.rejected, (state: ProductSlice, action) => {
                 state.status = Status.REJECTED
-                state.error = action.error.message as string
+                state.error = action.payload as ResponseError
             })
             .addCase(deleteProduct.pending, (state: ProductSlice) => {
                 state.status = Status.PENDING
@@ -135,7 +227,7 @@ const productSlice = createSlice({
             })
             .addCase(deleteProduct.rejected, (state: ProductSlice, action) => {
                 state.status = Status.REJECTED
-                state.error = action.error.message as string
+                state.error = action.payload as ResponseError
             })
             .addCase(editProduct.pending, (state: ProductSlice) => {
                 state.status = Status.PENDING
@@ -148,7 +240,7 @@ const productSlice = createSlice({
             })
             .addCase(editProduct.rejected, (state: ProductSlice, action) => {
                 state.status = Status.REJECTED
-                state.error = action.error.message as string
+                state.error = action.payload as ResponseError
 
             })
     }

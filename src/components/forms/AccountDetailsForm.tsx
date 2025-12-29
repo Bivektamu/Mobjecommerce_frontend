@@ -2,7 +2,7 @@ import React, { FormEvent, useEffect, useState } from 'react'
 import { CreateUserForm, User, FormError, ValidateSchema } from '../../store/types'
 import validateForm from '../../utils/validate'
 import { ApolloQueryResult, useMutation } from '@apollo/client'
-import { UPDATE_ACCOUNT_DETAILS } from '../../data/mutation'
+import { UPDATE_ACCOUNT_DETAILS } from '../../data/mutation/users.mutation'
 
 
 type Prop = {

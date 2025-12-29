@@ -9,7 +9,7 @@ import { useMutation } from '@apollo/client';
 import { useStoreDispatch } from '../../../store';
 import { addToast } from '../../../store/slices/toastSlice';
 import Modal from '../../layout/Modal';
-import { DELETE_REVIEW } from '../../../data/mutation';
+import { DELETE_REVIEW } from '../../../data/mutation/orders.mutation';
 import ReviewDetails from './ReviewDetails';
 import useIsTouchDevice from '../../hooks/useIsTouchDevice';
 

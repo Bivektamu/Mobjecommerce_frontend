@@ -19,7 +19,7 @@ const Cart = () => {
   const location = useLocation()
   const mergeCart = location?.state?.mergeCart
   const dispatch = useStoreDispatch()
-  const { authUser, status: userStatus } = useAuth()
+  const { user, status: userStatus } = useAuth()
   const { cart: carts } = useCart()
   const { status } = useProduct()
   useEffect(() => {
@@ -33,14 +33,14 @@ const Cart = () => {
   }, [userStatus, dispatch])
 
   useEffect(() => {
-    if (mergeCart && authUser) {
+    if (mergeCart && user) {
 
       const guestCartItems = structuredClone(carts.filter(item => !item.userId))
 
       if (guestCartItems.length > 0) {
-        const userCartItems = carts.filter(item => item.userId === authUser.id)
+        const userCartItems = carts.filter(item => item.userId === user.id)
         for (const item of guestCartItems) {
-          item.id = authUser.id + item.id
+          item.id = user.id + item.id
         }
         const mapCart = new Map<string, CartItemType>()
         for (const item of userCartItems) {
@@ -52,29 +52,28 @@ const Cart = () => {
             mapCart.set(item.id, ({ ...item, quantity: itemInMap.quantity + item.quantity }))
           }
           else {
-            mapCart.set(item.id, { ...item, userId: authUser.id })
+            mapCart.set(item.id, { ...item, userId: user.id })
           }
         }
 
-        const newCart = [...Array.from(mapCart.values()), ...carts.filter(item => item.userId && item.userId !== authUser.id)]
-        console.log(newCart)
+        const newCart = [...Array.from(mapCart.values()), ...carts.filter(item => item.userId && item.userId !== user.id)]
         dispatch(upDateCart(newCart))
       }
     }
-  }, [mergeCart, carts, authUser, dispatch])
+  }, [mergeCart, carts, user, dispatch])
 
   const userCart = useMemo(() => {
 
     if (carts.length > 0) {
 
-      if (authUser) {
-        return [...carts.filter(cart => cart.userId === authUser?.id)]
+      if (user) {
+        return [...carts.filter(cart => cart.userId === user?.id)]
       }
       return [...carts.filter(cart => !cart.userId)]
     }
     return []
   },
-    [carts, authUser]
+    [carts, user]
   )
 
 
@@ -93,7 +92,7 @@ const Cart = () => {
       }))
 
       const order: OrderInput = {
-        userId: authUser?.id || '',
+        userId: user?.id || '',
         status: Order_Status.PENDING,
         items,
         subTotal: subTotal,
@@ -105,7 +104,7 @@ const Cart = () => {
       return order
     }
     else return null
-  }, [userCart, authUser])
+  }, [userCart, user])
 
 
   return (
@@ -151,7 +150,7 @@ const Cart = () => {
                   <span className='font-medium'>${newOrder.total}</span>
                 </p>
                 {
-                  authUser ?
+                  user ?
 
                     <CustomNavLink
                       to='/checkout'

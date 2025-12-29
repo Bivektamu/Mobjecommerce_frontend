@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { stripTypename } from '@apollo/client/utilities'
 import ReviewTile from '../../components/admin/review/ReviewTile'
 import SearchIcon from '../../components/ui/SearchIcons'
-import { GET_REVIEWS } from '../../data/query'
+import { GET_REVIEWS } from '../../data/query/reviews.query'
 import { useStoreDispatch } from '../../store'
 import { DetailedReview, Toast, Toast_Vairant } from '../../store/types'
 import { useQuery } from '@apollo/client'
@@ -21,7 +21,6 @@ const Reviews = () => {
 
 
     if (error) {
-        console.log(error)
         const newToast: Toast = {
             id: uuidv4(),
             variant: Toast_Vairant.DANGER,

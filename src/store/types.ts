@@ -68,6 +68,7 @@ export interface AuthUser {
 
 export enum ErrorCode {
     USER_NOT_FOUND = 'USER_NOT_FOUND',
+    ALREADY_EXISTS = 'ALREADY_EXISTS',
     BAD_CREDENTIALS = 'BAD_CREDENTIALS',
     SHIPPING_ADDRESS_ERROR = 'SHIPPING_ADDRESS_ERROR',
     INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
@@ -80,7 +81,7 @@ export enum ErrorCode {
     JWT_TOKEN_INVALID = 'JWT_TOKEN_INVALID',
     JWT_TOKEN_MISSING = 'JWT_TOKEN_MISSING',
     GOOGLE_ERROR = 'GOOGLE_ERROR',
-    NETWORK_ERROR = 'NETWORK_ERROR'
+    TOKEN_REVOKED = 'TOKEN_REVOKED'
 }
 
 export interface ResponseError {
@@ -97,7 +98,7 @@ export interface CustomError {
 }
 export interface Auth {
     isLoggedIn: boolean,
-    authUser: AuthUser | null,
+    user: AuthUser | null,
     status: Status,
     error: ResponseError | null,
 }
@@ -112,9 +113,8 @@ export interface GoogleLoginInput {
 }
 
 
-export type LoginResponse = string
-
 export interface AuthStatusResponse {
+    accessToken?:string,
     isLoggedIn: boolean,
     user: AuthUser
 }
@@ -131,14 +131,14 @@ export enum Action {
 
 export interface ProductSlice {
     status: Status,
-    error: string,
+    error: ResponseError | null,
     products: Product[],
     action: Action | null
 }
 
 export interface UserSlice {
     status: Status,
-    error: string | null,
+    error: ResponseError | null,
     users: User[],
     user: User | null,
     action: Action | null

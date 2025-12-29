@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { useStoreDispatch } from '../../store'
 import { useMutation } from '@apollo/client'
-import { CREATE_REVIEW } from '../../data/mutation'
+import { CREATE_REVIEW } from '../../data/mutation/reviews.mutation'
 import { addToast } from '../../store/slices/toastSlice'
 
 type Props = {
@@ -31,11 +31,11 @@ const AddReviewForm = ({ productId, refetchReviews, closeModal }: Props) => {
       dispatch(addToast(newToast))
     }
   })
-  const { authUser } = useAuth()
+  const { user } = useAuth()
 
   const [formData, setFormData] = useState<ReviewInput>({
     productId: productId,
-    userId: authUser?.id,
+    userId: user?.id,
     rating: null,
     review: '',
   } as Review)
@@ -93,9 +93,6 @@ const AddReviewForm = ({ productId, refetchReviews, closeModal }: Props) => {
     if (Object.keys(errors).length > 0) {
       return setFormErrors(prev => ({ ...prev, ...errors }))
     }
-
-    console.log(formData)
-
     addReview({
       variables: {
         input: formData

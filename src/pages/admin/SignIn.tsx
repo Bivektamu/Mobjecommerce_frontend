@@ -13,7 +13,7 @@ const SignIn = () => {
 
   const dispatch = useStoreDispatch()
   const auth = useAuth()
-  const { isLoggedIn, status, authUser } = auth
+  const { isLoggedIn, status, user } = auth
 
   const navigate = useNavigate()
 
@@ -33,11 +33,11 @@ const SignIn = () => {
 
     }
     else if (status === Status.FULFILLED) {
-      if (isLoggedIn && authUser?.role === Role.ADMIN)
+      if (isLoggedIn && user?.role === Role.ADMIN)
         navigate('/admin/dashboard')
       return
     }
-  }, [status, isLoggedIn, authUser, dispatch, navigate])
+  }, [status, isLoggedIn, user, dispatch, navigate])
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -78,7 +78,7 @@ const SignIn = () => {
         dispatch(addToast(toast))
       })
   }
-  if (status === Status.PENDING || isLoggedIn && authUser?.role !== Role.CUSTOMER) return <Preloader />
+  if (status === Status.PENDING || isLoggedIn && user?.role !== Role.CUSTOMER) return <Preloader />
 
   return (
     <section className='w-full h-dvh flex justify-center items-center px-4'>

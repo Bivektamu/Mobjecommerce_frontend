@@ -16,7 +16,7 @@ const PrivateRoute = () => {
     const navigate = useNavigate()
     const allToasts = useToasts()
     const auth = useAuth()
-    const { isLoggedIn, status, authUser } = auth
+    const { isLoggedIn, status, user } = auth
     const dispatch = useStoreDispatch()
     const { pathname } = useLocation()
 
@@ -39,12 +39,12 @@ const PrivateRoute = () => {
             return
         }
         if (status === Status.FULFILLED) {
-            if (!isLoggedIn || (isLoggedIn && authUser?.role !== Role.ADMIN)) {
+            if (!isLoggedIn || (isLoggedIn && user?.role !== Role.ADMIN)) {
                 navigate('/admin/login')
                 return
             }
         }
-    }, [status, dispatch, navigate, isLoggedIn, authUser])
+    }, [status, dispatch, navigate, isLoggedIn, user])
 
 
 

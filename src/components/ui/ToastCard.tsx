@@ -6,6 +6,7 @@ import DangerSvg from './DangerSvg'
 import InfoSvg from './InfoSvg'
 import SuccessSvg from './SuccessSvg'
 import { useStoreDispatch } from '../../store'
+import WarnSvg from './WarnSvg'
 
 type Props = {
     toast: Toast
@@ -45,7 +46,7 @@ const ToastCard = ({ toast }: Props) => {
         case Toast_Vairant.WARNING:
             csName = 'text-orange-600 bg-orange-100'
             spanC = 'bg-orange-600'
-            logo = <InfoSvg />
+            logo = <WarnSvg />
             break;
         default:
             csName = 'text-red-600 bg-red-100';

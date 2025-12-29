@@ -1,24 +1,62 @@
-import { ApolloClient, ApolloLink, InMemoryCache } from "@apollo/client";
-import {setContext} from '@apollo/client/link/context'
+import { ApolloClient, ApolloLink, InMemoryCache, fromPromise } from "@apollo/client";
+import {onError} from "@apollo/client/link/error"
+import { setContext } from '@apollo/client/link/context'
 import createUploadLink from "apollo-upload-client/createUploadLink.mjs";
+import { getAccessToken, setAccessToken } from "../auth/tokenManager";
+import { REFRESH_TOKEN } from "./mutation/auth.mutation";
+import { ErrorCode } from "../store/types";
 
 
+let isRefreshing = false;
+let pending: (() => void)[] = [];
+
+const errorLink = onError(({ graphQLErrors, operation, forward }) => {
+  const unauthenticated = graphQLErrors?.some(
+    err => err.extensions?.code === ErrorCode.NOT_AUTHENTICATED
+  );
+
+  if (!unauthenticated) return;
+
+  if (!isRefreshing) {
+    isRefreshing = true;
+
+    return fromPromise(
+      client
+        .mutate({ mutation: REFRESH_TOKEN })
+        .then(res => {
+          setAccessToken(res.data.refreshToken.accessToken);
+          isRefreshing = false;
+          pending.forEach(cb => cb());
+          pending = [];
+        })
+        .catch(() => {
+          setAccessToken(null);
+          isRefreshing = false;
+        })
+    ).flatMap(() => forward(operation));
+  }
+
+  return fromPromise(
+    new Promise<void>(resolve => pending.push(resolve))
+  ).flatMap(() => forward(operation));
+});
 
 // Create an upload link for handling file uploads
 
-const uri = import.meta.env.PROD? import.meta.env.VITE_PROD_URI: import.meta.env.VITE_DEV_URI
+const uri = import.meta.env.PROD ? import.meta.env.VITE_PROD_URI : import.meta.env.VITE_DEV_URI
 const uploadLink = createUploadLink({
-    uri
+    uri,
+    credentials: "include"
 });
 
 
-const authLink = setContext((_, {headers})=> {
-    const token = localStorage.getItem('token')
-
+const authLink = setContext((_, { headers }) => {
+    const accessToken = getAccessToken()
+    console.log(accessToken)
     return {
         headers: {
             ...headers,
-            token: token? token : '',
+            authorization: accessToken ? `Bearer ${accessToken}` : '',
             'Apollo-Require-Preflight': 'true'
         }
     }
@@ -28,11 +66,12 @@ const authLink = setContext((_, {headers})=> {
 const link = ApolloLink.from([
     authLink,
     uploadLink,
+    errorLink
     // httpLink,
 ]);
 
 const client = new ApolloClient({
-    link:link,
+    link: link,
     cache: new InMemoryCache(),
 })
 

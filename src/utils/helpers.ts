@@ -24,6 +24,7 @@ export const getToastVariant = (errorCode: ErrorCode) => {
         case ErrorCode.WRONG_USER_TYPE:
         case ErrorCode.VALIDATION_ERROR:
         case ErrorCode.INPUT_ERROR:
+        case ErrorCode.ALREADY_EXISTS:
             return Toast_Vairant.WARNING
 
         case ErrorCode.NOT_FOUND:

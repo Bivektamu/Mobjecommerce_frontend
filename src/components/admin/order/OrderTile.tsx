@@ -18,8 +18,6 @@ const OrderTile = ({ order, refetchOrders }: Props) => {
 
     const statusHandler = (e: MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
-        console.log('status')
-
         const render: ReactElement = (
             <ChangeStatusForm id={order.id} refetch={refetchOrders} closeModal={() => setShowModal(false)} />
         )

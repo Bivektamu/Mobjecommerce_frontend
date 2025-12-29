@@ -75,11 +75,9 @@ const LoginForm = () => {
         dispatch(logInUser(formData))
             .unwrap()
             .then(() => {
-                console.log('success')
                 dispatch(addToast(toast))
             })
             .catch((error) => {
-                console.log(error)
                 toast.variant = getToastVariant(error.code)
                 toast.msg = error.message
                 dispatch(addToast(toast))

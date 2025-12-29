@@ -7,7 +7,7 @@ import { IoPeople } from 'react-icons/io5'
 import StarIcon from '../ui/StarIcon'
 import { useStoreDispatch } from '../../store'
 import { MouseEvent } from 'react'
-import { logOut } from '../../store/slices/authSlice'
+import { logOutUser } from '../../store/slices/authSlice'
 type Props = {
   isOpen: boolean
 }
@@ -16,7 +16,7 @@ const AdminSidebar = ({isOpen}:Props) => {
 
   const logOutHandler = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
-    dispatch(logOut())
+    dispatch(logOutUser())
   }
   return (
     <section className={`w-[180px] lg:w-[220px] z-20  bg-white h-dvh lg:px-6 px-4 fixed left-0 top-0 pt-8  md:-translate-x-0 transition-all duration-700 ease-in-out ${!isOpen?'-translate-x-[180px]':'translate-x-0 '}`}>

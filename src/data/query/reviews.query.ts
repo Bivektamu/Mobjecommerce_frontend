@@ -1,39 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const GET_AUTH = gql`
-  query GetAuthStatus {
-    getAuthStatus {
-      isLoggedIn
-      user {
-        role
-        id
-      }
-    }
-  }
-`;
 
-export const GET_PRODUCTS = gql`
-  query Products {
-  products {
-    id
-    title
-    slug
-    description
-    colors
-    sizes
-    price
-    quantity
-    imgs {
-      id
-      url
-    }
-    category
-    sku
-    stockStatus
-    featured
-  }
-}
-`
 
 export const GET_REVIEWS_BY_PRODUCT_ID = gql`
   query ProductReviews($productReviewsId: ID) {
@@ -78,8 +45,6 @@ export const GET_REVIEWS = gql`
   }
 }
 `
-
-
 export const GET_WISH_LIST_BY_USER_ID = gql`
   query WishListByUserId($userId: ID) {
     wishListByUserId(userId: $userId) {
@@ -89,23 +54,6 @@ export const GET_WISH_LIST_BY_USER_ID = gql`
         id
         createdAt
       }
-    }
-  }
-`
-
-export const GET_PRODUCT_AND_USER = gql`
-  query ProductAndUser($productId: ID, $userId: ID) {
-    product(id: $productId) {
-      imgs {
-        url
-      }
-      id
-      title
-    }
-    user(id: $userId) {
-      firstName
-      email
-      lastName
     }
   }
 `

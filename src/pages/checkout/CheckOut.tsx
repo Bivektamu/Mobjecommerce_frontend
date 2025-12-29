@@ -1,6 +1,6 @@
 import { MouseEvent, useEffect, useMemo, useState } from 'react'
 import { useStoreDispatch } from '../../store/index'
-import { useAuth } from '../../store/slices/authSlice'
+import { getAuthStatus, useAuth } from '../../store/slices/authSlice'
 import BreadCrumbs from '../../components/layout/BreadCrumbs'
 import { v4 as uuidv4 } from 'uuid';
 
@@ -13,7 +13,7 @@ import ShippingForm from '../../components/forms/ShippingForm'
 import Preloader from '../../components/ui/Preloader'
 // import ProgressLoader from '../../components/ui/ProgressLoader'
 import { useMutation } from '@apollo/client'
-import { CREATE_ORDER } from '../../data/mutation'
+import { CREATE_ORDER } from '../../data/mutation/orders.mutation'
 import PageWrapper from '../../components/ui/PageWrapper'
 import { addToast } from '../../store/slices/toastSlice'
 import { useUser } from '../../store/slices/userSlice'
@@ -29,12 +29,12 @@ const Checkout = () => {
       client.query({
         query: GET_ORDERS_BY_USER_ID,
         variables: {
-          userOrdersId: authUser?.id
+          userOrdersId: user?.id
         },
         fetchPolicy: "network-only", // force fresh fetch
       })
 
-      dispatch(deleteCartByCustomerId(authUser?.id))
+      dispatch(deleteCartByCustomerId(user?.id))
       navigate(`/checkout/success/${data.createOrder}`, {
         state: {
           fromCheckout: true
@@ -53,15 +53,27 @@ const Checkout = () => {
   })
 
   const dispatch = useStoreDispatch()
-  const { authUser, status: authStatus } = useAuth()
+  const { user, status } = useAuth()
   const { user } = useUser()
   const [preloaderFlag, setPreloaderFlag] = useState<boolean>(false)
 
   useEffect(() => {
-    if (authStatus !== Status.PENDING && authUser?.role !== Role.CUSTOMER) {
-      navigate('/')
+    if (status === Status.IDLE) {
+      dispatch(getAuthStatus())
+      return
     }
-  }, [authUser, authStatus])
+    else if (status === Status.REJECTED) {
+      console.log('a')
+      return navigate('/')
+    }
+    else if (status == Status.FULFILLED) {
+      if(!user || user?.role !== Role.CUSTOMER) {
+      console.log('b')
+
+        return navigate('/')
+      }
+    }
+  }, [user, status, navigate, dispatch])
 
 
   const newOrder: OrderInput | null = useMemo(() => {
@@ -80,14 +92,13 @@ const Checkout = () => {
     if (!newOrder || Object.keys(newOrder).length < 1 || newOrder.items.length < 1) {
       navigate('/')
     }
-  }, [newOrder])
+  }, [newOrder, navigate])
 
 
   const placeHandler = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     let addressValid: boolean
     const { shippingAddress } = newOrder as OrderInput
-    // console.log(shippingAddress)
     if (Object.keys(shippingAddress).length < 1) {
       addressValid = false
     }
@@ -113,18 +124,13 @@ const Checkout = () => {
       }
     })
   }
-
-
-  console.log(uniqueCartItems)
-  console.log(newOrder)
-
-  if (preloaderFlag || !newOrder)
+  if (preloaderFlag || !newOrder || status === Status.PENDING)
     return <Preloader />
 
   return (
     <PageWrapper>
       {
-        authStatus !== Status.FULFILLED && authUser?.role !== Role.CUSTOMER && <Preloader />
+        status !== Status.FULFILLED && user?.role !== Role.CUSTOMER && <Preloader />
       }
 
       <section id="breadcrums" className="px-4">
@@ -150,7 +156,7 @@ const Checkout = () => {
                 <div className="flex justify-between md:mb-12 mb-4">
                   <div className='flex'>
                     {
-                      uniqueCartItems.slice(0,4).map((item, index) => <img key={index} className='w-8 mr-2' src={item.imgUrl} />)
+                      uniqueCartItems.slice(0, 4).map((item, index) => <img key={index} className='w-8 mr-2' src={item.imgUrl} />)
                     }
                     {
                       uniqueCartItems.length > 4 && <span className='self-center md:text-sm text-xs italic font-medium text-slate-600 '>+ {uniqueCartItems.length - 4}</span>

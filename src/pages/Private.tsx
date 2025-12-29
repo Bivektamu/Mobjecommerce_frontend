@@ -14,7 +14,7 @@ const Private = () => {
 
     const navigate = useNavigate()
 
-    const { isLoggedIn, status, authUser } = useAuth()
+    const { isLoggedIn, status, user } = useAuth()
     const dispatch = useStoreDispatch()
 
     useEffect(() => {
@@ -37,10 +37,10 @@ const Private = () => {
 
     useEffect(() => {
 
-        if (authUser && authUser.role !== Role.CUSTOMER) {
+        if (user && user.role !== Role.CUSTOMER) {
             navigate('/')
         }
-    }, [authUser])
+    }, [user])
 
     return (
         <>

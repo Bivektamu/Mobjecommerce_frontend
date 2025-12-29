@@ -19,7 +19,7 @@ const LogIn = () => {
   const navigate = useNavigate()
 
   const dispatch = useStoreDispatch()
-  const { isLoggedIn, authUser, status } = useAuth()
+  const { isLoggedIn, user, status } = useAuth()
   const { cart } = useCart()
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const LogIn = () => {
       return
     }
     if (status === Status.FULFILLED) {
-      if (isLoggedIn && authUser?.role === Role.CUSTOMER) {
+      if (isLoggedIn && user?.role === Role.CUSTOMER) {
 
         if (mergeCart) {
           return navigate('/cart', {
@@ -40,7 +40,7 @@ const LogIn = () => {
         return navigate('/')
       }
     }
-  }, [status, dispatch, isLoggedIn, authUser, navigate, cart, mergeCart])
+  }, [status, dispatch, isLoggedIn, user, navigate, cart, mergeCart])
 
 
   const googleLoginHandler = (credentialResponse: CredentialResponse) => {
@@ -61,7 +61,6 @@ const LogIn = () => {
 
       })
       .catch((error) => {
-        console.log(error)
         toast.msg = error.message
         toast.variant = getToastVariant(error.code)
         dispatch(addToast(toast))

@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Action, UserInput, UserSlice, Status, RootState, Address } from "../types";
+import { Action, UserInput, UserSlice, Status, RootState, Address, User, ResponseError, ErrorCode, UserId } from "../types";
 import client from "../../data/client";
-import { CREATE_USER, UPDATE_ADDRESS } from "../../data/mutation";
+import { CREATE_USER, UPDATE_ADDRESS } from "../../data/mutation/users.mutation";
 import { GET_USER } from "../../data/query/user.query";
 import { stripTypename } from "@apollo/client/utilities";
 import { useSelector } from "react-redux";
+import { ApolloError } from "@apollo/client";
 
 const initialState: UserSlice = {
     status: Status.IDLE,
@@ -14,7 +15,15 @@ const initialState: UserSlice = {
     action: null
 }
 
-export const createUser = createAsyncThunk('/user/add', async (formData: UserInput) => {
+export const createUser = createAsyncThunk<
+    User,
+    UserInput,
+    { rejectValue: ResponseError }
+
+>('/user/add', async (
+    formData: UserInput,
+    { rejectWithValue }
+) => {
     try {
         const response = await client.mutate({
             mutation: CREATE_USER,
@@ -22,15 +31,41 @@ export const createUser = createAsyncThunk('/user/add', async (formData: UserInp
         })
         return response.data.createUser.id
 
-    } catch (error) {
-        if (error instanceof Error) {
-            throw error
+    } catch (err) {
+        if (err instanceof ApolloError) {
+            const error = err.graphQLErrors[0]
+            if (error) {
+                return rejectWithValue({
+                    message: error.message as string,
+                    code: error.extensions.code as ErrorCode,
+                    extras: error.extensions.extras as Record<string, string>
+                })
+            }
+
+            if (err.networkError) {
+                return rejectWithValue({
+                    message: 'Network Error',
+                    code: ErrorCode.NETWORK_ERROR,
+                })
+            }
         }
+
+        return rejectWithValue({
+            message: 'Unexpected Error',
+            code: ErrorCode.INTERNAL_SERVER_ERROR
+        })
     }
 })
 
 
-export const getUser = createAsyncThunk(`/user/:id`, async (id: string) => {
+export const getUser = createAsyncThunk<
+    User,
+    UserId,
+    { rejectValue: ResponseError }
+>(`/user/:id`, async (
+    id,
+    { rejectWithValue }
+) => {
     try {
         const response = await client.query({
             query: GET_USER,
@@ -39,33 +74,73 @@ export const getUser = createAsyncThunk(`/user/:id`, async (id: string) => {
 
         return response.data.user
 
-    } catch (error) {
-        if (error instanceof Error) {
+    } catch (err) {
+        if (err instanceof ApolloError) {
+            const error = err.graphQLErrors[0]
+            if (error) {
+                return rejectWithValue({
+                    message: error.message as string,
+                    code: error.extensions.code as ErrorCode,
+                    extras: error.extensions.extras as Record<string, string>
+                })
+            }
 
-            throw error
+            if (err.networkError) {
+                return rejectWithValue({
+                    message: 'Network Error',
+                    code: ErrorCode.NETWORK_ERROR,
+                })
+            }
         }
+
+        return rejectWithValue({
+            message: 'Unexpected Error',
+            code: ErrorCode.INTERNAL_SERVER_ERROR
+        })
     }
 })
 
 
 
-export const updateAddress = createAsyncThunk('/user/updateaddress', async (formData: Address) => {
-    // console.log('response.data');
-
+export const updateAddress = createAsyncThunk<
+    Address,
+    Address,
+    { rejectValue: ResponseError }
+>('/user/updateaddress', async (
+    formData: Address,
+    { rejectWithValue }
+) => {
     try {
         const response = await client.mutate({
             mutation: UPDATE_ADDRESS,
             variables: { input: formData }
         })
 
-
         return response.data.updateAddress
 
-    } catch (error) {
+    } catch (err) {
+        if (err instanceof ApolloError) {
+            const error = err.graphQLErrors[0]
+            if (error) {
+                return rejectWithValue({
+                    message: error.message as string,
+                    code: error.extensions.code as ErrorCode,
+                    extras: error.extensions.extras as Record<string, string>
+                })
+            }
 
-        if (error instanceof Error) {
-            throw error
+            if (err.networkError) {
+                return rejectWithValue({
+                    message: 'Network Error',
+                    code: ErrorCode.NETWORK_ERROR,
+                })
+            }
         }
+
+        return rejectWithValue({
+            message: 'Unexpected Error',
+            code: ErrorCode.INTERNAL_SERVER_ERROR
+        })
     }
 })
 
@@ -74,7 +149,7 @@ const userSlice = createSlice({
     name: 'users',
     initialState: initialState,
     reducers: {
-        resetUserAction:(state:UserSlice)=> {
+        resetUserAction: (state: UserSlice) => {
             state.action = null
         }
     },
@@ -92,7 +167,7 @@ const userSlice = createSlice({
             })
 
             .addCase(getUser.rejected, (state, action) => {
-                state.error = action.error.message as string
+                state.error = action.payload as ResponseError
                 state.status = Status.REJECTED
                 state.user = null
             })
@@ -108,7 +183,7 @@ const userSlice = createSlice({
                 state.error = null
             })
             .addCase(createUser.rejected, (state, action) => {
-                state.error = action.error.message as string
+                state.error = action.payload as ResponseError
                 state.status = Status.REJECTED
                 state.user = null
             })
@@ -127,7 +202,7 @@ const userSlice = createSlice({
                 state.error = null
             })
             .addCase(updateAddress.rejected, (state, action) => {
-                state.error = action.error.message as string
+                state.error = action.payload as ResponseError
                 state.status = Status.REJECTED
 
                 if (state.user) {
@@ -139,6 +214,6 @@ const userSlice = createSlice({
 
     }
 })
-export const {resetUserAction} = userSlice.actions
+export const { resetUserAction } = userSlice.actions
 export const useUser = () => useSelector((state: RootState) => state.user)
 export default userSlice.reducer;

@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 // import Close from '../ui/Close';
 import useAvatar from '../hooks/useAvatar';
 import { useMutation } from '@apollo/client';
-import { DELETE_USER } from '../../data/mutation';
+import { DELETE_USER } from '../../data/mutation/orders.mutation';
 import { addToast } from '../../store/slices/toastSlice';
 import { useStoreDispatch } from '../../store';
 import Modal from '../layout/Modal';
@@ -57,7 +57,6 @@ const UserTile = ({ user, refetchUsers }: Props) => {
 
             if (data?.deleteUser) {
                 const { deleteUser } = data
-                console.log(deleteUser)
                 if (deleteUser.success) {
                     const newToast: Toast = {
                         id: uuidv4(),
@@ -79,7 +78,6 @@ const UserTile = ({ user, refetchUsers }: Props) => {
             }
 
         } catch (error) {
-            console.log(error)
             if (error instanceof Error) {
                 const newToast: Toast = {
                     id: uuidv4(),

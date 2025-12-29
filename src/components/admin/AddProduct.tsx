@@ -277,8 +277,6 @@ const AddProduct = () => {
         if (Object.keys(errors).length > 0) {
             return setFormErrors({ ...errors })
         }
-        console.log(formData)
-
         dispatch(addProduct(formData))
     }
 
