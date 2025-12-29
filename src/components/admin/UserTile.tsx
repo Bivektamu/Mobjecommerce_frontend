@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 // import Close from '../ui/Close';
 import useAvatar from '../hooks/useAvatar';
 import { useMutation } from '@apollo/client';
-import { DELETE_USER } from '../../data/mutation/orders.mutation';
+import { DELETE_USER } from '../../data/mutation/users.mutation';
 import { addToast } from '../../store/slices/toastSlice';
 import { useStoreDispatch } from '../../store';
 import Modal from '../layout/Modal';
@@ -82,7 +82,7 @@ const UserTile = ({ user, refetchUsers }: Props) => {
                 const newToast: Toast = {
                     id: uuidv4(),
                     variant: Toast_Vairant.WARNING,
-                    msg: error.message
+                    msg:error.message
                 }
                 dispatch(addToast(newToast))
             }

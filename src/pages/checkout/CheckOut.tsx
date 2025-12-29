@@ -53,7 +53,7 @@ const Checkout = () => {
   })
 
   const dispatch = useStoreDispatch()
-  const { user, status } = useAuth()
+  const { user:authUser, status } = useAuth()
   const { user } = useUser()
   const [preloaderFlag, setPreloaderFlag] = useState<boolean>(false)
 
@@ -67,7 +67,7 @@ const Checkout = () => {
       return navigate('/')
     }
     else if (status == Status.FULFILLED) {
-      if(!user || user?.role !== Role.CUSTOMER) {
+      if(!user || authUser?.role !== Role.CUSTOMER) {
       console.log('b')
 
         return navigate('/')
@@ -130,7 +130,7 @@ const Checkout = () => {
   return (
     <PageWrapper>
       {
-        status !== Status.FULFILLED && user?.role !== Role.CUSTOMER && <Preloader />
+        status !== Status.FULFILLED && authUser?.role !== Role.CUSTOMER && <Preloader />
       }
 
       <section id="breadcrums" className="px-4">

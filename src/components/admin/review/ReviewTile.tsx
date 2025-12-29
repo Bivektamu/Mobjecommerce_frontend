@@ -9,7 +9,7 @@ import { useMutation } from '@apollo/client';
 import { useStoreDispatch } from '../../../store';
 import { addToast } from '../../../store/slices/toastSlice';
 import Modal from '../../layout/Modal';
-import { DELETE_REVIEW } from '../../../data/mutation/orders.mutation';
+import { DELETE_REVIEW } from '../../../data/mutation/reviews.mutation';
 import ReviewDetails from './ReviewDetails';
 import useIsTouchDevice from '../../hooks/useIsTouchDevice';
 
@@ -48,7 +48,7 @@ const ReviewTile = ({ review, refetchReview }: Props) => {
             const newToast: Toast = {
                 id: v4(),
                 variant: Toast_Vairant.INFO,
-                msg: error.message
+                msg:error.message
             }
             dispatch(addToast(newToast))
         }

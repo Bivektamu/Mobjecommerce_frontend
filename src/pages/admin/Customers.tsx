@@ -22,7 +22,7 @@ const Customers = () => {
         const newToast: Toast = {
             id: uuidv4(),
             variant: Toast_Vairant.DANGER,
-            msg: error.message
+            msg:error.message
         }
         dispatch(addToast(newToast))
     }

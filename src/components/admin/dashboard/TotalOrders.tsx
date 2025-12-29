@@ -16,7 +16,7 @@ const TotalOrders = () => {
         const newToast: Toast = {
             id: v4(),
             variant: Toast_Vairant.WARNING,
-            msg: error.message
+            msg:error.message
         }
         dispatch(addToast(newToast))
     }

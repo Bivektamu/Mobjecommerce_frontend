@@ -18,7 +18,7 @@ const SignUp = () => {
 
 
   const dispatch = useStoreDispatch()
-  const { isLoggedIn, user, status } = useAuth()
+  const { isLoggedIn, user:authUser, status } = useAuth()
 
   const { user, error: userError, action } = useUser()
 
@@ -55,7 +55,7 @@ const SignUp = () => {
       const newToast: Toast = {
         id: uuidv4(),
         variant: Toast_Vairant.DANGER,
-        msg: userError
+        msg: userError.message
       }
       dispatch(addToast(newToast))
     }
@@ -65,7 +65,7 @@ const SignUp = () => {
     return <Navigate to="/checkout" />
   }
 
-  if (isLoggedIn && user?.role === Role.CUSTOMER) {
+  if (isLoggedIn && authUser?.role === Role.CUSTOMER) {
     return <Navigate to="/" />
   }
 

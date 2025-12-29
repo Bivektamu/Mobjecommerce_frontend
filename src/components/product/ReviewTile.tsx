@@ -41,7 +41,7 @@ const ReviewTile = ({ review, refetchReview }: Props) => {
             const newToast: Toast = {
                 id: v4(),
                 variant: Toast_Vairant.INFO,
-                msg: error.message
+                msg:error.message
             }
             dispatch(addToast(newToast))
         }

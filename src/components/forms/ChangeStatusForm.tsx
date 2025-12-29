@@ -60,7 +60,7 @@ const ChangeStatusForm = ({ id, refetch, closeModal }: Props) => {
                     const newToast: Toast = {
                         id: uuidv4(),
                         variant: Toast_Vairant.WARNING,
-                        msg: error.message
+                        msg:error.message
                     }
                     dispatch(addToast(newToast))
                 }

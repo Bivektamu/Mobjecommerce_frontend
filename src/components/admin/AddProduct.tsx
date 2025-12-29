@@ -79,7 +79,7 @@ const AddProduct = () => {
             const newToast: Toast = {
                 id: v4(),
                 variant: Toast_Vairant.WARNING,
-                msg: error
+                msg:error.message
             }
             dispatch(addToast(newToast))
         }
