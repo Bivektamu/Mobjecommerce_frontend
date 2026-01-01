@@ -48,6 +48,7 @@ export const GET_USER_EMAIL = gql`
 export const GET_USER_ADDRESSES = gql`
 query UserAddresses {
   userAddresses {
+    id
     label
     street
     building
@@ -60,27 +61,20 @@ query UserAddresses {
 }
 `
 
-export const GET_PUBLIC_USER_DETAILS = gql`
-  query PublicUserDetails($userId: ID) {
-    publicUserDetails(id: $userId) {
-      firstName
-      lastName
-  }
-}
-`
-
 
 export const GET_USER_ADDRESS = gql`
-  query Address($userId: ID) {
-    user(id: $userId) {
-      address {
-        street
-        city
-        postcode
-        state
-        country
-      }
-    }
+  query UserAddress($userAddressId: ID) {
+  userAddress(id: $userAddressId) {
+    id
+    label
+    street
+    building
+    city
+    postcode
+    state
+    country
+    setAsDefault
   }
+}
 `;
 

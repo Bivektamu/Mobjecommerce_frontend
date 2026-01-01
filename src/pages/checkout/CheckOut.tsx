@@ -87,9 +87,8 @@ const Checkout = () => {
   const uniqueCartItems = useMemo(() => newOrder?.items ? [...new Map(newOrder.items.map(item => [item.productId, item])).values()] : [], [newOrder])
 
   useEffect(() => {
-
     if (!newOrder || Object.keys(newOrder).length < 1 || newOrder.items.length < 1) {
-      navigate('/')
+      return navigate('/')
     }
   }, [newOrder, navigate])
 

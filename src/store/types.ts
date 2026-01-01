@@ -2,6 +2,7 @@ import { JwtPayload } from "jwt-decode"
 import { Types } from "mongoose"
 
 export interface Address {
+    id:string | null,
     label:string,
     building?:string,
     street: string,

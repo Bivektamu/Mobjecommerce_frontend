@@ -1,30 +1,62 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4, v4 } from 'uuid';
 import { Action, Address, FormError, Toast, Toast_Vairant, ValidateSchema } from "../../store/types"
 import validateForm from "../../utils/validate"
-import { updateAddress, useUser } from "../../store/slices/userSlice"
+import { useUser } from "../../store/slices/userSlice"
 import { useStoreDispatch } from "../../store"
 import { addToast } from "../../store/slices/toastSlice";
-import { useAuth } from "../../store/slices/authSlice";
-import { useLazyQuery } from "@apollo/client";
-import { GET_USER_ADDRESS } from "../../data/query/user.query";
+import {  useMutation, useQuery } from "@apollo/client";
+import { GET_USER_ADDRESS, GET_USER_ADDRESSES } from "../../data/query/user.query";
 import { GoCheckbox } from "react-icons/go";
 import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
+import { UPDATE_ADDRESS_BY_ID } from "../../data/mutation/users.mutation";
+import { stripTypename } from "@apollo/client/utilities";
 
 interface Props {
-    addressId?: string
+    addressId?: string,
+    closeModal: () => void
 }
 
-const ShippingForm = ({ addressId }: Props) => {
+const ShippingForm = ({ addressId, closeModal }: Props) => {
 
-    const { user } = useAuth()
     const { action } = useUser()
     const dispatch = useStoreDispatch()
 
-    const [fetchAddress, { data }] = useLazyQuery(GET_USER_ADDRESS)
+    const [updateAddressById] = useMutation(UPDATE_ADDRESS_BY_ID, {
+        refetchQueries: [
+            { query: GET_USER_ADDRESSES }
+        ],
+        onCompleted: () => {
+            closeModal()
+            const newToast: Toast = {
+                id: v4(),
+                variant: Toast_Vairant.SUCCESS,
+                msg: `Address successfully ${addressId ? 'updated' : " added"}`
+            }
+            dispatch(addToast(newToast))
+        },
+        onError: (error) => {
+            const newToast: Toast = {
+                id: v4(),
+                variant: Toast_Vairant.WARNING,
+                msg: error.message
+            }
+            dispatch(addToast(newToast))
+        }
+    })
 
+
+    const { data } = useQuery(GET_USER_ADDRESS, {
+        variables: {
+            userAddressId: addressId
+        },
+        skip: !addressId
+    })
+
+    // const [getUserAddressById] = useLazyQuery(GET_USER_ADDRESS)
 
     const [formData, setFormData] = useState<Address>({
+        id:addressId,
         street: '',
         postcode: '',
         city: '',
@@ -35,33 +67,12 @@ const ShippingForm = ({ addressId }: Props) => {
         setAsDefault: false
     } as Address)
 
-    const [edit, setEdit] = useState<boolean>(false)
-
     useEffect(() => {
-
-        if (user && user.id) {
-            fetchAddress({
-                variables: {
-                    userId: user.id
-                }
-            })
-        }
-
-    }, [user, fetchAddress])
-
-    useEffect(() => {
-        if (data && data.user && data.user.address) {
-            setEdit(true)
-            setFormData({
-                street: data.user.address.street,
-                postcode: data.user.address.postcode,
-                city: data.user.address.city,
-                state: data.user.address.state,
-                label: data.user.address.label,
-                building: data.user.address.building,
-                country: data.user.address.country,
-                setAsDefault: data.user.address.setAsDefault,
-            })
+        console.log(data)
+        if (data && data.userAddress) {
+            const address: Address = stripTypename(data.userAddress)
+            console.log(address)
+            setFormData(prev=>({...prev, ...address}))
         }
     }, [data])
 
@@ -172,7 +183,11 @@ const ShippingForm = ({ addressId }: Props) => {
         }
 
         console.log(formData)
-        // dispatch(updateAddress(formData))
+        updateAddressById({
+            variables: {
+                input: formData
+            }
+        })
 
     }
 
@@ -183,18 +198,18 @@ const ShippingForm = ({ addressId }: Props) => {
             </h4>
             <p className="text-slate-500 text-xs mb-6 text-left font-light">
                 {
-                    !addressId?'Add a new ':'Update '
+                    !addressId ? 'Add a new ' : 'Update '
                 }
                 shipping address to your address book
             </p>
 
             <form className="grid md:grid-cols-2 grid-cols-1  gap-x-10 gap-y-6" onSubmit={onSumbitHandler}>
-                
+
                 <fieldset className="md:col-span-2 col-span-1">
                     <label htmlFor="label" className="capitalize text-left font-medium text-slate-600 md:text-sm text-xs block mb-2 w-full">Label</label>
                     <input
                         onChange={e => onChangeHandler(e)}
-                        type="text" id="label" name="label" className="border-[1px] outline-none block px-3 py-2 rounded w-full md:text-sm text-xs placeholder:font-normal" value={label} placeholder="e.g. Home, Office, WareHouse" />
+                        type="text" id="label" name="label" className="border-[1px] outline-none block px-3 py-2 rounded w-full md:text-sm text-xs placeholder:font-normal capitalize" value={label} placeholder="e.g. Home, Office, WareHouse" />
                     {formErrors.label && <span className='text-red-500 text-xs text-left block mt-2'>{formErrors.label}</span>}
                 </fieldset>
 
@@ -266,7 +281,7 @@ const ShippingForm = ({ addressId }: Props) => {
                         className="appearance-none hidden" />
                 </fieldset>
 
-                <button type="submit" id="add_product" className="w-full md:w-[200px] bg-black text-white py-2 px-4 rounded text-center cursor-pointer text-sm md:text-base">{edit ? 'Update' : 'Submit'} </button>
+                <button type="submit" id="add_product" className="w-full md:w-[200px] bg-black text-white py-2 px-4 rounded text-center cursor-pointer text-sm md:text-base">{addressId ? 'Update' : 'Submit'} </button>
             </form>
         </>
 

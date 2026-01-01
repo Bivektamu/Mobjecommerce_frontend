@@ -17,15 +17,9 @@ export const DELETE_USER = gql`
   }
 `
 
-export const UPDATE_ADDRESS = gql`
-  mutation UpdateAddress($input: AddressInput) {
-    updateAddress(input: $input) {
-      city
-      country
-      postcode
-      street
-      state
-    }
+export const UPDATE_ADDRESS_BY_ID = gql`
+  mutation UpdateAddressById($input: AddressInput) {
+  updateAddressById(input: $input)
 }
 `
 
@@ -43,5 +37,11 @@ export const UPDATE_ACCOUNT_DETAILS = gql`
       lastName
       email
     }
+  }
+`
+
+export const DELETE_ADDRESS_BY_ID = gql`
+  mutation DeleteAddress($deleteAddressId: ID) {
+    deleteAddress(id: $deleteAddressId)
   }
 `

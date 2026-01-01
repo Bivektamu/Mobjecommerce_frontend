@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Action, UserInput, UserSlice, Status, RootState, Address, User, ResponseError, ErrorCode, UserId } from "../types";
 import client from "../../data/client";
-import { CREATE_USER, UPDATE_ADDRESS } from "../../data/mutation/users.mutation";
+import { CREATE_USER } from "../../data/mutation/users.mutation";
 import { GET_USER } from "../../data/query/user.query";
 import { stripTypename } from "@apollo/client/utilities";
 import { useSelector } from "react-redux";
@@ -101,50 +101,6 @@ export const getUser = createAsyncThunk<
 })
 
 
-
-export const updateAddress = createAsyncThunk<
-    Address,
-    Address,
-    { rejectValue: ResponseError }
->('/user/updateaddress', async (
-    formData: Address,
-    { rejectWithValue }
-) => {
-    try {
-        const response = await client.mutate({
-            mutation: UPDATE_ADDRESS,
-            variables: { input: formData }
-        })
-
-        return response.data.updateAddress
-
-    } catch (err) {
-        if (err instanceof ApolloError) {
-            const error = err.graphQLErrors[0]
-            if (error) {
-                return rejectWithValue({
-                    message: error.message as string,
-                    code: error.extensions.code as ErrorCode,
-                    extras: error.extensions.extras as Record<string, string>
-                })
-            }
-
-            if (err.networkError) {
-                return rejectWithValue({
-                    message: 'Network Error',
-                    code: ErrorCode.NETWORK_ERROR,
-                })
-            }
-        }
-
-        return rejectWithValue({
-            message: 'Unexpected Error',
-            code: ErrorCode.INTERNAL_SERVER_ERROR
-        })
-    }
-})
-
-
 const userSlice = createSlice({
     name: 'users',
     initialState: initialState,
@@ -187,30 +143,6 @@ const userSlice = createSlice({
                 state.status = Status.REJECTED
                 state.user = null
             })
-
-            // Update Address
-            .addCase(updateAddress.fulfilled, (state, action) => {
-                if (state.user) {
-                    state.user.address = stripTypename(action.payload)
-                }
-                state.action = Action.EDIT
-                state.error = null
-                state.status = Status.FULFILLED
-            })
-            .addCase(updateAddress.pending, (state) => {
-                state.status = Status.PENDING
-                state.error = null
-            })
-            .addCase(updateAddress.rejected, (state, action) => {
-                state.error = action.payload as ResponseError
-                state.status = Status.REJECTED
-
-                if (state.user) {
-                    state.user.address = {} as Address
-                }
-
-            })
-
 
     }
 })
