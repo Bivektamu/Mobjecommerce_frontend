@@ -63,12 +63,10 @@ const Checkout = () => {
       return
     }
     else if (status === Status.REJECTED) {
-      console.log('a')
       return navigate('/')
     }
     else if (status == Status.FULFILLED) {
       if(!user || authUser?.role !== Role.CUSTOMER) {
-      console.log('b')
 
         return navigate('/')
       }

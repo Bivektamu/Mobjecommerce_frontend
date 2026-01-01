@@ -6,11 +6,10 @@ import { Store } from './store/index.ts'
 import { ApolloProvider } from '@apollo/client'
 import client from './data/client.ts'
 
-
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <Provider store={Store}>
-      <ApolloProvider client={client}>
+  <Provider store={Store}>
+    <ApolloProvider client={client}>
         <App />
-      </ApolloProvider>
-    </Provider >,
+    </ApolloProvider>
+  </Provider >,
 )

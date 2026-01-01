@@ -4,10 +4,7 @@ import router from "./router"
 import { useStoreDispatch } from "./store"
 import { useEffect } from "react"
 import { getAuthStatus } from "./store/slices/authSlice"
-import { GoogleOAuthProvider } from '@react-oauth/google'
-
 function App() {
-
 
   const dispatch = useStoreDispatch()
 
@@ -16,9 +13,7 @@ function App() {
   }, [])
 
   return (
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-      <RouterProvider router={router} />
-    </GoogleOAuthProvider>
+    <RouterProvider router={router} />
   )
 }
 

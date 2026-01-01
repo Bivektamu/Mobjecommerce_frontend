@@ -1,5 +1,8 @@
 import { Suspense, lazy, useEffect } from "react"
 import { createBrowserRouter, useLocation } from "react-router-dom"
+import { loadStripe, Stripe } from '@stripe/stripe-js'
+import { Elements } from '@stripe/react-stripe-js'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
 import Preloader from "./components/ui/Preloader"
 import ProgressLoader from "./components/ui/ProgressLoader"
@@ -37,6 +40,13 @@ const Collections = lazy(() => import("./pages/collections/Collections"))
 const UnderWork = lazy(() => import("./pages/UnderWork"))
 const LogIn = lazy(() => import("./pages/LogIn"))
 const SignUp = lazy(() => import("./pages/SignUp"))
+
+
+
+
+
+const stripe = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!)
+
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -87,7 +97,9 @@ const router = createBrowserRouter([
             {
                 path: '/checkout',
                 element: <Suspense fallback={< Preloader />}>
-                    <Private />
+                    <Elements stripe={stripe}>
+                        <Private />
+                    </Elements>
                 </Suspense>,
                 children: [
                     {
@@ -161,7 +173,9 @@ const router = createBrowserRouter([
             {
                 path: '/login',
                 element: <Suspense fallback={<Preloader />}>
-                    <LogIn />
+                    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+                        <LogIn />
+                    </GoogleOAuthProvider>
                 </Suspense>
             },
             {
