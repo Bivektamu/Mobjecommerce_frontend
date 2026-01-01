@@ -3,7 +3,7 @@ type Props = {
     square: number,
     squareClass?: string
 }
-const SquareLoader = ({ square, squareClass }: Props) => {
+const SquareLoader = ({ square = 1, squareClass }: Props) => {
     if (square === 1) {
         return <div className={`w-8 h-8 ${squareClass}  rounded-lg bg-slate-200 animate-pulse `} />
     }

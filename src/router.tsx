@@ -1,7 +1,5 @@
 import { Suspense, lazy, useEffect } from "react"
 import { createBrowserRouter, useLocation } from "react-router-dom"
-import { loadStripe, Stripe } from '@stripe/stripe-js'
-import { Elements } from '@stripe/react-stripe-js'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 
 import Preloader from "./components/ui/Preloader"
@@ -40,12 +38,6 @@ const Collections = lazy(() => import("./pages/collections/Collections"))
 const UnderWork = lazy(() => import("./pages/UnderWork"))
 const LogIn = lazy(() => import("./pages/LogIn"))
 const SignUp = lazy(() => import("./pages/SignUp"))
-
-
-
-
-
-const stripe = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!)
 
 
 const ScrollToTop = () => {
@@ -97,9 +89,7 @@ const router = createBrowserRouter([
             {
                 path: '/checkout',
                 element: <Suspense fallback={< Preloader />}>
-                    <Elements stripe={stripe}>
-                        <Private />
-                    </Elements>
+                    <Private />
                 </Suspense>,
                 children: [
                     {
