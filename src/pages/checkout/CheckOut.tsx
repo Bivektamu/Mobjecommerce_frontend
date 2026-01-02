@@ -5,7 +5,7 @@ import BreadCrumbs from '../../components/layout/BreadCrumbs'
 import { v4 as uuidv4 } from 'uuid';
 
 import { deleteCartByCustomerId } from '../../store/slices/cartSlice'
-import {  OrderInput, Role, Status, Toast, Toast_Vairant } from '../../store/types'
+import {  Address, OrderInput, Role, Status, Toast, Toast_Vairant } from '../../store/types'
 import SquareLoader from '../../components/ui/SquareLoader'
 // import { getProducts, useProduct } from '../../store/slices/productSlice'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -19,6 +19,16 @@ import { useUser } from '../../store/slices/userSlice'
 import { GET_ORDERS_BY_USER_ID } from '../../data/query/orders.query';
 import client from '../../data/client';
 import ShippingAddress from '../../components/checkout/ShippingAddress';
+
+export interface OrderItem {
+  
+}
+
+export interface CheckOutDetails {
+  shipping: Address,
+  billing: Address,
+  items: []
+}
 
 const Checkout = () => {
 
@@ -57,6 +67,11 @@ const Checkout = () => {
   const { user:authUser, status } = useAuth()
   const { user } = useUser()
   const [preloaderFlag, setPreloaderFlag] = useState<boolean>(false)
+  const [checkoutDetails, setCheckOutDetails] = useState({
+    shipping: null,
+    billing: null,
+    items: []
+  })
 
   useEffect(() => {
     if (status === Status.IDLE) {
@@ -155,9 +170,6 @@ const Checkout = () => {
                     {
                       uniqueCartItems.length > 4 && <span className='self-center md:text-sm text-xs italic font-medium text-slate-600 '>+ {uniqueCartItems.length - 4}</span>
                     }
-                    {/* {
-                      uniqueCartItems.length < newOrder.items.length && <span className='self-center md:text-sm text-xs italic font-medium text-slate-600 '>+ {newOrder.items.length - uniqueCartItems.length}</span>
-                    } */}
 
                   </div>
                   <Link to='/cart' className='md:text-sm text-xs  border-[1px] border-black w-28 justify-center flex items-center rounded'>Edit Cart</Link>

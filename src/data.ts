@@ -49,7 +49,7 @@ const data: Data =
                 country: 'Australia'
             },
             userId: 'user1',
-            orderPlaced: new Date,
+            createdAt: new Date,
             items: [
                 {
                     id: 'order1',

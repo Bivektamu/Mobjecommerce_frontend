@@ -8,12 +8,16 @@ export const GET_USER = gql`
     lastName
     email
     address {
-        street
-        city
-        postcode
-        state
-        country
-      }
+      id
+      label
+      street
+      building
+      city
+      postcode
+      state
+      country
+      setAsDefault
+    }
   }
 }
 `;
@@ -26,11 +30,15 @@ export const GET_USERS = gql`
       lastName
       email
       address {
+        id
+        label
         street
+        building
         city
         postcode
         state
         country
+        setAsDefault
       }
       role
       registeredDate

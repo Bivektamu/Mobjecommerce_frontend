@@ -26,7 +26,7 @@ const TotalSales = () => {
         return <ProgressLoader />
     }
     const salesAnalytics = data?.salesAnalytics
-    
+
 
     return (
         <div className='bg-white p-4 rounded-xl text-sm shadow'>

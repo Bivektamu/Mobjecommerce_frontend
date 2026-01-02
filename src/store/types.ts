@@ -316,10 +316,10 @@ export interface Order {
     total: number,
     tax: number,
     shippingAddress: Address,
-    orderPlaced: Date
+    createdAt: Date
 }
 
-export interface OrderInput extends Omit<Order, 'id' | 'items' | 'orderNumber' | 'orderPlaced'> {
+export interface OrderInput extends Omit<Order, 'id' | 'items' | 'orderNumber' | 'createdAt'> {
     items: OrderItemInput[]
 }
 

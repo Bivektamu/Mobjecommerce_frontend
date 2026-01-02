@@ -1,10 +1,9 @@
 import { GET_USER_ADDRESSES } from '../../data/query/user.query';
 import { Address } from '../../store/types'
-
 import AddressItem from '../../components/checkout/AddressItem';
 import ParagraphLoader from '../../components/ui/ParagraphLoader';
 import { useQuery } from '@apollo/client';
-import { ReactElement, useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { stripTypename } from '@apollo/client/utilities';
 import ShippingForm from '../forms/ShippingForm';
 import Modal from '../layout/Modal';
@@ -14,28 +13,52 @@ const ShippingAddress = () => {
 
     const [showModal, setShowModal] = useState(false)
 
+    const [selectedAddress, setSelectedAddress] = useState<Address | null>(null)
+
     const userAddresses = useMemo(() => {
         if (data?.userAddresses) {
-            return stripTypename(data.userAddresses)
+            const { userAddresses } = stripTypename(data)
+            console.log(userAddresses)
+            if (userAddresses.length > 0) {
+                setSelectedAddress(userAddresses.find((item:Address)=>item.setAsDefault))
+                return userAddresses
+            }
+
         }
         return []
     }, [data])
 
-    console.log(userAddresses)
+    useEffect(() => {
+        console.log(selectedAddress)
+    }, [selectedAddress])
+
+    const changeHandler = (e:ChangeEvent<HTMLSelectElement>) => {
+        setSelectedAddress(userAddresses[e.target.selectedIndex])
+    }
 
     return (
         <div className="xl:w-2/3 md:w-1/2 w-full">
-            <p className="font-bold md:text-xl text-lg  border-slate-200 lg:mb-12 md:mb-12 mb-6">Shipping Address</p>
+            <p className="font-bold md:text-xl text-lg   mb-2">Shipping Address</p>
+            <p className="font-light  text-xs  border-slate-200 lg:mb-12 md:mb-12 mb-6">Select a shipping address</p>
+
 
             {loading ? <ParagraphLoader /> : (
                 <div>
                     {
                         userAddresses.length < 1 ? <>
                             Please add shipping address
-                            <button>Add</button>
                         </>
                             :
-                            userAddresses.map((item: Address) => <AddressItem key={item.id} address={item} />)
+                            <select id="selectedAddress" name="selectedAddress" className='border-[1px] outline-none text-xs md:text-sm block px-2 py-2 rounded w-full' onChange={changeHandler}>
+                                {userAddresses.map((add: Address) => <>
+                                    <option selected={add.setAsDefault}>
+                                        {
+                                            `${add.building ? add.building + ',' : ''} ${add.street}, ${add.city}, ${add.state}, ${add.postcode}, ${add.country}`
+                                        }
+                                       
+                                    </option>
+                                </>)}
+                            </select>
 
                     }
 
@@ -43,11 +66,15 @@ const ShippingAddress = () => {
 
             )}
             <br />
-            <button className='md:text-sm text-xs  border-[1px] bg-black justify-center flex items-center rounded py-1 px-4 text-white' onClick={()=>setShowModal(true)}>Add Address</button>
+            <div className='flex gap-4 items-center'>
+                <span className='text-xs italic text-slate-400 font-light'>Want a new shipping address</span>
+            <button className='md:text-sm text-xs  border-[1px] bg-black justify-center flex items-center rounded py-1 px-4 text-white' onClick={() => setShowModal(true)}>Add Address</button>
+
+            </div>
 
             {
                 <Modal isOpen={showModal} close={() => setShowModal(false)} >
-                    {<ShippingForm  closeModal={()=>setShowModal(false)} />}
+                    {<ShippingForm closeModal={() => setShowModal(false)} />}
                 </Modal>
             }
 

@@ -29,8 +29,6 @@ const SalesOverTime = () => {
 
 
     const salesOverTime = stripTypename(data?.salesOverTime)
-    console.log(salesOverTime)
-
     return (
         <div className="xl:col-span-4 col-span-full bg-white rounded-xl shadow">
             <p className="font-medium flex justify-between mb-4 items-center p-4 ">

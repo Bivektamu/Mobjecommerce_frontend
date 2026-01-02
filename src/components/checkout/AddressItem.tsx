@@ -70,14 +70,12 @@ const AddressItem = ({ address }: Props) => {
         )
         setShowModal(true)
         setModal(content)
-
-        // dispatch(deleteCart(cartItem.id))
     }
 
 
     const { building, label, street, city, postcode, country, state } = address
     return (
-        <div className='flex justify-between items-start border p-4 rounded shadow gap-6'>
+        <div className='flex justify-between items-start border-b p-4  gap-6'>
             <div>
                 <div className="flex gap-4 mb-4">
                     <span className='font-semibold block capitalize '>{label}</span>

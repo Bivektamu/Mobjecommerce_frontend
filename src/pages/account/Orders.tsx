@@ -83,7 +83,7 @@ const UserOrders = () => {
 
               <div className="flex justify-between">
                 <span className="xl:text-sm text-xs text-slate-500 font-semibold lg:hidden">Date</span>
-                <span className="xl:text-sm text-xs text-slate-500">{new Date(order.orderPlaced).getDate() + ' ' + getMonth((new Date(order.orderPlaced).getMonth() + 1)) + ' ' + (new Date(order.orderPlaced).getFullYear())}</span>
+                <span className="xl:text-sm text-xs text-slate-500">{new Date(order.createdAt).getDate() + ' ' + getMonth((new Date(order.createdAt).getMonth() + 1)) + ' ' + (new Date(order.createdAt).getFullYear())}</span>
               </div>
 
               <div className="flex justify-between">

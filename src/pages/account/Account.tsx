@@ -50,7 +50,7 @@ const Account = () => {
           <div className='bg-white xl:w-[250px] md:w-[180px] w-1/3 xl:pt-24 pt-14'>
             <AccountSubNav />
           </div>
-          <div className=" rounded-lg 2xl:w-2/3 w-4/5 border-l xl:pl-16 md:pl-8 pl-4">
+          <div className=" rounded-lg w-4/5 border-l xl:pl-16 md:pl-8 pl-4">
             <Outlet />
           </div>
         </div>

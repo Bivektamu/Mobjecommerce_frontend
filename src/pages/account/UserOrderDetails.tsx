@@ -54,7 +54,7 @@ const UserOrderDetails = () => {
               <span className="text-slate-500 font-semibold basis-1/3 border-r ">Placed On</span>
             </td>
             <td className=" px-2 md:px-4 py-2">
-              <span className="text-slate-500 basis-2/3">{new Date(order.orderPlaced).getDate() + ' ' + getMonth((new Date(order.orderPlaced).getMonth() + 1)) + ' ' + (new Date(order.orderPlaced).getFullYear())}</span>
+              <span className="text-slate-500 basis-2/3">{new Date(order.createdAt).getDate() + ' ' + getMonth((new Date(order.createdAt).getMonth() + 1)) + ' ' + (new Date(order.createdAt).getFullYear())}</span>
             </td>
           </tr>
 

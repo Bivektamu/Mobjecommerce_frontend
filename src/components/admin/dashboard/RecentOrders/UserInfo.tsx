@@ -31,15 +31,18 @@ const UserInfo = ({ id }: Props) => {
     }
 
     const user = data?.user
-
     return (
         <div className="text-xs text-slate-500 flex items-center gap-2">
             <span className="rounded-full w-8 h-8 overflow-hidden">
                 {avatar}
             </span>
-            <span>
-                {user.firstName} {user.lastName}
-            </span>
+            {
+                user ? <span>
+                    {user?.firstName} {user?.lastName}
+                </span>:
+                <span>Inactive User</span>
+            }
+
         </div>
     )
 }

@@ -19,7 +19,7 @@ const PrivateRoute = lazy(() => import("./pages/admin/Private"))
 const Cart = lazy(() => import("./pages/Cart"))
 const Fail = lazy(() => import("./pages/checkout/Fail"))
 
-const Address = lazy(() => import("./pages/account/Address"))
+const AddressBook = lazy(() => import("./pages/account/AddressBook"))
 const ChangePassword = lazy(() => import("./pages/account/ChangePassword"))
 const AccountDetails = lazy(() => import("./pages/account/AccountDetails"))
 const Account = lazy(() => import("./pages/account/Account"))
@@ -139,9 +139,9 @@ const router = createBrowserRouter([
                         </Suspense>,
                     },
                     {
-                        path: 'address',
+                        path: 'address-book',
                         element: <Suspense fallback={< Preloader />} >
-                            <Address />
+                            <AddressBook />
                         </Suspense>,
                     },
                     {

@@ -11,25 +11,27 @@ import { NavLink } from 'react-router-dom'
 const RecentOrders = () => {
 
   const dispatch = useStoreDispatch()
+
+
   const { data, error, loading } = useQuery(GET_ORDERS, {
     variables: { limit: 10 },
     fetchPolicy: 'network-only'
   })
   if (error) {
+    console.log(error.networkError)
     const newToast: Toast = {
       id: v4(),
       variant: Toast_Vairant.WARNING,
       msg:error.message
     }
-    dispatch(addToast(newToast))
+    dispatch?.(addToast(newToast))
   }
 
-  if (loading) {
+ 
+  const orders = data?.orders
+ if (loading || !orders) {
     return <ProgressLoader />
   }
-
-  const orders = data?.orders
-
   return (
     <div>
       <p className="font-semibold p-4 text-slate-600 flex justify-between items-center bg-regal-white lg:bg-inherit">
@@ -95,7 +97,7 @@ const RecentOrders = () => {
               </div>
               <div className="flex justify-between items-center">
                 <span className="xl:text-sm text-xs text-slate-500 font-semibold lg:hidden">Date</span>
-                <span className="xl:text-sm text-xs text-slate-500">{(new Date(order.orderPlaced).toLocaleString()).split(',')[0]}</span>
+                <span className="xl:text-sm text-xs text-slate-500">{(new Date(order.createdAt).toLocaleString()).split(',')[0]}</span>
               </div>
 
 
@@ -106,7 +108,7 @@ const RecentOrders = () => {
               {/* <UserInfo id={order.userId} /> */}
               {/* <span className="text-xs text-slate-500 capitalize">{order.status}</span>
             <span className="text-xs text-slate-500">$ {order.total}</span>
-            <span className="text-xs text-slate-500">{(new Date(order.orderPlaced).toLocaleString()).split(',')[0]}</span> */}
+            <span className="text-xs text-slate-500">{(new Date(order.createdAt).toLocaleString()).split(',')[0]}</span> */}
             </div>
           )
         }

@@ -11,22 +11,24 @@ query Orders($limit: Int) {
     total
     subTotal
     tax
-    orderPlaced
     items {
       productId
       color
       quantity
       size
-      price
-      imgUrl
     }
     shippingAddress {
+      id
+      label
       street
+      building
       city
       postcode
       state
       country
+      setAsDefault
     }
+    createdAt
   }
 }
 `
@@ -49,14 +51,18 @@ export const GET_ORDERS_BY_USER_ID = gql`
         price
         imgUrl
       }
-      shippingAddress {
+       shippingAddress {
+        id
+        label
         street
+        building
         city
         postcode
         state
         country
+        setAsDefault
       }
-      orderPlaced
+      createdAt
     }
   }
 
@@ -88,7 +94,7 @@ query OrderByNumber($orderNumber: String) {
       state
       country
     }
-    orderPlaced
+    createdAt
   }
 }
 `
