@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Action, UserInput, UserSlice, Status, RootState, Address, User, ResponseError, ErrorCode, UserId } from "../types";
+import { Action, UserInput, UserSlice, Status, RootState, User, ResponseError, ErrorCode, UserId } from "../types";
 import client from "../../data/client";
 import { CREATE_USER } from "../../data/mutation/users.mutation";
 import { GET_USER } from "../../data/query/user.query";

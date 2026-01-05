@@ -3,7 +3,7 @@ import { useStoreDispatch } from '../store/index'
 import { useAuth, getAuthStatus } from '../store/slices/authSlice'
 import BreadCrumbs from '../components/layout/BreadCrumbs'
 import { upDateCart, useCart } from '../store/slices/cartSlice'
-import { Order_Status, Status, OrderInput, OrderItemInput, Colour, Size, Address, Cart as CartItemType } from '../store/types'
+import { Order_Status, Status, OrderInput, OrderItem, Colour, Size, Address, Cart as CartItemType } from '../store/types'
 import CartItem from '../components/CartItem'
 import SquareLoader from '../components/ui/SquareLoader'
 import { getProducts, useProduct } from '../store/slices/productSlice'
@@ -82,7 +82,7 @@ const Cart = () => {
       const subTotal = userCart.reduce((sum, item) => sum += ((item.price as number) * item.quantity), 0)
       const tax = parseFloat((subTotal * TAX_RATE).toFixed(2))
 
-      const items: OrderItemInput[] = userCart.map((item) => ({
+      const items: OrderItem[] = userCart.map((item) => ({
         productId: item.productId,
         color: item.color as Colour,
         quantity: item.quantity,

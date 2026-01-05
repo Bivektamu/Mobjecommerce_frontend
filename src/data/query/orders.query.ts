@@ -34,37 +34,36 @@ query Orders($limit: Int) {
 `
 
 export const GET_ORDERS_BY_USER_ID = gql`
-  query UserOrders($userOrdersId: ID) {
-    userOrders(id: $userOrdersId) {
-      id
-      orderNumber
-      userId
-      status
-      total
-      subTotal
-      tax
-      items {
-        productId
-        color
-        quantity
-        size
-        price
-        imgUrl
-      }
-       shippingAddress {
-        id
-        label
-        street
-        building
-        city
-        postcode
-        state
-        country
-        setAsDefault
-      }
-      createdAt
+ 
+query UserOrders($userOrdersId: ID) {
+  userOrders(id: $userOrdersId) {
+    id
+    orderNumber
+    userId
+    status
+    total
+    subTotal
+    tax
+    items {
+      productId
+      color
+      quantity
+      size
     }
+    shippingAddress {
+      id
+      label
+      street
+      building
+      city
+      postcode
+      state
+      country
+      setAsDefault
+    }
+    createdAt
   }
+}
 
 `
 

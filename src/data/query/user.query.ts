@@ -7,7 +7,8 @@ export const GET_USER = gql`
     firstName
     lastName
     email
-    address {
+    address 
+      {
       id
       label
       street
@@ -18,6 +19,7 @@ export const GET_USER = gql`
       country
       setAsDefault
     }
+    
   }
 }
 `;

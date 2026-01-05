@@ -93,7 +93,7 @@ const router = createBrowserRouter([
                 </Suspense>,
                 children: [
                     {
-                        path: 'success/:orderNumber',
+                        path: 'success',
                         element: <Suspense fallback={< Preloader />} >
                             <Success />
                         </Suspense>,

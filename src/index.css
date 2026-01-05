@@ -24,10 +24,7 @@ input[type="number"] {
 
 
 @layer components {
-  .grid-cols-table > * {
-    /* border-right:1px solid red;
-    border-left: 1px solid green; */
-  }
+ 
   .loader {
     width: 60px;
     aspect-ratio: 1;

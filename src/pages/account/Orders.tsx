@@ -19,6 +19,8 @@ const UserOrders = () => {
       userOrdersId: user?.id
     },
   })
+
+  console.log(data)
   const refinedData = useMemo(() => {
     if (data && data.userOrders.length > 0) {
       return stripTypename(data.userOrders)
@@ -29,6 +31,8 @@ const UserOrders = () => {
   if (loading) {
     return <ProgressLoader />
   }
+
+  console.log(data)
 
 
 

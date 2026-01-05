@@ -1,78 +1,28 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react"
-import { v4 as uuidv4, v4 } from 'uuid';
-import { Action, Address, FormError, Toast, Toast_Vairant, ValidateSchema } from "../../store/types"
+import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react"
+import {  BillingDetails, CheckOutDetails, FormError, ValidateSchema } from "../../store/types"
 import validateForm from "../../utils/validate"
-import { useUser } from "../../store/slices/userSlice"
-import { useStoreDispatch } from "../../store"
-import { addToast } from "../../store/slices/toastSlice";
-import {  useMutation, useQuery } from "@apollo/client";
-import { GET_USER_ADDRESS, GET_USER_ADDRESSES } from "../../data/query/user.query";
-import { GoCheckbox } from "react-icons/go";
-import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
-import { UPDATE_ADDRESS_BY_ID } from "../../data/mutation/users.mutation";
-import { stripTypename } from "@apollo/client/utilities";
+import { useUser } from "../../store/slices/userSlice";
 
 interface Props {
-    addressId?: string,
-    closeModal: () => void
+    clickHandler: ()=>void
+    setBilling:Dispatch<SetStateAction<CheckOutDetails>>
 }
 
-const ShippingForm = ({ addressId, closeModal }: Props) => {
 
-    const { action } = useUser()
-    const dispatch = useStoreDispatch()
+const BillingForm = ({ clickHandler, setBilling }: Props) => {
 
-    const [updateAddressById] = useMutation(UPDATE_ADDRESS_BY_ID, {
-        refetchQueries: [
-            { query: GET_USER_ADDRESSES }
-        ],
-        onCompleted: () => {
-            closeModal()
-            const newToast: Toast = {
-                id: v4(),
-                variant: Toast_Vairant.SUCCESS,
-                msg: `Address successfully ${addressId ? 'updated' : " added"}`
-            }
-            dispatch(addToast(newToast))
-        },
-        onError: (error) => {
-            const newToast: Toast = {
-                id: v4(),
-                variant: Toast_Vairant.WARNING,
-                msg: error.message
-            }
-            dispatch(addToast(newToast))
-        }
-    })
+  const { user } = useUser()
 
-
-    const { data } = useQuery(GET_USER_ADDRESS, {
-        variables: {
-            userAddressId: addressId
-        },
-        skip: !addressId
-    })
-
-    const [formData, setFormData] = useState<Address>({
-        id:addressId,
+    const [formData, setFormData] = useState<BillingDetails>({
+        name:'',
+        email:'',
         street: '',
         postcode: '',
         city: '',
         state: '',
-        label: '',
         building: '',
         country: '',
-        setAsDefault: false
-    } as Address)
-
-    useEffect(() => {
-        console.log(data)
-        if (data && data.userAddress) {
-            const address: Address = stripTypename(data.userAddress)
-            console.log(address)
-            setFormData(prev=>({...prev, ...address}))
-        }
-    }, [data])
+    } as BillingDetails)
 
     const [formErrors, setFormErrors] = useState<FormError>({})
 
@@ -80,27 +30,14 @@ const ShippingForm = ({ addressId, closeModal }: Props) => {
     useEffect(() => {
         if (Object.keys(formData).length > 0) {
             Object.keys(formData).map(key => {
-                if (formData[key as keyof Address]) {
+                if (formData[key as keyof BillingDetails]) {
                     setFormErrors(prev => ({ ...prev, [key]: '' }))
                 }
             })
         }
     }, [formData])
 
-    useEffect(() => {
-        if (action === Action.EDIT) {
-            const newToast: Toast = {
-                id: uuidv4(),
-                variant: Toast_Vairant.SUCCESS,
-                msg: 'Shipping address updated'
-            }
-            dispatch(addToast(newToast))
-        }
-    }, [action])
-
-    const { street, postcode, state, city, country, label, building, setAsDefault } = formData
-
-
+    const { street, postcode, state, city, country, building } = formData
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         e.stopPropagation()
@@ -118,8 +55,15 @@ const ShippingForm = ({ addressId, closeModal }: Props) => {
     }
 
     const postCodeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        e.stopPropagation()
-        if (!isNaN(parseInt(e.target.value))) {
+        // e.stopPropagation()
+        if(!e.target.value) {
+            setFormData(prev => ({
+                ...prev,
+                postcode: ''
+            }))
+        }
+        else if (Number(e.target.value)) {
+            // console.log('asdf')
             setFormData(prev => ({
                 ...prev,
                 postcode: e.target.value
@@ -128,18 +72,12 @@ const ShippingForm = ({ addressId, closeModal }: Props) => {
 
     }
 
-
     const onSumbitHandler = (e: FormEvent) => {
         e.preventDefault()
 
         const validateSchema: ValidateSchema<unknown>[] =
             [
-                {
-                    name: 'label',
-                    type: 'string',
-                    value: label,
-                    msg: 'Please provide label'
-                },
+            
                 {
                     name: 'street',
                     type: 'string',
@@ -180,36 +118,26 @@ const ShippingForm = ({ addressId, closeModal }: Props) => {
             return setFormErrors(prev => ({ ...prev, ...errors }))
         }
 
-        console.log(formData)
-        updateAddressById({
-            variables: {
-                input: formData
-            }
-        })
+        const billing:BillingDetails = {...formData,  name: user!.firstName + ' '+ user!.lastName,
+            email:user!.email}
 
+        setBilling(prev=>({...prev, billing: {...formData, ...billing}}))
+
+        clickHandler()
+        return
+    
     }
 
     return (
-        <>
+        <div className="pt-8 border-t mt-8">
             <h4 className="text-left font-medium  text-xl mb-2">
-                {addressId ? 'Update' : 'Add New'} Address
+                Billing Address
             </h4>
             <p className="text-slate-500 text-xs mb-6 text-left font-light">
-                {
-                    !addressId ? 'Add a new ' : 'Update '
-                }
-                shipping address to your address book
+                Please fill fields for billing address
             </p>
 
             <form className="grid md:grid-cols-2 grid-cols-1  gap-x-10 gap-y-6" onSubmit={onSumbitHandler}>
-
-                <fieldset className="md:col-span-2 col-span-1">
-                    <label htmlFor="label" className="capitalize text-left font-medium text-slate-600 md:text-sm text-xs block mb-2 w-full">Label</label>
-                    <input
-                        onChange={e => onChangeHandler(e)}
-                        type="text" id="label" name="label" className="border-[1px] outline-none block px-3 py-2 rounded w-full md:text-sm text-xs placeholder:font-normal capitalize" value={label} placeholder="e.g. Home, Office, WareHouse" />
-                    {formErrors.label && <span className='text-red-500 text-xs text-left block mt-2'>{formErrors.label}</span>}
-                </fieldset>
 
                 <fieldset className="md:col-span-2 col-span-1">
                     <label htmlFor="building" className="capitalize text-left font-medium text-slate-600 md:text-sm text-xs block mb-2 w-full">Building / Apt / Suite</label>
@@ -266,24 +194,11 @@ const ShippingForm = ({ addressId, closeModal }: Props) => {
 
                 </fieldset>
 
-                <fieldset className="col-span-2">
-                    <label htmlFor="setAsDefault" className="text-left font-medium text-slate-600 md:text-sm text-xs block mb-2 w-full flex items-center gap-2">
-                        {setAsDefault ? <GoCheckbox className="size-6" /> : <MdOutlineCheckBoxOutlineBlank className="size-6" />}
-                        Set as default address
-                    </label>
-                    <input
-                        onChange={e => onChangeHandler(e)}
-                        type="checkbox"
-                        id="setAsDefault"
-                        name="setAsDefault"
-                        className="appearance-none hidden" />
-                </fieldset>
-
-                <button type="submit" id="add_product" className="w-full md:w-[200px] bg-black text-white py-2 px-4 rounded text-center cursor-pointer text-sm md:text-base">{addressId ? 'Update' : 'Submit'} </button>
+                <button type="submit" id="add_product" className="w-full md:w-[200px] bg-black text-white py-2 px-4 rounded text-center cursor-pointer text-sm md:text-base">Continue</button>
             </form>
-        </>
+        </div>
 
     )
 }
 
-export default ShippingForm
+export default BillingForm

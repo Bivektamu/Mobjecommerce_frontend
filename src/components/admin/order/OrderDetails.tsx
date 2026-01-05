@@ -1,12 +1,11 @@
-import { Order, Colour } from '../../../store/types'
+import { Order } from '../../../store/types'
 import getMonth from '../../../utils/getMonth'
-import Tooltip from '../../ui/Tooltip'
 import { useQuery } from '@apollo/client'
 import { GET_USER } from '../../../data/query/user.query'
 import ProgressLoader from '../../ui/ProgressLoader'
 import { useEffect } from 'react'
 import useAvatar from '../../hooks/useAvatar'
-import ProductTitle from './ProductTitle'
+import OrderItem from './OrderItem'
 type Props = {
     order: Order
 }
@@ -32,7 +31,6 @@ const OrderDetails = ({ order }: Props) => {
         }
 
     }, [user])
-
 
 
     if (loading) {
@@ -66,7 +64,11 @@ const OrderDetails = ({ order }: Props) => {
                 </span>
 
                 <div className=''>
-                    <span className=" font-medium">{user?.firstName + ' ' + user?.lastName}</span>
+                    {
+                        user?<span className=" font-medium">{user?.firstName + ' ' + user?.lastName}</span>:
+                        <span>Inactive User</span>
+                    }
+                    
                     <br />
                     <span className="text-xs text-slate-500 font-medium">{user?.email}</span>
                 </div>
@@ -74,39 +76,7 @@ const OrderDetails = ({ order }: Props) => {
 
             <p className="font-medium text-slate-900 mt-10 mb-6 pb-2 border-b-[1px] text-lg">Ordered Items</p>
             {
-                order.items.map(item => {
-
-
-                    return (
-                        <div key={item.productId + item.size + item.color} className="flex items-center gap-4 mb-6">
-                            <img src={item.imgUrl as string} alt="" className='w-14 h-14' />
-                            <div className='grow'>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-sm font-medium">
-                                        <ProductTitle id={item.productId} />
-                                    </span>
-                                    <div className='flex items-center gap-2'>
-                                        <span className={`w-3 h-3 rounded-full relative group bg-${item.color.toLowerCase()}${item.color === Colour.BLACK ? '' : '-600'} block`}>
-                                            <Tooltip title='color' />
-                                        </span>
-                                        <span className='w-3 h-[1px] bg-black text-sm'></span>
-                                        <span className='text-xs relative group'>
-                                            {item.size}
-                                            <Tooltip title='size' />
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className='flex items-center gap-2'>
-                                    <span className="text-xs text-slate-500 font-medium">$ {item.price}</span>
-                                    <span className='w-3 h-[1px] bg-black text-sm'></span>
-                                    <span className='text-xs relative group'>Quantity: {item.quantity}
-                                    </span>
-                                </div>
-
-
-                            </div>
-                        </div>)
-                }
+                order.items.map(item => <OrderItem item={item} key={item.productId + item.size + item.color} />
                 )
             }
 

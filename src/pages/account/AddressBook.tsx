@@ -32,7 +32,6 @@ const AddressBook = () => {
                     {
                         userAddresses.length < 1 ? <>
                             Please add shipping address
-                            <button>Add</button>
                         </>
                             :
                             userAddresses.map((item: Address) => <AddressItem key={item.id} address={item} />)

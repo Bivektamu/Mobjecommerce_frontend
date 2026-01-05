@@ -8,3 +8,13 @@ export const CREATE_PAYMENT_INTENT = gql`
         }
     }
 `
+
+export const GET_ORDER_BY_PAYMENT_INTENT_ID=gql`
+    query OrderByPaymentIntent($paymentIntentId: String!) {
+    orderByPaymentIntent(paymentIntentId: $paymentIntentId) {
+        id
+        status
+        orderNumber
+  }
+}
+`

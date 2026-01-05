@@ -295,16 +295,14 @@ export enum Order_Status {
 
 
 export interface OrderItem {
-    id: string,
     productId: ProductId,
     color: Colour,
     quantity: number,
     size: Size,
-    price: number,
-    imgUrl: string
+    price?: number,
+    imgUrl?:string
 }
 
-export type OrderItemInput = Omit<OrderItem, 'id'>
 
 export interface Order {
     id: string,
@@ -320,7 +318,7 @@ export interface Order {
 }
 
 export interface OrderInput extends Omit<Order, 'id' | 'items' | 'orderNumber' | 'createdAt'> {
-    items: OrderItemInput[]
+    items: OrderItem[]
 }
 
 
@@ -402,4 +400,16 @@ export interface LowStockProduct {
     price: number,
     quantity: number,
     sku: string,
+}
+
+
+export interface BillingDetails extends Omit<Address, 'id'|'setaAsDefault' | 'label'> {
+    name:string,
+    email:string
+}
+
+export interface CheckOutDetails {
+  shipping: Address | null,
+  billing: BillingDetails | null,
+  items: OrderItem[]
 }

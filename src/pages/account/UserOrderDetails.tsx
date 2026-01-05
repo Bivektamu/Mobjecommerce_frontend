@@ -106,7 +106,7 @@ const UserOrderDetails = () => {
         <tbody className="w-full grid grid-cols-1 gap-8 lg:table-row-group ">
           {
             order.items.map((item: OrderItem) =>
-              <tr className="border-y border-x lg:border-x-0 rounded lg:text-center grid lg:table-row shadow lg:shadow-none" key={item.id}>
+              <tr className="border-y border-x lg:border-x-0 rounded lg:text-center grid lg:table-row shadow lg:shadow-none" key={item.productId+item.color+item.size}>
                 <td className="grid lg:table-cell justify-center border-b lg:border-b-0 mb-4 lg:mb-0">
                   <img className="w-32 lg:w-14" src={item.imgUrl} alt="" />
                 </td>
@@ -132,7 +132,7 @@ const UserOrderDetails = () => {
                 </td>
                 <td className="grid gap-4 lg:table-cell grid-cols-3  text-slate-500 px-4 md:px-8 py-1 md:py-2 pb-4 md:pb-8 lg:pb-2">
                   <span className="font-semibold block lg:hidden">Subtotal</span>
-                  <span className="col-span-2">{item.price * item.quantity}</span>
+                  <span className="col-span-2">{item.price! * item.quantity}</span>
                 </td>
               </tr>
 

@@ -1,79 +1,21 @@
 import { useEffect } from 'react'
 import BreadCrumbs from '../../components/layout/BreadCrumbs'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import Arrow from '../../components/ui/Arrow'
 import PageWrapper from '../../components/ui/PageWrapper'
-import { useQuery } from '@apollo/client'
-import { GET_ORDER_BY_PAYMENT_INTENT_ID } from '../../data/payment.graphql'
-import Preloader from '../../components/ui/Preloader'
-import { Order_Status, Toast, Toast_Vairant } from '../../store/types'
-import { v4 } from 'uuid'
-import { addToast } from '../../store/slices/toastSlice'
-import { useStoreDispatch } from '../../store'
-import { LiaSpinnerSolid } from 'react-icons/lia'
-import { deleteCartByCustomerId } from '../../store/slices/cartSlice'
-import { useAuth } from '../../store/slices/authSlice'
 
 const Success = () => {
-    const dispatch = useStoreDispatch()
 
+    const location = useLocation()
     const navigate = useNavigate();
-    const [searchParams] = useSearchParams()
-    const { user } = useAuth()
-
-    const payment_intent_id: string | null = searchParams.get('payment_intent')
-
-    const { data, loading, error, stopPolling, startPolling } = useQuery(GET_ORDER_BY_PAYMENT_INTENT_ID, {
-        variables: {
-            paymentIntentId: payment_intent_id
-        },
-        skip: !payment_intent_id,
-    })
-
+    const { orderNumber } = useParams();
 
     useEffect(() => {
-        if (payment_intent_id) {
-            // Start checking every 2 seconds
-            startPolling(2000);
+        if (!location.state?.fromCheckout || !orderNumber) {
+            navigate('/404', { replace: true });
         }
-        return () => stopPolling(); // Cleanup on unmount
-    }, [payment_intent_id, startPolling, stopPolling]);
+    }, [location, navigate, orderNumber]);
 
-    useEffect(() => {
-
-
-        if (data?.orderByPaymentIntent?.status === Order_Status.COMPLETED || data?.orderByPaymentIntent?.status === Order_Status.FAILED) {
-            stopPolling()
-            if (data.orderByPaymentIntent.status === Order_Status.FAILED) {
-                navigate('/checkout/fail')
-                return
-            }
-            else if (data.orderByPaymentIntent.status === Order_Status.COMPLETED) {
-                dispatch(deleteCartByCustomerId(user!.id))
-            }
-        }
-
-    }, [data, stopPolling, dispatch, user, navigate])
-
-    if (error) {
-        const toast: Toast = {
-            id: v4(),
-            variant: Toast_Vairant.WARNING,
-            msg: error.message
-        }
-        dispatch(addToast(toast))
-    }
-
-    console.log(data?.orderByPaymentIntent)
-
-    if (loading || !data || data?.orderByPaymentIntent?.status === Order_Status.PENDING) return <Preloader>
-        <div className="text-center fixed z-20 top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]">
-            <LiaSpinnerSolid className="size-16 inline-block animate-spin " />
-            <br /><br />
-            <h1>Confirming with your bank...</h1>
-            <p>Please don't close this window.</p>
-        </div>
-    </Preloader>
 
     return (
         <PageWrapper>
@@ -90,13 +32,13 @@ const Success = () => {
                     <path d="M136.004 92.0562L120.217 106.712L117.479 102.842C116.877 101.994 115.697 101.791 114.847 102.391C113.994 102.994 113.794 104.172 114.395 105.023L118.38 110.653C118.696 111.098 119.187 111.383 119.728 111.441C119.793 111.448 119.858 111.45 119.922 111.45C120.397 111.45 120.856 111.273 121.206 110.946L138.572 94.8219C139.337 94.1119 139.381 92.9181 138.671 92.1553C137.961 91.3856 136.762 91.3441 136.004 92.0562Z" fill="#6FA479" />
                 </svg>
                 <h2 className="md:text-2xl text-lg text-center font-bold md:mb-4">Thank you for shopping</h2>
-                <p className="md:text-sm text-xs text-center text-slate-500 md:mb-8 mb-4">Your order #{data.orderByPaymentIntent.orderNumber} has been successfully placed and is now being processed.</p>
+                <p className="md:text-sm text-xs text-center text-slate-500 md:mb-8 mb-4">Your order {orderNumber} has been successfully placed and is now being processed.</p>
                 <Link className='flex gap-x-4 align-center bg-black text-white py-3 px-6 rounded text-center cursor-pointer md:text-sm text-xs  mb-8' to="/account">Go to my account
                     <Arrow cssClass='mt-[2px]' />
                 </Link>
+
+
             </section>
-
-
         </PageWrapper>
     )
 }
