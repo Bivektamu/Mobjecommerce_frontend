@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useMemo, useState } from 'react'
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { useStoreDispatch } from '../../store/index'
 import { getAuthStatus, useAuth } from '../../store/slices/authSlice'
 import BreadCrumbs from '../../components/layout/BreadCrumbs'
@@ -27,17 +27,19 @@ const Checkout = () => {
 
   const navigate = useNavigate()
   const location = useLocation()
-  const [clientSecret, setClientSecret] = useState<string | null>(null)
+  const clientSecret = useRef<string | null>(null)
   const [disabled, setDisabled] = useState(false)
 
   const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!)
 
   const [createPaymentIntent, { loading }] = useMutation(CREATE_PAYMENT_INTENT, {
     onCompleted(data) {
-      setClientSecret(data.createPaymentIntent.clientSecret)
+      clientSecret.current = data.createPaymentIntent.clientSecret
     },
+
   })
 
+  console.log(clientSecret.current)
 
   const dispatch = useStoreDispatch()
   const { user: authUser, status } = useAuth()
@@ -119,14 +121,15 @@ const Checkout = () => {
   const clickHandler = () => {
     if (shipping && billing && items.length > 0) {
       console.log(billing)
-      createPaymentIntent({
-        variables: {
-          input: {
-            items,
-            shippingAddress: shipping,
+      if (!clientSecret.current)
+        createPaymentIntent({
+          variables: {
+            input: {
+              items,
+              shippingAddress: shipping,
+            }
           }
-        }
-      })
+        })
     }
   }
 
@@ -150,7 +153,7 @@ const Checkout = () => {
         <div className="container md:pt-16 pt-8 md:pb-36 pb-16 flex xl:gap-28 gap-10 md:flex-row flex-col">
 
           {
-            !clientSecret ?
+            !clientSecret.current ?
               <div className='xl:w-2/3 md:w-1/2 w-full'>
                 <ShippingAddress setCheckOutDetails={setCheckOutDetails} />
                 <br />
@@ -193,7 +196,7 @@ const Checkout = () => {
               :
               <div className='xl:w-2/3 md:w-1/2 w-full'>
                 <Elements stripe={stripePromise} options={{
-                  clientSecret
+                  clientSecret: clientSecret.current
                 }}>
                   <PaymentForm billing={billing!} total={newOrder.total} />
                 </Elements>

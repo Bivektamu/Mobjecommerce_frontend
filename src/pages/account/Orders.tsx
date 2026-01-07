@@ -92,7 +92,7 @@ const UserOrders = () => {
 
               <div className="flex justify-between">
                 <span className="xl:text-sm text-xs text-slate-500 font-semibold lg:hidden">Items</span>
-                <span className="xl:text-sm text-xs text-slate-500 ">{order.items.length}</span>
+                <span className="xl:text-sm text-xs text-slate-500 ">{order.items.reduce((sum, item)=>sum=sum+item.quantity, 0)}</span>
               </div>
 
               <div className="flex justify-between">

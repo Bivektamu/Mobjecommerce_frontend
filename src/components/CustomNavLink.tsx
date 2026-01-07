@@ -11,28 +11,6 @@ type Props = {
 
 const CustomNavLink = ({ to, state, children, cssClass, isNavLink, isDisabled }: Props) => {
 
-  // const navigate = useNavigate()
-
-  // const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
-  // e.preventDefault()
-  // e.stopPropagation()
-
-  // const body = document.querySelector('body')
-  // body?.classList.add('opacity-0', 'transition', 'duration-200', 'overflow-hidden')
-
-  // setTimeout(() => {
-  //   navigate(to)
-  // }, 200)
-
-  // setTimeout(() => {
-  //   window.scrollTo({
-  //     top: 0,
-  //     behavior: "instant",
-  //   });
-  //   body?.classList.remove('opacity-0', 'overflow-hidden')
-  // }, 400)
-  // }
-
   if (isDisabled) {
     return (
       <span className={cssClass}>{children}</span>

@@ -5,13 +5,10 @@ import Preloader from "../../components/ui/Preloader"
 import { stripTypename } from "@apollo/client/utilities"
 import { Order, OrderItem } from "../../store/types"
 import getMonth from "../../utils/getMonth"
+import UserOrderItemTile from "../../components/account/UserOrderItemTile"
 
 const UserOrderDetails = () => {
-
-
-
   const { orderNumber } = useParams()
-
 
   const { data, loading } = useQuery(GET_ORDER_DETAILS_BY_ORDER_NUMBER, {
     variables: {
@@ -19,17 +16,10 @@ const UserOrderDetails = () => {
     }
   })
 
-  // useEffect(() => {
-  //   if (error)
-  //     navigate('/404')
-  // }, [error])
-
-
-
   const order: Order = stripTypename(data?.orderByNumber)
 
 
-  if (loading || !order || Object.keys(order).length < 1) {
+  if (loading || !order) {
     return <Preloader />
   }
   return (
@@ -103,37 +93,7 @@ const UserOrderDetails = () => {
         </thead>
         <tbody className="w-full grid grid-cols-1 gap-8 lg:table-row-group ">
           {
-            order.items.map((item: OrderItem) =>
-              <tr className="border-y border-x lg:border-x-0 rounded lg:text-center grid lg:table-row shadow lg:shadow-none" key={item.productId+item.color+item.size}>
-                <td className="grid lg:table-cell justify-center border-b lg:border-b-0 mb-4 lg:mb-0">
-                  <img className="w-32 lg:w-14" src={item.imgUrl} alt="" />
-                </td>
-                <td className="grid gap-4 lg:table-cell grid-cols-3  text-slate-500 px-4 md:px-8 py-1 md:py-2">
-                  <span className="font-semibold block lg:hidden">Product</span>
-                  <span className="col-span-2"> Essential Neutrals</span>
-                </td>
-                <td className="grid gap-4 lg:table-cell grid-cols-3  text-slate-500 px-4 md:px-8 py-1 md:py-2">
-                  <span className="font-semibold block lg:hidden">Qty</span>
-                  <span className="col-span-2">{item.quantity}</span>
-                </td>
-                <td className="grid gap-4 lg:table-cell grid-cols-3  text-slate-500 px-4 md:px-8 py-1 md:py-2 ">
-                  <span className="font-semibold block lg:hidden">Colour</span>
-                  <span className="col-span-2">{item.color}</span>
-                </td>
-                <td className="grid gap-4 lg:table-cell grid-cols-3  text-slate-500 px-4 md:px-8 py-1 md:py-2">
-                  <span className="font-semibold block lg:hidden">Size</span>
-                  <span className="col-span-2">{item.size}</span>
-                </td>
-                <td className="grid gap-4 lg:table-cell grid-cols-3  text-slate-500 px-4 md:px-8 py-1 md:py-2">
-                  <span className="font-semibold block lg:hidden">Unit</span>
-                  <span className="col-span-2">{item.price}</span>
-                </td>
-                <td className="grid gap-4 lg:table-cell grid-cols-3  text-slate-500 px-4 md:px-8 py-1 md:py-2 pb-4 md:pb-8 lg:pb-2">
-                  <span className="font-semibold block lg:hidden">Subtotal</span>
-                  <span className="col-span-2">{item.price! * item.quantity}</span>
-                </td>
-              </tr>
-
+            order.items.map((item: OrderItem) => <UserOrderItemTile key={item.productId+item.color+item.size} item={item} />
             )
           }
         </tbody>

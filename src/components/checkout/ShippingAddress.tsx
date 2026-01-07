@@ -17,6 +17,7 @@ const ShippingAddress = memo(({ setCheckOutDetails }: Props) => {
     const [showModal, setShowModal] = useState(false)
 
     const [selectedAddress, setSelectedAddress] = useState<Address | null>(null)
+    const [selectedOption, setSelectedOption] = useState('Choose shipping address')
 
 
     const userAddresses = useMemo(() => {
@@ -33,6 +34,7 @@ const ShippingAddress = memo(({ setCheckOutDetails }: Props) => {
 
     useEffect(() => {
         if (selectedAddress) {
+            setSelectedOption(`${selectedAddress.building ? selectedAddress.building + ',' : ''} ${selectedAddress.street}, ${selectedAddress.city}, ${selectedAddress.state}, ${selectedAddress.postcode}, ${selectedAddress.country}`)
             setCheckOutDetails(prev => ({ ...prev, shipping: selectedAddress }))
         }
        
@@ -55,9 +57,14 @@ const ShippingAddress = memo(({ setCheckOutDetails }: Props) => {
                         <div>
                             <p className="font-light  text-xs  border-slate-200 mb-2">Select a shipping address</p>
 
-                            <select id="selectedAddress" name="selectedAddress" className='border-[1px] outline-none text-xs md:text-sm block px-2 py-2 rounded w-full' onChange={changeHandler}>
+                            <select 
+                            id="selectedAddress" 
+                            name="selectedAddress" 
+                            defaultValue={selectedOption}
+                            className='border-[1px] outline-none text-xs md:text-sm block px-2 py-2 rounded w-full'
+                             onChange={changeHandler}>
                                 {userAddresses.map((add: Address) => <>
-                                    <option key={add.id} selected={add.setAsDefault}>
+                                    <option key={add.id}>
                                         {
                                             `${add.building ? add.building + ',' : ''} ${add.street}, ${add.city}, ${add.state}, ${add.postcode}, ${add.country}`
                                         }
