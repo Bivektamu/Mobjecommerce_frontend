@@ -1,8 +1,7 @@
 import { useQuery } from "@apollo/client"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { GET_ORDER_DETAILS_BY_ORDER_NUMBER } from "../../data/query/orders.query"
 import Preloader from "../../components/ui/Preloader"
-import { useEffect } from "react"
 import { stripTypename } from "@apollo/client/utilities"
 import { Order, OrderItem } from "../../store/types"
 import getMonth from "../../utils/getMonth"
@@ -10,21 +9,20 @@ import getMonth from "../../utils/getMonth"
 const UserOrderDetails = () => {
 
 
-  const navigate = useNavigate()
 
   const { orderNumber } = useParams()
 
 
-  const { data, loading, error } = useQuery(GET_ORDER_DETAILS_BY_ORDER_NUMBER, {
+  const { data, loading } = useQuery(GET_ORDER_DETAILS_BY_ORDER_NUMBER, {
     variables: {
       orderNumber: orderNumber
     }
   })
 
-  useEffect(() => {
-    if (error)
-      navigate('/404')
-  }, [error])
+  // useEffect(() => {
+  //   if (error)
+  //     navigate('/404')
+  // }, [error])
 
 
 

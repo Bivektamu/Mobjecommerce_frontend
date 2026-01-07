@@ -1,9 +1,22 @@
-import PageWrapper from '../../components/ui/PageWrapper'
+import { useEffect } from 'react'
 import BreadCrumbs from '../../components/layout/BreadCrumbs'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import Arrow from '../../components/ui/Arrow'
+import PageWrapper from '../../components/ui/PageWrapper'
 
 const Fail = () => {
-  return (
-    <PageWrapper>
+
+    const location = useLocation()
+    const navigate = useNavigate()
+    const order = location?.state?.order
+    useEffect(()=> {
+        if(!order) {
+            navigate('/404')
+        }
+    },[order])
+
+    return (
+        <PageWrapper>
             <section id="breadcrums" className="bg-[#FBD9D0] px-4">
                 <div className="md:py-14 py-6 container mx-auto">
                     <h2 className="md:text-2xl text-lg font-bold mb-4">Failed Order</h2>
@@ -35,7 +48,7 @@ const Fail = () => {
 
                 <h2 className="md:text-2xl text-lg font-bold mb-4 text-center">Oops! There was an issue</h2>
                 <p className="md:text-sm text-xs  text-slate-500 mb-8 text-center">Oops! There was a problem processing your order. Please review the details and try again.</p>
-                {/* <Link
+                <Link
                     className='flex gap-x-4 align-center bg-black text-white py-3 px-6 rounded text-center cursor-pointer md:text-sm text-xs  mb-8'
                     to="/checkout"
                     state={
@@ -45,12 +58,12 @@ const Fail = () => {
                     }
                 >Reorder
                     <Arrow cssClass='mt-[2px]' />
-                </Link> */}
+                </Link>
 
 
             </section>
         </PageWrapper>
-  )
+    )
 }
 
 export default Fail

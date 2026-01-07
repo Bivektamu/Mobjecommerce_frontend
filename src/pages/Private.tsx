@@ -1,16 +1,12 @@
-import {  useEffect } from 'react'
+import { useEffect } from 'react'
 import { getAuthStatus, useAuth } from '../store/slices/authSlice'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { Status, Role } from '../store/types'
 import { useStoreDispatch } from '../store'
-import ProgressLoader from '../components/ui/ProgressLoader'
-// import Preloader from '../components/ui/Preloader'
+import Preloader from '../components/ui/Preloader'
 
-// type Props = {
-//     children: ReactNode
-// }
 const Private = () => {
-// const Private = ({ children }: Props) => {
+    // const Private = ({ children }: Props) => {
 
     const navigate = useNavigate()
 
@@ -20,37 +16,27 @@ const Private = () => {
     useEffect(() => {
         if (status === Status.IDLE)
             dispatch(getAuthStatus())
-    }, [status, dispatch])
-
-    useEffect(() => {
-        if (status === Status.FULFILLED && !isLoggedIn) {
-            // console.log('saf');
-
-            navigate('/')
-        }
         else if (status === Status.REJECTED) {
-            // console.log('saf');
-            navigate('/')
+            return navigate('/')
         }
-
-    }, [isLoggedIn, status])
-
-    useEffect(() => {
-
-        if (user && user.role !== Role.CUSTOMER) {
-            navigate('/')
+        else if (status === Status.FULFILLED) {
+            if (!isLoggedIn) {
+                return navigate('/')
+            }
+            else if (!user || user?.role !== Role.CUSTOMER) {
+                return navigate('/')
+            }
         }
-    }, [user])
+    }, [status, dispatch, navigate, isLoggedIn, user])
+
+
+    if (status === Status.PENDING || !user || user?.role !== Role.CUSTOMER) {
+        return <Preloader />
+    }
 
     return (
-        <>
-            {
-                status !== Status.FULFILLED ?
-                    (<ProgressLoader cssClass='mt-32' />) :
-                    <Outlet />
-            }
+        <Outlet />
 
-        </>
     )
 }
 

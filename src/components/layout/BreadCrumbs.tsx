@@ -25,7 +25,9 @@ const BreadCrumbs = ({ rootLink, alias }: Props) => {
         return (
             <div key={index} className='flex items-center gap-x-2'>
                 <CustomNavLink isDisabled={index === matches.length - 1 && true} to={links} cssClass={`  capitalize ${matches.length !== index + 1 ? 'font-medium text-slate-500' : 'font-bold'}`}>
-                    {url.replaceAll('-', ' ')}
+                    {url}
+                    {/* {url.replaceAll('-', ' ')} */}
+
                 </CustomNavLink>
                 {matches.length !== index + 1 ? (<span className=" w-3 h-3 border-t-2 border-r-2 border-slate-600 rotate-45"></span>) : ''}
             </div>)

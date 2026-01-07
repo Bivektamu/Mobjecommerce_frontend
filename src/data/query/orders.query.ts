@@ -83,15 +83,17 @@ query OrderByNumber($orderNumber: String) {
       color
       quantity
       size
-      price
-      imgUrl
     }
     shippingAddress {
+      id
+      label
       street
+      building
       city
       postcode
       state
       country
+      setAsDefault
     }
     createdAt
   }
