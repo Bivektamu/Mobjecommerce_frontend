@@ -10,8 +10,10 @@ import { useQuery } from '@apollo/client'
 const TotalOrders = () => {
     const dispatch = useStoreDispatch()
     const { data, error, loading } = useQuery(GET_ORDER_ANALYTICS, {
-        fetchPolicy: 'network-only'
+    pollInterval: 2000,
     })
+
+
     if (error) {
         const newToast: Toast = {
             id: v4(),
@@ -20,6 +22,8 @@ const TotalOrders = () => {
         }
         dispatch(addToast(newToast))
     }
+
+
 
 
     if (loading) {

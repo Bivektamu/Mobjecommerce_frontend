@@ -66,8 +66,8 @@ const PaymentForm = ({ billing, total }: Props) => {
             <br /><br />
             <button
                 type='submit'
-                className='bg-black text-white py-2 px-4 rounded text-center cursor-pointer w-full text-sm md:text-base'
-                disabled={loading || !stripe}
+                className={`py-2 px-4 rounded text-center cursor-pointer w-full text-sm md:text-base ${(loading || !stripe || !elements)?'disabled':'bg-black text-white '}`}
+                disabled={loading || !stripe || !elements}
                 onClick={handleSubmit}>Pay ${total.toFixed(2)}</button>
         </>
     )

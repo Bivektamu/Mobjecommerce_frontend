@@ -25,6 +25,10 @@ input[type="number"] {
 
 @layer components {
  
+  .disabled {
+@apply bg-slate-200 text-slate-400 pointer-events-none
+  }
+
   .loader {
     width: 60px;
     aspect-ratio: 1;

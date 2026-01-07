@@ -10,8 +10,9 @@ import { addToast } from '../../../store/slices/toastSlice'
 const TotalSales = () => {
     const dispatch = useStoreDispatch()
     const { data, error, loading } = useQuery(GET_SALES_ANALYTICS, {
-        fetchPolicy: 'network-only'
+    pollInterval: 2000,
     })
+
 
     if (error) {
         const newToast: Toast = {

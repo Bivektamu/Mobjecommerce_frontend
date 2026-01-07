@@ -15,21 +15,22 @@ const RecentOrders = () => {
 
   const { data, error, loading } = useQuery(GET_ORDERS, {
     variables: { limit: 10 },
-    fetchPolicy: 'network-only'
+    pollInterval: 2000,
+
   })
   if (error) {
     console.log(error.networkError)
     const newToast: Toast = {
       id: v4(),
       variant: Toast_Vairant.WARNING,
-      msg:error.message
+      msg: error.message
     }
     dispatch?.(addToast(newToast))
   }
 
- 
+
   const orders = data?.orders
- if (loading || !orders) {
+  if (loading || !orders) {
     return <ProgressLoader />
   }
   return (

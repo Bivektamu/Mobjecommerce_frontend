@@ -11,8 +11,10 @@ import { stripTypename } from '@apollo/client/utilities'
 const SalesOverTime = () => {
     const dispatch = useStoreDispatch()
     const { data, error, loading } = useQuery(GET_SALES_OVER_TIME, {
-        fetchPolicy: 'network-only'
+        // fetchPolicy:'network-only',
+        pollInterval: 2000,
     })
+
 
     if (error) {
         const newToast: Toast = {
@@ -29,6 +31,8 @@ const SalesOverTime = () => {
 
 
     const salesOverTime = stripTypename(data?.salesOverTime)
+
+    console.log(salesOverTime)
     return (
         <div className="xl:col-span-4 col-span-full bg-white rounded-xl shadow">
             <p className="font-medium flex justify-between mb-4 items-center p-4 ">

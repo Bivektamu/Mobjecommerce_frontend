@@ -10,7 +10,7 @@ import { GoCheckbox } from 'react-icons/go';
 import { MdOutlineCheckBoxOutlineBlank } from 'react-icons/md';
 import { LiaSpinnerSolid } from "react-icons/lia";
 
-import {  BillingDetails, CheckOutDetails, OrderInput, Role, Status, } from '../../store/types'
+import { BillingDetails, CheckOutDetails, OrderInput, Role, Status, } from '../../store/types'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Preloader from '../../components/ui/Preloader'
 import { useMutation } from '@apollo/client'
@@ -28,6 +28,7 @@ const Checkout = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const [clientSecret, setClientSecret] = useState<string | null>(null)
+  const [disabled, setDisabled] = useState(false)
 
   const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!)
 
@@ -85,16 +86,28 @@ const Checkout = () => {
     if (billingCheck && shipping && user) {
       const { id, label, setAsDefault, ...rest } = shipping
       const billing = rest as BillingDetails
-      setCheckOutDetails(prev => ({ ...prev, billing: {
-        ...billing, 
-        name: user.firstName + ' ' + user.lastName,
-        email:user.email
-      } }))
+      setCheckOutDetails(prev => ({
+        ...prev, billing: {
+          ...billing,
+          name: user.firstName + ' ' + user.lastName,
+          email: user.email
+        }
+      }))
     }
     else if (!billingCheck) {
       setCheckOutDetails(prev => ({ ...prev, billing: null }))
     }
-  }, [shipping, billingCheck, user])
+  }, [shipping, billingCheck, user, loading])
+
+  useEffect(() => {
+    if (shipping && billing && !loading) {
+      setDisabled(false)
+    }
+    else {
+      setDisabled(true)
+    }
+
+  }, [loading, shipping, billing])
 
   const checkHandler = (e: ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation()
@@ -143,19 +156,22 @@ const Checkout = () => {
                 <br />
                 <br />
 
-                <div className=''>
-                  <label htmlFor="billingCheck" className="text-left font-medium text-slate-600 md:text-sm text-xs block mb-2 w-full flex items-center gap-2">
-                    Billing address same as shipping address
+                {
+                  shipping &&
+                  <div className=''>
+                    <label htmlFor="billingCheck" className="text-left font-medium text-slate-600 md:text-sm text-xs block mb-2 w-full flex items-center gap-2">
+                      Billing address same as shipping address
 
-                    {billingCheck ? <GoCheckbox className="size-6" /> : <MdOutlineCheckBoxOutlineBlank className="size-6" />}
-                  </label>
-                  <input
-                    onChange={e => checkHandler(e)}
-                    type="checkbox"
-                    id="billingCheck"
-                    name="billingCheck"
-                    className="appearance-none hidden" />
-                </div>
+                      {billingCheck ? <GoCheckbox className="size-6" /> : <MdOutlineCheckBoxOutlineBlank className="size-6" />}
+                    </label>
+                    <input
+                      onChange={e => checkHandler(e)}
+                      type="checkbox"
+                      id="billingCheck"
+                      name="billingCheck"
+                      className="appearance-none hidden" />
+                  </div>
+                }
 
                 {
                   !billingCheck ? <BillingForm clickHandler={clickHandler} setBilling={setCheckOutDetails} /> :
@@ -163,10 +179,10 @@ const Checkout = () => {
                       <br />
                       <br />
                       <button
-                        disabled={loading}
+                        disabled={disabled}
                         type="button"
                         onClick={clickHandler}
-                        className="relative w-full md:w-[200px] bg-black text-white py-2 px-4 rounded text-center cursor-pointer text-sm md:text-base mt-16">
+                        className={`relative w-full md:w-[200px]  py-2 px-4 rounded text-center cursor-pointer text-sm md:text-base mt-16 ${!disabled ? 'bg-black text-white' : 'disabled'}`}>
                         Continue
                         {loading && <LiaSpinnerSolid className='size-6 absolute right-4 top-0 bottom-0 m-auto animate-spin' />}
 

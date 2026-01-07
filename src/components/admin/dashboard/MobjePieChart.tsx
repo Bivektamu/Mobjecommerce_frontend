@@ -25,8 +25,10 @@ const COLOR_PALETTES = [
 const MobjePieChart = () => {
     const dispatch = useStoreDispatch()
     const { data, error, loading } = useQuery(GET_ORDERS_BY_CATEGORY, {
-        fetchPolicy: 'network-only'
+    pollInterval: 2000,
     })
+
+
     if (error) {
         const newToast: Toast = {
             id: v4(),

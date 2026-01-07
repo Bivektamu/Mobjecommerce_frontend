@@ -20,7 +20,7 @@ const DashBoard = () => {
 
   const dispatch = useStoreDispatch()
   const { data, error, loading } = useQuery(GET_LOW_STOCK_PRODUCTS, {
-    fetchPolicy: 'network-only'
+    pollInterval: 2000,
   })
 
   if (error) {
