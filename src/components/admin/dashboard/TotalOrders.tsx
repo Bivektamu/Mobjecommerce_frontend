@@ -6,12 +6,16 @@ import { v4 } from 'uuid'
 import { addToast } from '../../../store/slices/toastSlice'
 import ProgressLoader from '../../ui/ProgressLoader'
 import { useQuery } from '@apollo/client'
+import { useEffect } from 'react'
 
 const TotalOrders = () => {
     const dispatch = useStoreDispatch()
-    const { data, error, loading } = useQuery(GET_ORDER_ANALYTICS, {
-    pollInterval: 2000,
+    const { data, error, loading, stopPolling } = useQuery(GET_ORDER_ANALYTICS, {
+    pollInterval: 10000,
     })
+ useEffect(()=> {
+      return(()=>stopPolling())
+    }, [stopPolling])
 
 
     if (error) {

@@ -6,15 +6,19 @@ import { Toast, Toast_Vairant } from '../../../store/types'
 import { v4 } from 'uuid'
 import { addToast } from '../../../store/slices/toastSlice'
 import ProgressLoader from '../../ui/ProgressLoader'
+import { useEffect } from 'react'
 
 const ActiveCustomer = () => {
 
     const dispatch = useStoreDispatch()
-    const { data, error, loading } = useQuery(GET_USERS_ANALYTICS, {
-    pollInterval: 2000,
+    const { data, error, loading, stopPolling } = useQuery(GET_USERS_ANALYTICS, {
+    pollInterval: 10000,
     })
 
   
+    useEffect(()=> {
+      return(()=>stopPolling())
+    }, [stopPolling])
 
     if (error) {
         const newToast: Toast = {

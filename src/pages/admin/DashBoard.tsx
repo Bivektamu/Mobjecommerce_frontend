@@ -15,19 +15,24 @@ import { v4 } from 'uuid'
 import { addToast } from '../../store/slices/toastSlice'
 import SalesOverTime from '../../components/admin/dashboard/SalesOverTime'
 import ProgressLoader from '../../components/ui/ProgressLoader'
+import { useEffect } from 'react'
 
 const DashBoard = () => {
 
   const dispatch = useStoreDispatch()
-  const { data, error, loading } = useQuery(GET_LOW_STOCK_PRODUCTS, {
-    pollInterval: 2000,
+  const { data, error, loading, stopPolling } = useQuery(GET_LOW_STOCK_PRODUCTS, {
+    pollInterval: 10000,
   })
+
+  useEffect(() => {
+    return (() => stopPolling())
+  }, [stopPolling])
 
   if (error) {
     const newToast: Toast = {
       id: v4(),
       variant: Toast_Vairant.WARNING,
-      msg:error.message
+      msg: error.message
     }
     dispatch(addToast(newToast))
   }

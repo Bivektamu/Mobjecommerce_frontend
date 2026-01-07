@@ -7,17 +7,22 @@ import { addToast } from '../../../../store/slices/toastSlice'
 import ProgressLoader from '../../../ui/ProgressLoader'
 import UserInfo from './UserInfo'
 import { NavLink } from 'react-router-dom'
+import { useEffect } from 'react'
 
 const RecentOrders = () => {
 
   const dispatch = useStoreDispatch()
 
 
-  const { data, error, loading } = useQuery(GET_ORDERS, {
+  const { data, error, loading, stopPolling } = useQuery(GET_ORDERS, {
     variables: { limit: 10 },
-    pollInterval: 2000,
+    pollInterval: 10000,
 
   })
+  useEffect(()=> {
+    return(()=>stopPolling())
+  }, [])
+
   if (error) {
     console.log(error.networkError)
     const newToast: Toast = {

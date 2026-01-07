@@ -7,14 +7,18 @@ import { v4 } from 'uuid'
 import { addToast } from '../../../store/slices/toastSlice'
 import ProgressLoader from '../../ui/ProgressLoader'
 import { stripTypename } from '@apollo/client/utilities'
+import { useEffect } from 'react'
 
 const SalesOverTime = () => {
     const dispatch = useStoreDispatch()
-    const { data, error, loading } = useQuery(GET_SALES_OVER_TIME, {
+    const { data, error, loading, stopPolling } = useQuery(GET_SALES_OVER_TIME, {
         // fetchPolicy:'network-only',
-        pollInterval: 2000,
+        pollInterval: 10000,
     })
 
+ useEffect(()=> {
+      return(()=>stopPolling())
+    }, [stopPolling])
 
     if (error) {
         const newToast: Toast = {

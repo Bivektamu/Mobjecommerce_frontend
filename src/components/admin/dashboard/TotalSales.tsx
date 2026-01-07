@@ -6,12 +6,18 @@ import { Toast, Toast_Vairant } from '../../../store/types'
 import { v4 } from 'uuid'
 import { useStoreDispatch } from '../../../store'
 import { addToast } from '../../../store/slices/toastSlice'
+import { useEffect } from 'react'
 
 const TotalSales = () => {
     const dispatch = useStoreDispatch()
-    const { data, error, loading } = useQuery(GET_SALES_ANALYTICS, {
-    pollInterval: 2000,
+    const { data, error, loading, stopPolling } = useQuery(GET_SALES_ANALYTICS, {
+    pollInterval: 10000,
     })
+
+
+    useEffect(()=> {
+      return(()=>stopPolling())
+    }, [stopPolling])
 
 
     if (error) {
