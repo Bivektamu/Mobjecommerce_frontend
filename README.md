@@ -2,6 +2,7 @@
 
 The **Mobje Commerce Frontend** is a modern, responsive e-commerce web application built with **React** and **TypeScript**, providing a seamless shopping experience.  
 It consumes the GraphQL backend API to manage products, orders, users, and reviews in real time.
+Live Frontend: https://mobjecommerce.netlify.app/
 
 ---
 
