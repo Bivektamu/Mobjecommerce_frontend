@@ -6,13 +6,16 @@ import { useAuth, getAuthStatus, logInGoogleUser } from '../store/slices/authSli
 import BreadCrumbs from '../components/layout/BreadCrumbs'
 import { useLocation, useNavigate } from 'react-router-dom'
 import CustomNavLink from '../components/CustomNavLink'
-import {  useCart } from '../store/slices/cartSlice'
+import { useCart } from '../store/slices/cartSlice'
 import PageWrapper from '../components/ui/PageWrapper'
 import LoginForm from '../components/forms/LoginForm';
-import { CredentialResponse, GoogleLogin } from '@react-oauth/google'
 import { addToast } from '../store/slices/toastSlice'
 import { v4 } from 'uuid'
 import { getToastVariant } from '../utils/helpers'
+import Preloader from '../components/ui/Preloader'
+import useGoogleAuth from '../auth/useGoogleAuth'
+import { FaGoogle } from 'react-icons/fa'
+
 const LogIn = () => {
   const location = useLocation()
   const mergeCart = location?.state?.mergeCart
@@ -21,6 +24,9 @@ const LogIn = () => {
   const dispatch = useStoreDispatch()
   const { isLoggedIn, user, status } = useAuth()
   const { cart } = useCart()
+
+  const { login, loading, data, error } = useGoogleAuth()
+
 
   useEffect(() => {
     if (status === Status.IDLE) {
@@ -32,50 +38,43 @@ const LogIn = () => {
 
         if (mergeCart) {
           return navigate('/cart', {
-            state: {mergeCart}
+            state: { mergeCart }
           })
 
-       
+
         }
         return navigate('/')
       }
     }
   }, [status, dispatch, isLoggedIn, user, navigate, cart, mergeCart])
 
-
-  const googleLoginHandler = (credentialResponse: CredentialResponse) => {
-
-    const credential = (credentialResponse.credential)
-
+  useEffect(() => {
     const toast: Toast = {
       id: v4(),
       variant: Toast_Vairant.SUCCESS,
       msg: 'Sign In successful'
     }
 
-
-    dispatch(logInGoogleUser(credential as string))
-      .unwrap()
-      .then(() => {
-        dispatch(addToast(toast))
-
-      })
-      .catch((error) => {
-        toast.msg = error.message
-        toast.variant = getToastVariant(error.code)
-        dispatch(addToast(toast))
-      })
-  }
-
-  const googleErrorHandler = () => {
-    const toast: Toast = {
-      id: v4(),
-      variant: Toast_Vairant.DANGER,
-      msg: 'Google sign in error'
+    if (data) {
+      dispatch(logInGoogleUser(data))
+        .unwrap()
+        .then(() => {
+          dispatch(addToast(toast))
+        })
+        .catch((error) => {
+          toast.msg = error.message
+          toast.variant = getToastVariant(error.code)
+          dispatch(addToast(toast))
+        })
     }
-    dispatch(addToast(toast))
+    else if (error) {
+      toast.variant = Toast_Vairant.DANGER,
+        toast.msg = 'Google sign in error'
+      dispatch(addToast(toast))
+    }
+  }, [data, error, dispatch])
 
-  }
+  if (loading) return <Preloader />
 
   return (
     <PageWrapper>
@@ -90,11 +89,15 @@ const LogIn = () => {
         <div className="md:w-[384px] w-full  max-w-full bg-white pt-8 pb-12 md:px-8 px-4 rounded-lg">
           <LoginForm />
           <br />
-          <GoogleLogin
-            onSuccess={googleLoginHandler}
-            onError={googleErrorHandler}
-            useOneTap
-          />
+
+          <button
+          className='border-black border py-2 px-4 rounded w-full text-sm md:text-base flex items-center justify-center gap-4'
+            onClick={login}
+          >
+            <FaGoogle />
+            Continue on Google
+          </button>
+
           <p className="text-sm mt-8 text-center text-slate-500">
             Don't have an account? <CustomNavLink to='/signup' cssClass='font-semibold text-black'>Sign up</CustomNavLink>
           </p>
