@@ -13,7 +13,7 @@ const OrderSummary = ({ order }:Props) => {
 
     return (
         <div className="xl:w-1/3 md:w-1/2 w-full border-slate-200 border-[1px] md:border-[0] md:border-l-[1px]  md:pl-16 p-4 md:p-0">
-            <p className="font-bold md:text-xl text-lg md:mb-12 mb-4">Order Summary</p>
+            <p className="font-semibold md:text-xl text-lg md:mb-12 mb-4">Order Summary</p>
             <div className=" md:mb-12 mb-4">
                 {
                     order.items.map(item => <OrderItem key={`${item.productId}${item.size}${item.color}`} item={item} />)

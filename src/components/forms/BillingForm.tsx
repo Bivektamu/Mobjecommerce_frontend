@@ -1,21 +1,21 @@
-import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react"
-import {  BillingDetails, CheckOutDetails, FormError, ValidateSchema } from "../../store/types"
+import { ChangeEvent, FormEvent, useEffect, useState } from "react"
+import { BillingDetails, FormError, ValidateSchema } from "../../store/types"
 import validateForm from "../../utils/validate"
 import { useUser } from "../../store/slices/userSlice";
 
 interface Props {
-    clickHandler: ()=>void
-    setBilling:Dispatch<SetStateAction<CheckOutDetails>>
+    setBilling: (billing: BillingDetails) => void,
+    closeModal: () => void,
 }
 
 
-const BillingForm = ({ clickHandler, setBilling }: Props) => {
+const BillingForm = ({ setBilling, closeModal }: Props) => {
 
-  const { user } = useUser()
+    const { user } = useUser()
 
     const [formData, setFormData] = useState<BillingDetails>({
-        name:'',
-        email:'',
+        name: '',
+        email: '',
         street: '',
         postcode: '',
         city: '',
@@ -56,7 +56,7 @@ const BillingForm = ({ clickHandler, setBilling }: Props) => {
 
     const postCodeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         // e.stopPropagation()
-        if(!e.target.value) {
+        if (!e.target.value) {
             setFormData(prev => ({
                 ...prev,
                 postcode: ''
@@ -77,7 +77,7 @@ const BillingForm = ({ clickHandler, setBilling }: Props) => {
 
         const validateSchema: ValidateSchema<unknown>[] =
             [
-            
+
                 {
                     name: 'street',
                     type: 'string',
@@ -118,19 +118,18 @@ const BillingForm = ({ clickHandler, setBilling }: Props) => {
             return setFormErrors(prev => ({ ...prev, ...errors }))
         }
 
-        const billing:BillingDetails = {...formData,  name: user!.firstName + ' '+ user!.lastName,
-            email:user!.email}
+        const billing: BillingDetails = {
+            ...formData, name: user!.firstName + ' ' + user!.lastName,
+            email: user!.email
+        }
 
-        setBilling(prev=>({...prev, billing: {...formData, ...billing}}))
-
-        clickHandler()
-        return
-    
+        setBilling(billing)
+        closeModal()
     }
 
     return (
         <div className="pt-8 border-t mt-8">
-            <h4 className="text-left font-medium  text-xl mb-2">
+            <h4 className="text-left font-semibold md:text-xl text-lg mb-2">
                 Billing Address
             </h4>
             <p className="text-slate-500 text-xs mb-6 text-left font-light">

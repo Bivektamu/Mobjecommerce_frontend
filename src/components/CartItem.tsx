@@ -1,6 +1,6 @@
 import { ChangeEvent, MouseEvent, ReactElement, useEffect, useState } from 'react'
 import { Cart, Colour, Product, Toast, Toast_Vairant } from '../store/types'
-import { getProducts, useProduct } from '../store/slices/productSlice'
+import { useProduct } from '../store/slices/productSlice'
 import { useStoreDispatch } from '../store'
 import SquareLoader from './ui/SquareLoader'
 import TextLoader from './ui/TextLoader'
@@ -27,15 +27,11 @@ const CartItem = ({ cartItem }: Props) => {
 
 
     useEffect(() => {
-        dispatch(getProducts())
-    }, [])
-
-    useEffect(() => {
         if (products.length > 0) {
             const productExist: Product | undefined = products.find((p: Product) => p.id === cartItem.productId)
             setProduct(productExist || null)
         }
-    }, [products])
+    }, [products, cartItem])
 
     useEffect(() => {
         dispatch(updateCartQuantity({
@@ -43,7 +39,7 @@ const CartItem = ({ cartItem }: Props) => {
             quantity: quantity || 0
         }))
 
-    }, [quantity])
+    }, [quantity, dispatch, cartItem])
 
     useEffect(() => {
         if (modalContent) {
@@ -91,8 +87,8 @@ const CartItem = ({ cartItem }: Props) => {
             <div className='text-center'>
                 <p className="mb-6 font-medium md:text-sm text-xs">Are you sure you want to delete this product?</p>
                 <div className="flex gap-x-4 justify-center">
-                    <button className='bg-black text-white px-4 py-2 rounded' onClick={e => closeModal(e)}>Cancel</button>
-                    <button className='border-slate-600 border px-4 py-2 rounded' onClick={() => deleteCartItem(cartItem.id)}>Delete</button>
+                    <button className='border-slate-600 border px-4 py-2 rounded' onClick={e => closeModal(e)}>Cancel</button>
+                    <button className='bg-black text-white  px-4 py-2 rounded' onClick={() => deleteCartItem(cartItem.id)}>Delete</button>
                 </div>
             </div>
         )
@@ -161,8 +157,8 @@ const CartItem = ({ cartItem }: Props) => {
                             </div>
                         </fieldset>
                 }
-                <button className='w-10 h-10 bg-cultured' onClick={deleteHandler}>
-                    <Close classN='bg-black w-4' />
+                <button className='w-10 h-10 bg-cultured flex justify-center items-center' onClick={deleteHandler}>
+                    <Close classN='bg-black w-4 relative' />
                 </button>
 
             </div>

@@ -119,7 +119,7 @@ const Cart = () => {
       <section className='w-full bg-white flex justify-center items-center px-4'>
         <div className="container pt-16 lg:pb-36 pb-16 flex lg:gap-28 gap-12 flex-col lg:flex-row">
           <div className="lg:w-2/3 w-full">
-            <p className="font-bold md:text-xl text-lg pb-4 border-b-[1px] border-slate-200 md:mb-12 mb-6">Your Cart</p>
+            <p className="font-semibold md:text-xl text-lg pb-4 border-b-[1px] border-slate-200 md:mb-12 mb-6">Your Cart</p>
             {
               userCart.length < 1 ?
                 <p className='md:text-sm text-xs'>
@@ -131,7 +131,7 @@ const Cart = () => {
           {
             status !== Status.FULFILLED ? <SquareLoader square={1} squareClass='lg:w-1/3 w-full h-[400px]' /> : newOrder && newOrder?.subTotal > 0 &&
               <div className="lg:w-1/3 w-full border-slate-200 border-[1px] p-6">
-                <p className="font-bold md:text-xl text-lg md:mb-12 mb-6">Order Summary</p>
+                <p className="font-semibold md:text-xl text-lg md:mb-12 mb-6">Order Summary</p>
                 <p className="flex justify-between mb-4">
                   <span className=" text-gray-500 font-medium">Subtotal</span>
                   <span className='font-medium'>${newOrder.subTotal}</span>
@@ -171,8 +171,19 @@ const Cart = () => {
                           }
                         }
                         cssClass='bg-black text-white py-3 px-4 rounded text-center cursor-pointer md:text-sm text-xs w-full mb-2 block'>Sign in to checkout</CustomNavLink>
-                      <p className="md:text-sm text-xs mb-8 text-center text-slate-500 italic">
-                        or <CustomNavLink to='/signup?cart=true' cssClass='font-semibold'>Sign up</CustomNavLink>
+                      <p className="mb-8 text-center ">
+                        <span className='text-slate-500 italic md:text-sm text-xs'>or</span>
+
+                        <CustomNavLink
+                          state={
+                            {
+                              order: newOrder
+                            }
+                          }
+                          to="/checkout"
+                          cssClass='border border-black text-black py-3 px-4 rounded text-center cursor-pointer md:text-sm text-xs w-full mb-2 block'>Checkout as guest</CustomNavLink>
+
+                        {/* <CustomNavLink to='/signup?cart=true' cssClass='font-semibold'>Sign up</CustomNavLink> */}
                       </p>
                     </>
                 }

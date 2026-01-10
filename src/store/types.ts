@@ -2,15 +2,15 @@ import { JwtPayload } from "jwt-decode"
 import { Types } from "mongoose"
 
 export interface Address {
-    id:string | null,
-    label:string,
-    building?:string,
+    id: string | null,
+    label: string,
+    building?: string,
     street: string,
     city: string,
     postcode: string,
     country: string,
     state: string,
-    setAsDefault:boolean,
+    setAsDefault: boolean,
 }
 export interface User {
     id: string,
@@ -119,7 +119,7 @@ export interface GoogleLoginInput {
 
 
 export interface AuthStatusResponse {
-    accessToken?:string,
+    accessToken?: string,
     isLoggedIn: boolean,
     user: AuthUser
 }
@@ -300,7 +300,7 @@ export interface OrderItem {
     quantity: number,
     size: Size,
     price?: number,
-    imgUrl?:string
+    imgUrl?: string
 }
 
 
@@ -403,13 +403,20 @@ export interface LowStockProduct {
 }
 
 
-export interface BillingDetails extends Omit<Address, 'id'|'setaAsDefault' | 'label'> {
-    name:string,
-    email:string
+export interface BillingDetails extends Omit<Address, 'id' | 'setaAsDefault' | 'label'> {
+    name: string,
+    email: string
 }
 
 export interface CheckOutDetails {
-  shipping: Address | null,
-  billing: BillingDetails | null,
-  items: OrderItem[]
+    email?: string,
+    shipping: Address | null,
+    billing: BillingDetails | null,
+    items: OrderItem[]
+}
+
+export interface PaymentIntent {
+    items: OrderItem[],
+    shippingAddress: Address,
+    
 }

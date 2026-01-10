@@ -84,7 +84,7 @@ const PaymentForm = ({ billing, total }: Props) => {
     return (
 
         <>
-            <h2 className="font-bold md:text-xl text-lg lg:mb-12 md:mb-12 mb-6">Payment Method</h2>
+            <h2 className="font-semibold md:text-xl text-lg lg:mb-12 md:mb-12 mb-6">Payment Method</h2>
             <p className="text-slate-500 text-xs  text-left font-light mb-3">
                 All transactions are secure and encrypted.
             </p>

@@ -200,14 +200,21 @@ function AddToCartForm({ product }: Props) {
                 dispatch(updateCartQuantity(productToAdd))
             }
             else {
-                const productToAdd = { ...formData, id: (user?.id||'') + productId +  color + size }
+                const productToAdd = { ...formData, id: (user?.id || '') + productId + color + size }
                 dispatch(addToCart(productToAdd))
             }
         }
         else {
-            const productToAdd = { ...formData, id: (user?.id||'') + productId +  color + size }
+            const productToAdd = { ...formData, id: (user?.id || '') + productId + color + size }
             dispatch(addToCart({ ...productToAdd }))
         }
+
+        setFormData(prev => ({
+            ...prev,
+            color: null,
+            size: null,
+            quantity: 0,
+        }))
     }
 
     return (

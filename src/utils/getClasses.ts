@@ -21,7 +21,7 @@ const getClasses = (colour: Colour) => {
             break;
         case Colour.WHITE:
             bgClass = 'bg-regal-white'
-            borderClass = 'border-regal-white'
+            borderClass = 'border-cultured'
             break;
 
         default:

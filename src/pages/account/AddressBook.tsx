@@ -25,7 +25,7 @@ const AddressBook = () => {
 
     return (
         <div className="w-full">
-            <p className="font-bold md:text-xl text-lg  border-slate-200 lg:mb-12 md:mb-12 mb-6">Shipping Address</p>
+            <p className="font-semibold md:text-xl text-lg  border-slate-200 lg:mb-12 md:mb-12 mb-6">Shipping Address</p>
 
             {loading ? <ParagraphLoader /> : (
                 <div className='grid grid-cols-1 gap-6'>

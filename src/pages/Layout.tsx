@@ -23,7 +23,10 @@ const Layout = () => {
       {
         location.pathname.includes("admin") ? <Outlet /> :
           <>
-            <Header />
+            {
+              !location.pathname.includes("checkout") && <Header />
+            }
+
             <AnimatePresence mode="wait">
 
               <main id="main" key={location.pathname}>
@@ -31,8 +34,15 @@ const Layout = () => {
                 <Outlet />
               </main>
             </AnimatePresence >
-            <NewsLetter />
-            <Footer />
+
+
+            {
+              !location.pathname.includes("checkout") && <>
+                <NewsLetter />
+                <Footer />
+              </>
+            }
+
           </>
 
       }
