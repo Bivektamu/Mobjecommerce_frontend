@@ -16,7 +16,7 @@ const RecentOrders = () => {
 
   const { data, error, loading, stopPolling } = useQuery(GET_ORDERS, {
     variables: { limit: 10 },
-    pollInterval: 10000,
+    pollInterval: 5000,
 
   })
   useEffect(()=> {

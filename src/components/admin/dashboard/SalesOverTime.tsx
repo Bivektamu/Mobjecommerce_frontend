@@ -13,7 +13,7 @@ const SalesOverTime = () => {
     const dispatch = useStoreDispatch()
     const { data, error, loading, stopPolling } = useQuery(GET_SALES_OVER_TIME, {
         // fetchPolicy:'network-only',
-        pollInterval: 10000,
+        pollInterval: 5000,
     })
 
  useEffect(()=> {

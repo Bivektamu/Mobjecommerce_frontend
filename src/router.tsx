@@ -4,8 +4,6 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 
 import Preloader from "./components/ui/Preloader"
 import ProgressLoader from "./components/ui/ProgressLoader"
-import Private from "./pages/Private"
-
 const DashBoard = lazy(() => import("./pages/admin/DashBoard"))
 const Products = lazy(() => import("./pages/admin/Products"))
 const SignIn = lazy(() => import("./pages/admin/SignIn"))
@@ -29,7 +27,7 @@ const WishList = lazy(() => import("./pages/account/WishList"))
 
 const PageNotFound = lazy(() => import("./pages/PageNotFound"))
 const Checkout = lazy(() => import("./pages/checkout/CheckOut"))
-const Success = lazy(() => import("./pages/checkout/Success"))
+const OrderConfirmation = lazy(() => import("./pages/checkout/OrderConfirmation"))
 const Home = lazy(() => import("./pages/Home"))
 const Layout = lazy(() => import("./pages/Layout"))
 const Product = lazy(() => import("./pages/collections/ProductDetails"))
@@ -90,9 +88,9 @@ const router = createBrowserRouter([
                 path: '/checkout',
                 children: [
                     {
-                        path: 'success',
+                        path: 'order-confirmation',
                         element: <Suspense fallback={< Preloader />} >
-                            <Success />
+                            <OrderConfirmation />
                         </Suspense>,
                     },
                     {
@@ -102,10 +100,10 @@ const router = createBrowserRouter([
                         </Suspense>,
                     },
                     {
-                        path:'index',
-                        element:<Suspense fallback={< Preloader />}>
-                    <Checkout />
-                </Suspense>,
+                        index: true,
+                        element: <Suspense fallback={< Preloader />}>
+                            <Checkout />
+                        </Suspense>,
                     }
                 ]
 

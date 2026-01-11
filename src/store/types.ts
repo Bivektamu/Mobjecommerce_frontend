@@ -409,7 +409,7 @@ export interface BillingDetails extends Omit<Address, 'id' | 'setaAsDefault' | '
 }
 
 export interface CheckOutDetails {
-    email?: string,
+    email: string,
     shipping: Address | null,
     billing: BillingDetails | null,
     items: OrderItem[]

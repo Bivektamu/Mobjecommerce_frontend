@@ -27,7 +27,7 @@ const ShippingAndBilling = memo(({ setCheckOutDetails, checkoutDetails }: Props)
     const [selectedOption, setSelectedOption] = useState('Choose shipping address')
     const [billingCheck, setBillingCheck] = useState(true);
 
-    const { shipping, billing, items, email } = checkoutDetails
+    const { shipping, billing, email } = checkoutDetails
 
 
     useEffect(() => {

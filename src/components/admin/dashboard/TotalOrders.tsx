@@ -11,7 +11,7 @@ import { useEffect } from 'react'
 const TotalOrders = () => {
     const dispatch = useStoreDispatch()
     const { data, error, loading, stopPolling } = useQuery(GET_ORDER_ANALYTICS, {
-    pollInterval: 10000,
+    pollInterval: 5000,
     })
  useEffect(()=> {
       return(()=>stopPolling())

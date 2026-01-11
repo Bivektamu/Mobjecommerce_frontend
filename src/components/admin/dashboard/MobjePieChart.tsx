@@ -26,7 +26,7 @@ const COLOR_PALETTES = [
 const MobjePieChart = () => {
     const dispatch = useStoreDispatch()
     const { data, error, loading, stopPolling } = useQuery(GET_ORDERS_BY_CATEGORY, {
-    pollInterval: 10000,
+    pollInterval: 5000,
     })
 
     useEffect(()=> {

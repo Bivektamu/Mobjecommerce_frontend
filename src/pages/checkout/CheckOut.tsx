@@ -40,10 +40,6 @@ const Checkout = () => {
   })
 
 
-  console.log(clientSecret.current)
-
-
-
   useEffect(() => {
     if (authStatus === Status.IDLE)
       dispatch(getAuthStatus())
@@ -58,6 +54,7 @@ const Checkout = () => {
 
   const [checkoutDetails, setCheckOutDetails] = useState<CheckOutDetails>({
     shipping: null,
+    email:'',
     billing: null,
     items: []
   })
@@ -70,9 +67,9 @@ const Checkout = () => {
 
 
   useEffect(() => {
-    // if (!newOrder || Object.keys(newOrder).length < 1 || newOrder.items.length < 1) {
-    //   return navigate('/')
-    // }
+    if (!newOrder || Object.keys(newOrder).length < 1 || newOrder.items.length < 1) {
+      return navigate('/')
+    }
     const items = structuredClone(newOrder.items).map(({ imgUrl, price, ...rest }) => rest)
     setCheckOutDetails(prev => ({ ...prev, items }))
   }, [newOrder, navigate])

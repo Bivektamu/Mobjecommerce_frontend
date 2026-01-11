@@ -60,7 +60,7 @@ const ShippingForm = ({ addressId, closeModal, setShipping }: Props) => {
         postcode: '',
         city: '',
         state: '',
-        label: '',
+        label: user ? '' : 'guest',
         building: '',
         country: '',
         setAsDefault: false
@@ -224,14 +224,17 @@ const ShippingForm = ({ addressId, closeModal, setShipping }: Props) => {
             }
             <form className="grid md:grid-cols-2 grid-cols-1  gap-x-10 gap-y-6" onSubmit={onSumbitHandler}>
 
-                <fieldset className="md:col-span-2 col-span-1">
-                    <label htmlFor="label" className="capitalize text-left font-medium text-slate-600 md:text-sm text-xs block mb-2 w-full">Label</label>
-                    <input
-                        onChange={e => onChangeHandler(e)}
-                        type="text" id="label" name="label" 
-                        className="border-[1px] outline-none block px-3 bg-slate-50 py-2 rounded w-full md:text-sm text-xs placeholder:font-normal capitalize" value={label} placeholder="e.g. Home, Office, WareHouse" />
-                    {formErrors.label && <span className='text-red-500 text-xs text-left block mt-2'>{formErrors.label}</span>}
-                </fieldset>
+                {
+                    user &&
+                    <fieldset className="md:col-span-2 col-span-1">
+                        <label htmlFor="label" className="capitalize text-left font-medium text-slate-600 md:text-sm text-xs block mb-2 w-full">Label</label>
+                        <input
+                            onChange={e => onChangeHandler(e)}
+                            type="text" id="label" name="label"
+                            className="border-[1px] outline-none block px-3 bg-slate-50 py-2 rounded w-full md:text-sm text-xs placeholder:font-normal capitalize" value={label} placeholder="e.g. Home, Office, WareHouse" />
+                        {formErrors.label && <span className='text-red-500 text-xs text-left block mt-2'>{formErrors.label}</span>}
+                    </fieldset>
+                }
 
                 <fieldset className="md:col-span-2 col-span-1">
                     <label htmlFor="building" className="capitalize text-left font-medium text-slate-600 md:text-sm text-xs block mb-2 w-full">Building / Apt / Suite</label>
@@ -256,7 +259,7 @@ const ShippingForm = ({ addressId, closeModal, setShipping }: Props) => {
                     <input
                         onChange={e => onChangeHandler(e)}
                         placeholder="Sydney"
-                        type="text" id="city" name="city" className="border-[1px] outline-none block px-3 bg-slate-50 py-2 rounded w-full md:text-sm text-xs placeholder:font-normal" value={city} />
+                        type="text" id="city" name="city" className="border-[1px] outline-none block px-3 bg-slate-50 py-2 rounded w-full md:text-sm text-xs placeholder:font-normal capitalize" value={city} />
                     {formErrors.city && <span className='text-red-500 text-xs text-left block mt-2'>{formErrors.city}</span>}
                 </fieldset>
                 <fieldset className="">
@@ -264,7 +267,7 @@ const ShippingForm = ({ addressId, closeModal, setShipping }: Props) => {
                     <input
                         onChange={e => onChangeHandler(e)}
                         placeholder="NSW"
-                        type="text" id="state" name="state" className="border-[1px] outline-none block px-3 bg-slate-50 py-2 rounded w-full md:text-sm text-xs placeholder:font-normal" value={state} />
+                        type="text" id="state" name="state" className="border-[1px] outline-none block px-3 bg-slate-50 py-2 rounded w-full md:text-sm text-xs placeholder:font-normal uppercase" value={state} />
                     {formErrors.state && <span className='text-red-500 text-xs text-left block mt-2'>{formErrors.state}</span>}
 
                 </fieldset>
@@ -283,7 +286,7 @@ const ShippingForm = ({ addressId, closeModal, setShipping }: Props) => {
                     <input
                         onChange={e => onChangeHandler(e)}
                         placeholder="Australia"
-                        type="text" id="country" name="country" className="border-[1px] outline-none block px-3 bg-slate-50 py-2 rounded w-full md:text-sm text-xs placeholder:font-normal" value={country} />
+                        type="text" id="country" name="country" className="border-[1px] outline-none block px-3 bg-slate-50 py-2 rounded w-full md:text-sm text-xs placeholder:font-normal capitalize" value={country} />
                     {formErrors.country && <span className='text-red-500 text-xs text-left block mt-2'>{formErrors.country}</span>}
 
                 </fieldset>

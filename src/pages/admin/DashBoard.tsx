@@ -21,7 +21,7 @@ const DashBoard = () => {
 
   const dispatch = useStoreDispatch()
   const { data, error, loading, stopPolling } = useQuery(GET_LOW_STOCK_PRODUCTS, {
-    pollInterval: 10000,
+    pollInterval: 5000,
   })
 
   useEffect(() => {

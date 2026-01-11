@@ -12,7 +12,7 @@ const ActiveCustomer = () => {
 
     const dispatch = useStoreDispatch()
     const { data, error, loading, stopPolling } = useQuery(GET_USERS_ANALYTICS, {
-    pollInterval: 10000,
+    pollInterval: 5000,
     })
 
   

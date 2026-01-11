@@ -11,7 +11,7 @@ import { useEffect } from 'react'
 const TotalSales = () => {
     const dispatch = useStoreDispatch()
     const { data, error, loading, stopPolling } = useQuery(GET_SALES_ANALYTICS, {
-    pollInterval: 10000,
+    pollInterval: 5000,
     })
 
 
