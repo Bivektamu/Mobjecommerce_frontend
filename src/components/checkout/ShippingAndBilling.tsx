@@ -85,7 +85,7 @@ const ShippingAndBilling = memo(({ setCheckOutDetails, checkoutDetails }: Props)
 
     const guestBillingHandler = () => {
         setModalContent(
-            <BillingForm closeModal={() => setModalContent(null)} setBilling={(billing: BillingDetails) => setCheckOutDetails(prev => ({
+            <BillingForm email={email || null} closeModal={() => setModalContent(null)} setBilling={(billing: BillingDetails) => setCheckOutDetails(prev => ({
                 ...prev,
                 billing
             }))} />

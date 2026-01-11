@@ -6,10 +6,11 @@ import { useUser } from "../../store/slices/userSlice";
 interface Props {
     setBilling: (billing: BillingDetails) => void,
     closeModal: () => void,
+    email:string | null
 }
 
 
-const BillingForm = ({ setBilling, closeModal }: Props) => {
+const BillingForm = ({ setBilling, closeModal, email }: Props) => {
 
     const { user } = useUser()
 
@@ -25,6 +26,27 @@ const BillingForm = ({ setBilling, closeModal }: Props) => {
     } as BillingDetails)
 
     const [formErrors, setFormErrors] = useState<FormError>({})
+
+    useEffect(()=> {
+        if(email) {
+            setFormData(prev=>({
+                ...prev,
+                name:'guest',
+                email
+            }))
+        }
+    }, [email])
+
+    
+    useEffect(()=> {
+        if(user) {
+            setFormData(prev=>({
+                ...prev,
+                name: user.firstName +' '+user.lastName,
+                email: user.email
+            }))
+        }
+    }, [user])
 
     // code to remove error info when fields are typed
     useEffect(() => {
@@ -118,12 +140,7 @@ const BillingForm = ({ setBilling, closeModal }: Props) => {
             return setFormErrors(prev => ({ ...prev, ...errors }))
         }
 
-        const billing: BillingDetails = {
-            ...formData, name: user!.firstName + ' ' + user!.lastName,
-            email: user!.email
-        }
-
-        setBilling(billing)
+        setBilling(formData)
         closeModal()
     }
 

@@ -32,14 +32,18 @@ const cartSlice = createSlice({
             localStorage.setItem('cart', JSON.stringify(state.cart))
         },
         deleteCart: (state, action) => {
-
             const carts = state.cart.filter(cart => cart.id !== action.payload)
-
             state.cart = carts
             localStorage.setItem('cart', JSON.stringify(state.cart))
         },
         deleteCartByCustomerId: (state, action) => {
-            const carts = state.cart.filter(cart => cart.userId !== action.payload)
+            let carts = state.cart
+            if(action.payload === 'guest') {
+                carts = state.cart.filter(cart => cart.userId)
+            }
+            else {
+                carts = state.cart.filter(cart => cart.userId !== action.payload)
+            }
             state.cart = carts
             localStorage.setItem('cart', JSON.stringify(state.cart))
         },

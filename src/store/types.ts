@@ -418,5 +418,7 @@ export interface CheckOutDetails {
 export interface PaymentIntent {
     items: OrderItem[],
     shippingAddress: Address,
+    billingAddress: BillingDetails,
+    email?:string
     
 }

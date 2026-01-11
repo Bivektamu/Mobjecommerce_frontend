@@ -7,7 +7,7 @@ import { loadStripe } from '@stripe/stripe-js'
 
 import { LiaSpinnerSolid } from "react-icons/lia";
 
-import { CheckOutDetails, OrderInput, Status, ValidateSchema, } from '../../store/types'
+import { CheckOutDetails, OrderInput, PaymentIntent, Status, ValidateSchema, } from '../../store/types'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Preloader from '../../components/ui/Preloader'
 import { useMutation } from '@apollo/client'
@@ -40,6 +40,8 @@ const Checkout = () => {
   })
 
 
+  console.log(clientSecret.current)
+
 
 
   useEffect(() => {
@@ -68,9 +70,9 @@ const Checkout = () => {
 
 
   useEffect(() => {
-    if (!newOrder || Object.keys(newOrder).length < 1 || newOrder.items.length < 1) {
-      return navigate('/')
-    }
+    // if (!newOrder || Object.keys(newOrder).length < 1 || newOrder.items.length < 1) {
+    //   return navigate('/')
+    // }
     const items = structuredClone(newOrder.items).map(({ imgUrl, price, ...rest }) => rest)
     setCheckOutDetails(prev => ({ ...prev, items }))
   }, [newOrder, navigate])
@@ -79,18 +81,6 @@ const Checkout = () => {
 
   const { shipping, billing, items, email } = checkoutDetails
 
-  useEffect(() => {
-    if (billing && user) {
-      setCheckOutDetails(prev => ({
-        ...prev, billing: {
-          ...billing,
-          name: user.firstName + ' ' + user.lastName,
-          email: user.email
-        }
-      }))
-    }
-
-  }, [billing, user])
 
   useEffect(() => {
     if (shipping && billing && !loading) {
@@ -125,17 +115,21 @@ const Checkout = () => {
       }]
       if (!user) {
         const error = validateForm(validateSchema)
-        return setEmailError(error.email)
+        console.log()
+        if (Object.keys(error).length > 0)
+          return setEmailError(error.email)
       }
 
       if (!clientSecret.current) {
-        const input:PaymentIntent = {
+        const input: PaymentIntent = {
           items,
           shippingAddress: shipping,
+          billingAddress: billing,
         }
-        if(email) {
+        if (email) {
           input.email = email
         }
+        console.log(input)
         createPaymentIntent({
           variables: {
             input
@@ -145,7 +139,6 @@ const Checkout = () => {
     }
   }
 
-  console.log(user)
   if (!newOrder || status === Status.PENDING)
     return <Preloader />
 

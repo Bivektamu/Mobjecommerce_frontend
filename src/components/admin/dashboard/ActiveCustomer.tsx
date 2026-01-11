@@ -37,7 +37,7 @@ const ActiveCustomer = () => {
     return (
         <div className='bg-white p-4 rounded-xl text-sm shadow'>
             <p className="font-medium text-slate-600 flex justify-between mb-4 items-center">
-                <span>Active Customer</span>
+                <span>New Customers</span>
                 <span className="bg-slate-500 p-2 rounded-lg text-white">
                     <IoPeople />
                 </span>

@@ -88,9 +88,6 @@ const router = createBrowserRouter([
             },
             {
                 path: '/checkout',
-                element: <Suspense fallback={< Preloader />}>
-                    <Checkout />
-                </Suspense>,
                 children: [
                     {
                         path: 'success',
@@ -104,6 +101,12 @@ const router = createBrowserRouter([
                             <Fail />
                         </Suspense>,
                     },
+                    {
+                        path:'index',
+                        element:<Suspense fallback={< Preloader />}>
+                    <Checkout />
+                </Suspense>,
+                    }
                 ]
 
             },

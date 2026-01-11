@@ -49,7 +49,7 @@ const Success = () => {
                 return
             }
             else if (data.orderByPaymentIntent.status === Order_Status.COMPLETED) {
-                dispatch(deleteCartByCustomerId(user!.id))
+                dispatch(deleteCartByCustomerId(user?.id || 'guest'))
             }
         }
 
@@ -91,9 +91,19 @@ const Success = () => {
                 </svg>
                 <h2 className="md:text-2xl text-lg text-center font-bold md:mb-4">Thank you for shopping</h2>
                 <p className="md:text-sm text-xs text-center text-slate-500 md:mb-8 mb-4">Your order #{data.orderByPaymentIntent.orderNumber} has been successfully placed and is now being processed.</p>
-                <Link className='flex gap-x-4 align-center bg-black text-white py-3 px-6 rounded text-center cursor-pointer md:text-sm text-xs  mb-8' to="/account">Go to my account
-                    <Arrow cssClass='mt-[2px]' />
-                </Link>
+
+                {
+                    user ?
+
+                        <Link className='flex gap-x-4 align-center bg-black text-white py-3 px-6 rounded text-center cursor-pointer md:text-sm text-xs  mb-8' to="/account">Go to my account
+                            <Arrow cssClass='mt-[2px]' />
+                        </Link>
+                        :
+                        <Link className='flex gap-x-4 align-center bg-black text-white py-3 px-6 rounded text-center cursor-pointer md:text-sm text-xs  mb-8' to="/">Back to Homepage
+                            <Arrow cssClass='mt-[2px]' />
+                        </Link>
+                }
+
             </section>
 
 
