@@ -18,7 +18,7 @@ Designed with performance and usability in mind, it leverages a modern tech stac
 - **Dynamic Product Listing** — Fetches and displays products with categories, filters, and search.  
 - **Shopping Cart & Checkout** — Add, remove, and manage items; integrates with backend for order creation.  
 - **Secure User Authentication** — SSign up and login using JWT access + refresh tokens (token rotation system) for enhanced security.
-- **Stripe Payment Integration** — Seamless checkout using Stripe (guest checkout not yet supported).
+- **Stripe Payment Integration** — Seamless checkout using Stripe including guest checkout.
 - **Order Tracking** — Users can view order status and history.  
 - **Review & Rating System** — Users can leave reviews and ratings for products.  
 - **Responsive Design** — Mobile-frienly layout using **Tailwind CSS** and **Sass**.  (Under Work)
