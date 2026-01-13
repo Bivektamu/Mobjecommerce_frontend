@@ -7,11 +7,16 @@ import { useToasts } from '../store/slices/toastSlice'
 import ToastComponent from '../components/ui/Toast'
 import { AnimatePresence } from 'framer-motion'
 import NewsLetter from '../components/layout/NewsLetter'
+import useResetScroll from '../hooks/useResetScroll'
+import useGTMPageView from '../hooks/useGTMPageViews.ts'
 
 const Layout = () => {
-  const allToasts = useToasts()
 
-  const location = useLocation()
+  useGTMPageView()
+  useResetScroll()
+
+  const allToasts = useToasts()
+  const { pathname } = useLocation()
 
   return (
     <>
@@ -21,15 +26,15 @@ const Layout = () => {
       }
 
       {
-        location.pathname.includes("admin") ? <Outlet /> :
+        pathname.includes("admin") ? <Outlet /> :
           <>
             {
-              !location.pathname.includes("checkout") && <Header />
+              !pathname.includes("checkout") && <Header />
             }
 
             <AnimatePresence mode="wait">
 
-              <main id="main" key={location.pathname}>
+              <main id="main" key={pathname}>
 
                 <Outlet />
               </main>
@@ -37,7 +42,7 @@ const Layout = () => {
 
 
             {
-              !location.pathname.includes("checkout") && <>
+              !pathname.includes("checkout") && <>
                 <NewsLetter />
                 <Footer />
               </>

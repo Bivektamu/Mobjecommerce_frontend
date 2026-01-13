@@ -1,5 +1,5 @@
-import { Suspense, lazy, useEffect } from "react"
-import { createBrowserRouter, useLocation } from "react-router-dom"
+import { Suspense, lazy,  } from "react"
+import { createBrowserRouter } from "react-router-dom"
 import { GoogleOAuthProvider } from '@react-oauth/google'
 
 import Preloader from "./components/ui/Preloader"
@@ -38,22 +38,13 @@ const LogIn = lazy(() => import("./pages/LogIn"))
 const SignUp = lazy(() => import("./pages/SignUp"))
 
 
-const ScrollToTop = () => {
-    const { pathname } = useLocation();
-
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [pathname]);
-
-    return null;
-};
 
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <Suspense fallback={< Preloader />}>
-            <ScrollToTop />
+            
             <Layout />
         </Suspense >,
         children: [
