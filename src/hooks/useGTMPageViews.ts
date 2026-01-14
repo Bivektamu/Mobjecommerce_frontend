@@ -10,8 +10,8 @@ const useGTMPageView = () => {
 
             TagManager.dataLayer({
                 dataLayer: {
-                    event: 'pageview',
-                    page: pathname
+                    event: 'page_view',
+                    page_path: pathname
                 }
             })
         }

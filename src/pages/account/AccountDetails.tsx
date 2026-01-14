@@ -4,12 +4,13 @@ import { GET_USER } from "../../data/query/user.query"
 import { useAuth } from "../../store/slices/authSlice"
 import ProgressLoader from "../../components/ui/ProgressLoader"
 import { stripTypename } from "@apollo/client/utilities"
+import { Helmet } from "react-helmet-async"
 
 const AccountDetails = () => {
 
-  const {user} = useAuth()
+  const { user } = useAuth()
 
-  const {data, loading, refetch} = useQuery(GET_USER, {
+  const { data, loading, refetch } = useQuery(GET_USER, {
     variables: {
       userId: user?.id
     }
@@ -17,7 +18,7 @@ const AccountDetails = () => {
 
   const userDetails = stripTypename(data?.user)
 
-  if(loading) {
+  if (loading) {
     return <ProgressLoader />
   }
 
@@ -25,9 +26,12 @@ const AccountDetails = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Account Details | Manage account details |  Mobje Commerce </title>
+      </Helmet>
       <h2 className="font-bold mb-8 md:mb-16">Account Details</h2>
       <div className="mb-8 w-full md:w-[320px]">
-        <AccountDetailsForm user={userDetails} refetchQuery= {refetch} />
+        <AccountDetailsForm user={userDetails} refetchQuery={refetch} />
       </div>
     </>)
 }

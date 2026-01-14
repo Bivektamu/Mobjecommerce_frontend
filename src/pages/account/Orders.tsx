@@ -9,6 +9,7 @@ import Arrow from "../../components/ui/Arrow"
 import { Order } from "../../store/types"
 import getMonth from "../../utils/getMonth"
 import { useAuth } from "../../store/slices/authSlice"
+import { Helmet } from "react-helmet-async"
 
 const UserOrders = () => {
 
@@ -29,16 +30,20 @@ const UserOrders = () => {
   }, [data])
 
   if (loading) {
-    return <ProgressLoader />
+    return <>
+      <Helmet>
+        <title>User Orders | View Orders |  Mobje Commerce </title>
+      </Helmet>
+      <ProgressLoader />
+    </>
   }
-
-  console.log(data)
-
-
 
   if (error) {
     return (
       <div className="flex justify-center items-center h-full">
+        <Helmet>
+          <title>User Orders | View Orders |  Mobje Commerce </title>
+        </Helmet>
         <div className="w-max m-auto flex justify-center flex-col items-center">
 
           <p className="text-slate-400 xl:text-sm text-xs mb-8">Sorry there was an error while fetching orders. Please refresh page again.</p>
@@ -52,6 +57,9 @@ const UserOrders = () => {
 
     return (
       <div className="flex justify-center items-center h-full">
+        <Helmet>
+          <title>User Orders | View Orders |  Mobje Commerce </title>
+        </Helmet>
         <div className="w-max m-auto flex justify-center flex-col items-center">
           <IoFileTrayOutline className="mb-10 w-[100px] h-[100px] stroke-slate-600" />
           <p className="text-slate-400 xl:text-sm text-xs mb-8">Your order history is waiting to be filled.
@@ -92,7 +100,7 @@ const UserOrders = () => {
 
               <div className="flex justify-between">
                 <span className="xl:text-sm text-xs text-slate-500 font-semibold lg:hidden">Items</span>
-                <span className="xl:text-sm text-xs text-slate-500 ">{order.items.reduce((sum, item)=>sum=sum+item.quantity, 0)}</span>
+                <span className="xl:text-sm text-xs text-slate-500 ">{order.items.reduce((sum, item) => sum = sum + item.quantity, 0)}</span>
               </div>
 
               <div className="flex justify-between">

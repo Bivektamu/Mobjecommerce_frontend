@@ -1,9 +1,10 @@
-import { Suspense, lazy,  } from "react"
-import { createBrowserRouter } from "react-router-dom"
+import { Suspense, lazy, } from "react"
+import { createBrowserRouter, Navigate } from "react-router-dom"
 import { GoogleOAuthProvider } from '@react-oauth/google'
 
 import Preloader from "./components/ui/Preloader"
 import ProgressLoader from "./components/ui/ProgressLoader"
+import Contact from "./pages/Contact"
 const DashBoard = lazy(() => import("./pages/admin/DashBoard"))
 const Products = lazy(() => import("./pages/admin/Products"))
 const SignIn = lazy(() => import("./pages/admin/SignIn"))
@@ -33,7 +34,6 @@ const Layout = lazy(() => import("./pages/Layout"))
 const Product = lazy(() => import("./pages/collections/ProductDetails"))
 // const Contact = lazy(() => import("./pages/Contact"))
 const Collections = lazy(() => import("./pages/collections/Collections"))
-const UnderWork = lazy(() => import("./pages/UnderWork"))
 const LogIn = lazy(() => import("./pages/LogIn"))
 const SignUp = lazy(() => import("./pages/SignUp"))
 
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
     {
         path: '/',
         element: <Suspense fallback={< Preloader />}>
-            
+
             <Layout />
         </Suspense >,
         children: [
@@ -66,7 +66,7 @@ const router = createBrowserRouter([
             {
                 path: '/contact',
                 element: <Suspense fallback={< Preloader />}>
-                    <UnderWork />
+                    <Contact />
                 </Suspense>
             },
             {
@@ -141,6 +141,11 @@ const router = createBrowserRouter([
                         element: <Suspense fallback={< Preloader />} >
                             <AccountDetails />
                         </Suspense>,
+                    },
+
+                    {
+                        index: true,
+                        element: <Navigate to="details" replace />,
                     },
 
                 ]

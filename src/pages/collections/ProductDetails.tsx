@@ -18,6 +18,7 @@ import PageWrapper from '../../components/ui/PageWrapper'
 import { useLazyQuery } from '@apollo/client'
 import { GET_REVIEWS_BY_PRODUCT_ID } from '../../data/query/reviews.query'
 import { stripTypename } from '@apollo/client/utilities'
+import { Helmet } from 'react-helmet-async'
 
 const ProductComponent = () => {
 
@@ -31,13 +32,13 @@ const ProductComponent = () => {
   const [reviews, setReviews] = useState<ReviewUserOnly[]>([])
 
 
-  const [queryReviews, {refetch, data}] = useLazyQuery(GET_REVIEWS_BY_PRODUCT_ID)
+  const [queryReviews, { refetch, data }] = useLazyQuery(GET_REVIEWS_BY_PRODUCT_ID)
 
-  useEffect(()=> {
+  useEffect(() => {
     if (data && data?.productReviews) {
-        const tempReviews = stripTypename(data.productReviews as ReviewUserOnly[]).sort((a, b) => (new Date(b.createdAt)).getTime() - (new Date(a.createdAt)).getTime())
-        setReviews([...tempReviews])
-      }
+      const tempReviews = stripTypename(data.productReviews as ReviewUserOnly[]).sort((a, b) => (new Date(b.createdAt)).getTime() - (new Date(a.createdAt)).getTime())
+      setReviews([...tempReviews])
+    }
   }, [data])
 
   useEffect(() => {
@@ -60,8 +61,8 @@ const ProductComponent = () => {
     if (productItem) {
 
       queryReviews({
-          variables: {
-            productReviewsId: productItem.id
+        variables: {
+          productReviewsId: productItem.id
         }
       })
 
@@ -78,6 +79,11 @@ const ProductComponent = () => {
 
   return (
     <PageWrapper>
+      <Helmet>
+        <title>
+          {productItem?.title || 'Details'} | Mobje Commerce
+        </title>
+      </Helmet>
       <section id="breadcrums" className="bg-white px-4">
         <div className="py-8 container mx-auto">
           <BreadCrumbs rootLink="Ecommerce" />
@@ -103,7 +109,7 @@ const ProductComponent = () => {
 
                   <p className="bg-cultured text-slate-600 font-medium flex items-center gap-2 py-2 px-6 rounded-full text-xs">
                     <StarIcon />
-                    {getAverageRating(reviews.map(review=>review.rating) as number[])} 
+                    {getAverageRating(reviews.map(review => review.rating) as number[])}
                     <span className="w-4 h-[2px] bg-slate-600"></span>
                     {reviews.length} Reviews
                   </p>

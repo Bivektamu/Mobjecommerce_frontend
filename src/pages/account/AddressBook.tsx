@@ -8,6 +8,7 @@ import { useMemo, useState } from 'react';
 import { stripTypename } from '@apollo/client/utilities';
 import Modal from '../../components/layout/Modal';
 import ShippingForm from '../../components/forms/ShippingForm';
+import { Helmet } from 'react-helmet-async';
 
 const AddressBook = () => {
     const { data, loading } = useQuery(GET_USER_ADDRESSES)
@@ -25,6 +26,10 @@ const AddressBook = () => {
 
     return (
         <div className="w-full">
+
+            <Helmet>
+                <title>Addresses | Manage address book |  Mobje Commerce </title>
+            </Helmet>
             <p className="font-semibold md:text-xl text-lg  border-slate-200 lg:mb-12 md:mb-12 mb-6">Shipping Address</p>
 
             {loading ? <ParagraphLoader /> : (
@@ -42,11 +47,11 @@ const AddressBook = () => {
 
             )}
             <br />
-            <button className='md:text-sm text-xs  border-[1px] bg-black justify-center flex items-center rounded py-1 px-4 text-white' onClick={()=>setShowModal(true)}>Add Address</button>
+            <button className='md:text-sm text-xs  border-[1px] bg-black justify-center flex items-center rounded py-1 px-4 text-white' onClick={() => setShowModal(true)}>Add Address</button>
 
             {
                 <Modal isOpen={showModal} close={() => setShowModal(false)} >
-                    {<ShippingForm  closeModal={()=>setShowModal(false)} />}
+                    {<ShippingForm closeModal={() => setShowModal(false)} />}
                 </Modal>
             }
 

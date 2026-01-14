@@ -6,6 +6,7 @@ import { stripTypename } from "@apollo/client/utilities"
 import { Order, OrderItem } from "../../store/types"
 import getMonth from "../../utils/getMonth"
 import UserOrderItemTile from "../../components/account/UserOrderItemTile"
+import { Helmet } from "react-helmet-async"
 
 const UserOrderDetails = () => {
   const { orderNumber } = useParams()
@@ -23,7 +24,11 @@ const UserOrderDetails = () => {
     return <Preloader />
   }
   return (
+
     <div>
+      <Helmet>
+        <title>Order {order.orderNumber && `Order #${order.orderNumber} | `}Order Details |  Mobje Commerce</title>
+      </Helmet>
       <div className="summary-wrapper mb-10 md:mb-20">
         <h1 className="font-bold mb-6 md:mb-12">Order Summary</h1>
 
@@ -93,7 +98,7 @@ const UserOrderDetails = () => {
         </thead>
         <tbody className="w-full grid grid-cols-1 gap-8 lg:table-row-group ">
           {
-            order.items.map((item: OrderItem) => <UserOrderItemTile key={item.productId+item.color+item.size} item={item} />
+            order.items.map((item: OrderItem) => <UserOrderItemTile key={item.productId + item.color + item.size} item={item} />
             )
           }
         </tbody>

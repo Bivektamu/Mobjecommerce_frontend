@@ -15,6 +15,7 @@ import { getToastVariant } from '../utils/helpers'
 import Preloader from '../components/ui/Preloader'
 import useGoogleAuth from '../auth/useGoogleAuth'
 import { FaGoogle } from 'react-icons/fa'
+import { Helmet } from 'react-helmet-async'
 
 const LogIn = () => {
   const location = useLocation()
@@ -26,7 +27,6 @@ const LogIn = () => {
   const { cart } = useCart()
 
   const { login, loading, data, error } = useGoogleAuth()
-
 
   useEffect(() => {
     if (status === Status.IDLE) {
@@ -78,6 +78,9 @@ const LogIn = () => {
 
   return (
     <PageWrapper>
+      <Helmet>
+        <title>Login | Sign In to Mobje Commerce</title>
+      </Helmet>
       <section id="breadcrums" className="px-4">
         <div className="md:py-14 py-6 container mx-auto">
           <h2 className="text-xl md:text-2xl font-semibold mb-4">Login</h2>

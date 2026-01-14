@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import { Store } from './store/index.ts'
 import { ApolloProvider } from '@apollo/client'
 import client from './data/client.ts'
+import {HelmetProvider} from 'react-helmet-async'
 
 const tagManagerArgs = {
   gtmId: 'GTM-N3MSCCCH'
@@ -16,7 +17,9 @@ TagManager.initialize(tagManagerArgs)
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <Provider store={Store}>
     <ApolloProvider client={client}>
+      <HelmetProvider>
         <App />
+        </HelmetProvider>
     </ApolloProvider>
   </Provider >,
 )

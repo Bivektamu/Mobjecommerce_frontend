@@ -9,6 +9,7 @@ import { resetUserAction, useUser } from '../store/slices/userSlice'
 import { addToast } from '../store/slices/toastSlice';
 import PageWrapper from '../components/ui/PageWrapper';
 import SignUpForm from '../components/forms/SignUpForm';
+import { Helmet } from 'react-helmet-async';
 
 const SignUp = () => {
 
@@ -18,7 +19,7 @@ const SignUp = () => {
 
 
   const dispatch = useStoreDispatch()
-  const { isLoggedIn, user:authUser, status } = useAuth()
+  const { isLoggedIn, user: authUser, status } = useAuth()
 
   const { user, error: userError, action } = useUser()
 
@@ -59,7 +60,7 @@ const SignUp = () => {
       }
       dispatch(addToast(newToast))
     }
-  }, [userError])
+  }, [userError, dispatch])
 
   if (searchParams.get('cart') && isLoggedIn) {
     return <Navigate to="/checkout" />
@@ -71,6 +72,10 @@ const SignUp = () => {
 
   return (
     <PageWrapper>
+      <Helmet>
+        <title>Sign Up | Create Your Mobje Commerce Account</title>
+      </Helmet>
+
       <section id="breadcrums" className="px-4">
         <div className="md:py-14 py-6 container mx-auto">
           <h2 className="text-xl md:text-2xl font-semibold mb-4">Sign Up</h2>

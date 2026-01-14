@@ -11,6 +11,7 @@ import ProductCard from "../../components/ui/ProductCard"
 import SortProducts from "../../components/SortProducts"
 import { resetCartAction, useCart } from "../../store/slices/cartSlice"
 import PageWrapper from "../../components/ui/PageWrapper"
+import { Helmet } from "react-helmet-async"
 
 
 const Collections = () => {
@@ -111,6 +112,11 @@ const Collections = () => {
 
   return (
     <PageWrapper>
+      <Helmet>
+        <title>
+          Collections | Explore Products | Mobje Commerce
+        </title>
+      </Helmet>
       <section id="breadcrums" className="px-4">
         <div className="md:py-8 py-4 container mx-auto">
           <BreadCrumbs rootLink="Ecommerce" />

@@ -26,18 +26,19 @@ const Account = () => {
       navigate('/login')
     }
     else if (pathname === '/account' || pathname === '/account/') {
-      navigate('/account/orders')
+      return navigate('/account/orders')
     }
 
 
   }, [user, isLoggedIn, status, pathname])
 
-  if(!isLoggedIn) {
+  if (!isLoggedIn) {
     return <Preloader />
   }
 
   return (
     <PageWrapper>
+   
       <section id="breadcrums" className="px-4">
         <div className="lg:py-14 py-6 container mx-auto">
           <h2 className="text-2xl font-bold mb-4">My Account</h2>

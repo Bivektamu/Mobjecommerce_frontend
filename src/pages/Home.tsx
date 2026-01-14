@@ -11,6 +11,7 @@ import { Status } from "../store/types"
 import FeaturedLatest from "../components/home/FeaturedLatest"
 import ProductCard from "../components/ui/ProductCard"
 import PageWrapper from "../components/ui/PageWrapper"
+import { Helmet } from "react-helmet-async"
 
 const Home = () => {
   const dispatch = useStoreDispatch()
@@ -22,6 +23,9 @@ const Home = () => {
 
   return (
     <PageWrapper>
+      <Helmet>
+        <title>Mobje Commerce | Shop Online, Add to Wishlist & Enjoy Seamless Checkout</title>
+      </Helmet>
       <Hero />
       <section className="bg-white pt-12 pb-20 md:pt-24 md:pb-36 px-4">
         <div className='container mx-auto md:grid-cols-2 lg:grid-cols-3  grid gap-12 md:gap-24 mb-20 md:mb-36'>

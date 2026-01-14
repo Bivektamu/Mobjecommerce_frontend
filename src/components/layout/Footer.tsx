@@ -10,7 +10,7 @@ const Footer = () => {
       <section id="footer" className='bg-white px-4'>
         <div className="container flex flex-wrap justify-between items-start mx-auto md:py-14 py-8 gap-8">
           <div className="flex flex-col gap-8 ">
-            <Link to='/'><Logo /></Link>
+            <Logo />
          
             <div className="flex gap-4">
               <Link className='pointer-events-none' to=''><GithubIcon /></Link>
