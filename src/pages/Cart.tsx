@@ -10,6 +10,7 @@ import { getProducts, useProduct } from '../store/slices/productSlice'
 import { Link, useLocation } from 'react-router-dom'
 import CustomNavLink from '../components/CustomNavLink'
 import PageWrapper from '../components/ui/PageWrapper'
+import { Helmet } from 'react-helmet-async'
 
 
 const TAX_RATE: number = 0.1
@@ -109,6 +110,10 @@ const Cart = () => {
 
   return (
     <PageWrapper>
+      <Helmet>
+        <title>Cart | Your Shopping Cart  | Mobje Commerce</title>
+      </Helmet>
+
       <section id="breadcrums" className="px-4">
         <div className="lg:py-14 py-6 container mx-auto">
           <h2 className="text-2xl font-semibold mb-4">Cart</h2>

@@ -10,6 +10,7 @@ import SearchIcon from '../../components/ui/SearchIcons'
 import ProgressLoader from '../../components/ui/ProgressLoader'
 import ProductTile from '../../components/admin/ProductTile'
 import useSearch from '../../components/hooks/useSearch'
+import { Helmet } from 'react-helmet-async'
 
 
 const Products = () => {
@@ -70,7 +71,7 @@ const Products = () => {
       const newToast: Toast = {
         id: uuidv4(),
         variant: Toast_Vairant.WARNING,
-        msg:error.message
+        msg: error.message
       }
       dispatch(addToast(newToast))
     }
@@ -90,6 +91,9 @@ const Products = () => {
   return (
 
     <div className=' rounded-lg'>
+      <Helmet>
+        <title>Product Management | Manage Products   |   Mobje Commerce</title>
+      </Helmet>
       <div className="flex justify-between px-4 pb-4 pt-0 xl:p-8 items-center relative bg-regal-white">
         <p className="font-semibold">Products</p>
         <div className="flex gap-x-4 absolute md:static -top-10  justify-between w-full md:w-auto  left-0">

@@ -8,6 +8,7 @@ import { editProduct, getProducts, useProduct } from '../../store/slices/product
 import { useStoreDispatch } from '../../store';
 import mongoose from 'mongoose';
 import ProgressLoader from '../ui/ProgressLoader';
+import { Helmet } from 'react-helmet-async';
 
 
 interface PreviewImage {
@@ -301,6 +302,9 @@ const EditProduct = () => {
     return (
 
         <div className='bg-white rounded-lg'>
+            <Helmet>
+                <title>Edit Product | {title}   |   Mobje Commerce</title>
+            </Helmet>
             <div className="border-t-[1px] px-4 lg:px-8 py-6 border-b-[1px]">
                 <span className='font-medium'>Edit Product</span>
             </div>
@@ -475,7 +479,7 @@ const EditProduct = () => {
                         {formErrors.description && <span className='text-red-500 text-xs'>{formErrors.description}</span>}
                     </fieldset>
 
-                        <button type="submit" className='md:w-[200px] bg-black text-white py-2 px-4 rounded text-center cursor-pointer text-sm md:text-base'>Edit Product</button>
+                    <button type="submit" className='md:w-[200px] bg-black text-white py-2 px-4 rounded text-center cursor-pointer text-sm md:text-base'>Edit Product</button>
 
                 </form>
             </div>

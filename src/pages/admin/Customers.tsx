@@ -11,6 +11,7 @@ import ProgressLoader from '../../components/ui/ProgressLoader';
 import { stripTypename } from '@apollo/client/utilities';
 import { useStoreDispatch } from '../../store';
 import useSearch from '../../components/hooks/useSearch';
+import { Helmet } from 'react-helmet-async';
 
 const Customers = () => {
     const dispatch = useStoreDispatch()
@@ -22,7 +23,7 @@ const Customers = () => {
         const newToast: Toast = {
             id: uuidv4(),
             variant: Toast_Vairant.DANGER,
-            msg:error.message
+            msg: error.message
         }
         dispatch(addToast(newToast))
     }
@@ -34,6 +35,9 @@ const Customers = () => {
     return (
 
         <div className='bg-white rounded-lg'>
+            <Helmet>
+                <title>Customer Management | Manage Customers   |   Mobje Commerce</title>
+            </Helmet>
             <div className="flex justify-between p-4 pt-0 lg:p-8 items-center bg-regal-white lg:bg-inherit">
                 <p className="font-semibold">Customers</p>
                 <div className='relative'>

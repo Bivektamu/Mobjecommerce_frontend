@@ -1,8 +1,8 @@
 import Logo from '../ui/Logo'
 import Search from './Search'
 
-import { useProduct } from '../../store/slices/productSlice'
-import { Role } from '../../store/types'
+import { getProducts, useProduct } from '../../store/slices/productSlice'
+import { Role, Status } from '../../store/types'
 import { logOutUser, useAuth } from '../../store/slices/authSlice'
 import { MouseEvent, useEffect, useState } from 'react'
 import { useStoreDispatch } from '../../store'
@@ -16,8 +16,8 @@ import { GiShoppingCart } from 'react-icons/gi'
 const Header = () => {
   const { pathname } = useLocation();
 
-  const { products } = useProduct()
-  const { isLoggedIn, user:authUser } = useAuth()
+  const { products, status } = useProduct()
+  const { isLoggedIn, user: authUser } = useAuth()
   const { setAvatarEmail, avatar } = useAvatar()
   const { user } = useUser()
 
@@ -26,6 +26,11 @@ const Header = () => {
 
   const dispatch = useStoreDispatch()
 
+  useEffect(() => {
+    if (status === Status.IDLE) {
+      dispatch(getProducts())
+    }
+  }, [status, dispatch])
 
   useEffect(() => {
     if (authUser && authUser.role === Role.CUSTOMER) {
@@ -64,7 +69,6 @@ const Header = () => {
           <CustomNavLink isNavLink={true} cssClass='flex items-center hover:font-bold' to="/">Home</CustomNavLink>
           <CustomNavLink isNavLink={true} cssClass='flex items-center hover:font-bold' to="/collections">Collections</CustomNavLink>
           <CustomNavLink isNavLink={true} cssClass='flex items-center hover:font-bold' to="/contact">Contact</CustomNavLink>
-
         </div>
 
 

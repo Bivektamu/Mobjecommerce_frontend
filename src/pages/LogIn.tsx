@@ -27,6 +27,7 @@ const LogIn = () => {
   const { cart } = useCart()
 
   const { login, loading, data, error } = useGoogleAuth()
+  console.log(loading)
 
   useEffect(() => {
     if (status === Status.IDLE) {
@@ -74,7 +75,12 @@ const LogIn = () => {
     }
   }, [data, error, dispatch])
 
-  if (loading) return <Preloader />
+  if (loading)
+    return <>
+      <Helmet>
+        <title>Signing You In...</title>
+      </Helmet>
+      <Preloader /></>
 
   return (
     <PageWrapper>
@@ -93,9 +99,11 @@ const LogIn = () => {
           <LoginForm />
           <br />
 
+
           <button
-          className='border-black border py-2 px-4 rounded w-full text-sm md:text-base flex items-center justify-center gap-4'
+            className='border-black border py-2 px-4 rounded w-full text-sm md:text-base flex items-center justify-center gap-4'
             onClick={login}
+            disabled={loading}
           >
             <FaGoogle />
             Continue on Google

@@ -11,6 +11,7 @@ import { useQuery } from '@apollo/client'
 import { addToast } from '../../store/slices/toastSlice';
 import ProgressLoader from '../../components/ui/ProgressLoader';
 import useSearch from '../../components/hooks/useSearch';
+import { Helmet } from 'react-helmet-async';
 
 const Reviews = () => {
 
@@ -24,7 +25,7 @@ const Reviews = () => {
         const newToast: Toast = {
             id: uuidv4(),
             variant: Toast_Vairant.DANGER,
-            msg:error.message
+            msg: error.message
         }
         dispatch(addToast(newToast))
     }
@@ -35,6 +36,9 @@ const Reviews = () => {
     return (
 
         <div className='bg-white lg:rounded-lg'>
+            <Helmet>
+                <title>Review Management | Manage Reviews   |   Mobje Commerce</title>
+            </Helmet>
             <div className="flex justify-between p-4 pt-0 lg:p-8 items-center bg-regal-white lg:bg-inherit">
                 <p className="font-semibold">Reviews</p>
                 <div className='relative'>
@@ -69,7 +73,7 @@ const Reviews = () => {
                 <span className='text-sm text-slate-500 font-medium'>
                     Submitted at
                 </span>
-              
+
 
                 <span className='text-sm text-slate-500 font-medium'>
                     Action
@@ -84,9 +88,9 @@ const Reviews = () => {
                         {
                             reviews.map(review =>
                                 <>
-                                    <ReviewTile key={review.id} review={review} refetchReview={refetch}/>
+                                    <ReviewTile key={review.id} review={review} refetchReview={refetch} />
 
-                                    
+
                                 </>
                             )
                         }

@@ -20,9 +20,9 @@ const AccountSubNav = () => {
 
   return (
     <nav className='flex text-xs md:text-sm flex-col gap-y-2 md:gap-y-4 xl:gap-y-8 sticky top-[100px] lg:static'>
-      <NavLink className={({ isActive }) => (isActive ? 'font-semibold bg-regal-white' : 'text-slate-600') + `  px-3 md:px-6 py-2 rounded flex gap-x-2 md:gap-x-4 items-center`} to="/account/details"><FaRegUser className='w-4 h-4' /> Account Detail</NavLink>
 
       <NavLink className={({ isActive }) => (isActive ? 'font-semibold bg-regal-white' : 'text-slate-600') + `  px-3 md:px-6 py-2 rounded flex gap-x-2 md:gap-x-4 items-center`} to="/account/orders"><BsCart4 className='w-5 h-5' /> Orders</NavLink>
+      <NavLink className={({ isActive }) => (isActive ? 'font-semibold bg-regal-white' : 'text-slate-600') + `  px-3 md:px-6 py-2 rounded flex gap-x-2 md:gap-x-4 items-center`} to="/account/details"><FaRegUser className='w-4 h-4' /> Account Detail</NavLink>
 
       <NavLink className={({ isActive }) => (isActive ? 'font-semibold bg-regal-white' : 'text-slate-600') + `  px-3 md:px-6 py-2 rounded flex gap-x-2 md:gap-x-4 items-center`} to="/account/wishlist"><FaRegHeart className='w-4 h-4' /> Wishlist</NavLink>
 

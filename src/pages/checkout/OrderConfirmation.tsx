@@ -11,6 +11,7 @@ import { LiaSpinnerSolid } from 'react-icons/lia'
 import { deleteCartByCustomerId } from '../../store/slices/cartSlice'
 import { useAuth } from '../../store/slices/authSlice'
 import OrderItem from '../../components/checkout/OrderItem'
+import { Helmet } from 'react-helmet-async'
 
 const OrderConfirmation = () => {
     const dispatch = useStoreDispatch()
@@ -38,9 +39,6 @@ const OrderConfirmation = () => {
             // Start checking every 2 seconds
             startPolling(2000);
         }
-        else {
-            // return navigate('/404')
-        }
         return () => stopPolling(); // Cleanup on unmount
     }, [payment_intent_id, startPolling, stopPolling]);
 
@@ -50,8 +48,8 @@ const OrderConfirmation = () => {
         if (data?.orderByPaymentIntent?.status === Order_Status.COMPLETED || data?.orderByPaymentIntent?.status === Order_Status.FAILED) {
             stopPolling()
             if (data.orderByPaymentIntent.status === Order_Status.FAILED) {
-                navigate('/checkout/fail')
-                return
+                // navigate('/checkout/fail')
+                // return
             }
             else if (data.orderByPaymentIntent.status === Order_Status.COMPLETED) {
                 dispatch(deleteCartByCustomerId(user?.id || 'guest'))
@@ -67,24 +65,31 @@ const OrderConfirmation = () => {
     }, [error, navigate])
 
 
-    if (loading || !data || data?.orderByPaymentIntent?.status === Order_Status.PENDING) return <Preloader>
-        <div className="text-center fixed z-20 top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]">
-            <LiaSpinnerSolid className="size-16 inline-block animate-spin " />
-            <br /><br />
-            <h1>Confirming with your bank...</h1>
-            <p>Please don't close this window.</p>
-        </div>
-    </Preloader>
+    if ( loading || !data || data?.orderByPaymentIntent?.status === Order_Status.PENDING) return (
+        <>
+            <Helmet>
+                <title>Processing Your Payment…  | Mobje Commerce</title>
+            </Helmet>
+            <Preloader>
+                <div className="text-center fixed z-20 top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]">
+                    <LiaSpinnerSolid className="size-16 inline-block animate-spin " />
+                    <br /><br />
+                    <h1>Confirming with your bank...</h1>
+                    <p>Please don't close this window.</p>
+                </div>
+            </Preloader>
+        </>
+    )
+
+
+
 
     const order = data.orderByPaymentIntent
     return (
         <PageWrapper>
-            {/* <section id="breadcrums" className="bg-[#D5E5D7] px-4">
-                <div className="md:py-14 py-6 container mx-auto">
-                    <h2 className="md:text-2xl text-lg font-bold mb-4">Successful Order</h2>
-                    <BreadCrumbs rootLink="Ecommerce" alias='Successful Order' />
-                </div>
-            </section> */}
+              <Helmet>
+                <title>Order Success    |   Order Confirmed   |  Mobje Commerce</title>
+            </Helmet>
 
             <section className='lg:py-36 md:py-20 py-10 items-center flex flex-col md:gap-y-4 gap-y-2 px-4'>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 161 160" className='size-20 md:size-32' fill="none">

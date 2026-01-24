@@ -1,15 +1,16 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { FormError, LoginInput, Toast, Toast_Vairant, ValidateSchema } from '../../store/types';
+import { FormError, LoginInput, Status, Toast, Toast_Vairant, ValidateSchema } from '../../store/types';
 import validateForm from '../../utils/validate';
 import { v4 } from 'uuid';
 import { useStoreDispatch } from '../../store';
-import { logInUser } from '../../store/slices/authSlice';
+import { logInUser, useAuth } from '../../store/slices/authSlice';
 import { addToast } from '../../store/slices/toastSlice';
 import { getToastVariant } from '../../utils/helpers';
 
 const LoginForm = () => {
 
+    const {status} = useAuth()
     const dispatch = useStoreDispatch()
 
     const [showPass, setShowPass] = useState(false)
@@ -104,7 +105,10 @@ const LoginForm = () => {
                 </button>
                 {errors.password && <span className='text-xs md:text-sm text-red-500'>{errors.password}</span>}
             </fieldset>
-            <button type="submit" className='bg-black text-white py-2 px-4 rounded text-center cursor-pointer w-full text-sm md:text-base'>Login</button>
+            <button 
+            type="submit"
+            disabled={status === Status.PENDING} 
+            className={` py-2 px-4 rounded text-center cursor-pointer w-full text-sm md:text-base ${status === Status.PENDING ?'disabled': 'bg-black text-white'}`}>Login</button>
         </form>
     )
 }

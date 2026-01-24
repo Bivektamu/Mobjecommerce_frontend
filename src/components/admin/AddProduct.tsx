@@ -10,6 +10,7 @@ import { v4 } from 'uuid';
 import { addToast } from '../../store/slices/toastSlice';
 
 import { Types } from 'mongoose';
+import { Helmet } from 'react-helmet-async';
 
 interface PrviewImage {
     id: Types.ObjectId,
@@ -79,7 +80,7 @@ const AddProduct = () => {
             const newToast: Toast = {
                 id: v4(),
                 variant: Toast_Vairant.WARNING,
-                msg:error.message
+                msg: error.message
             }
             dispatch(addToast(newToast))
         }
@@ -290,6 +291,9 @@ const AddProduct = () => {
     return (
 
         <div className='bg-white rounded-lg'>
+            <Helmet>
+                <title>Add Product  |   Mobje Commerce</title>
+            </Helmet>
             <div className="border-t-[1px] px-4 lg:px-8 py-6 border-b-[1px]">
                 <span className='font-medium'>Add Product</span>
             </div>

@@ -18,6 +18,7 @@ import OrderSummary from '../../components/checkout/OrderSummary';
 import { CREATE_PAYMENT_INTENT } from '../../data/payment.graphql';
 import PaymentForm from '../../components/forms/PaymentForm'
 import validateForm from '../../utils/validate'
+import { Helmet } from 'react-helmet-async'
 
 const Checkout = () => {
 
@@ -54,7 +55,7 @@ const Checkout = () => {
 
   const [checkoutDetails, setCheckOutDetails] = useState<CheckOutDetails>({
     shipping: null,
-    email:'',
+    email: '',
     billing: null,
     items: []
   })
@@ -141,6 +142,9 @@ const Checkout = () => {
 
   return (
     <PageWrapper>
+      <Helmet>
+        <title>Checkout | Secure Checkout  | Mobje Commerce</title>
+      </Helmet>
 
       <section id="breadcrums" className="px-4">
         <div className="lg:py-14 py-6 container mx-auto">

@@ -7,6 +7,7 @@ import { Order } from '../../store/types'
 import ProgressLoader from '../../components/ui/ProgressLoader'
 import useSearch from '../../components/hooks/useSearch'
 import SearchIcon from '../../components/ui/SearchIcons'
+import { Helmet } from 'react-helmet-async'
 
 const Orders = () => {
 
@@ -22,6 +23,9 @@ const Orders = () => {
 
     return (
         <div className='bg-white rounded-lg'>
+            <Helmet>
+                <title>Order Management | Manage Orders   |   Mobje Commerce</title>
+            </Helmet>
             <div className="flex justify-between p-4 pt-0 lg:p-8 items-center bg-regal-white lg:bg-inherit">
                 <p className="font-semibold ">Orders</p>
 

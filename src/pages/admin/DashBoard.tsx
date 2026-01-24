@@ -16,6 +16,7 @@ import { addToast } from '../../store/slices/toastSlice'
 import SalesOverTime from '../../components/admin/dashboard/SalesOverTime'
 import ProgressLoader from '../../components/ui/ProgressLoader'
 import { useEffect } from 'react'
+import { Helmet } from 'react-helmet-async'
 
 const DashBoard = () => {
 
@@ -41,6 +42,9 @@ const DashBoard = () => {
 
   return (
     <section className="container mx-auto ">
+      <Helmet>
+        <title>Admin Dashboard | Mobje Commerce</title>
+      </Helmet>
       <div className="xl:grid-cols-4 md:grid-cols-2 grid gap-6 mb-6">
 
         <TotalSales />
