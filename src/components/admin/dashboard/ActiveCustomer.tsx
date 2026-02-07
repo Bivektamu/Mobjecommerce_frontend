@@ -5,8 +5,8 @@ import { useQuery } from '@apollo/client'
 import { Toast, Toast_Vairant } from '../../../store/types'
 import { v4 } from 'uuid'
 import { addToast } from '../../../store/slices/toastSlice'
-import ProgressLoader from '../../ui/ProgressLoader'
 import { useEffect } from 'react'
+import TileLoader from '../../ui/TileLoader'
 
 const ActiveCustomer = () => {
 
@@ -30,7 +30,7 @@ const ActiveCustomer = () => {
     }
 
     if (loading) {
-        return <ProgressLoader />
+        return <TileLoader cssClass='w-full h-32 bg-white' />
     }
     const userAnalytics = data?.userAnalytics
 

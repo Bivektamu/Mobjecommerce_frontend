@@ -5,9 +5,9 @@ import { GET_SALES_OVER_TIME } from '../../../data/query/analytics.query'
 import { Toast, Toast_Vairant } from '../../../store/types'
 import { v4 } from 'uuid'
 import { addToast } from '../../../store/slices/toastSlice'
-import ProgressLoader from '../../ui/ProgressLoader'
 import { stripTypename } from '@apollo/client/utilities'
 import { useEffect } from 'react'
+import SquareLoader from '../../ui/SquareLoader'
 
 const SalesOverTime = () => {
     const dispatch = useStoreDispatch()
@@ -16,21 +16,23 @@ const SalesOverTime = () => {
         pollInterval: 5000,
     })
 
- useEffect(()=> {
-      return(()=>stopPolling())
+    useEffect(() => {
+        return (() => stopPolling())
     }, [stopPolling])
 
     if (error) {
         const newToast: Toast = {
             id: v4(),
             variant: Toast_Vairant.WARNING,
-            msg:error.message
+            msg: error.message
         }
         dispatch(addToast(newToast))
     }
 
     if (loading) {
-        return <ProgressLoader />
+        return <div className='xl:col-span-4 col-span-full  rounded-xl shadow h-[300px]'>
+            <SquareLoader square={1} cssClass='h-full' squareClass='h-full w-full bg-white' />
+        </div>
     }
 
 
@@ -45,6 +47,7 @@ const SalesOverTime = () => {
                 </span>
             </p>
             {
+                
                 salesOverTime.length < 1 ? <div className='mb-4 text-slate-400 p-4 italic'>Sorry, no sales has been made yet over 30 days</div> :
                     <SalesChart data={salesOverTime} />
             }

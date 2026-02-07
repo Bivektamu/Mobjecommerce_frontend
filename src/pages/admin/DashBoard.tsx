@@ -14,9 +14,10 @@ import { Toast, Toast_Vairant } from '../../store/types'
 import { v4 } from 'uuid'
 import { addToast } from '../../store/slices/toastSlice'
 import SalesOverTime from '../../components/admin/dashboard/SalesOverTime'
-import ProgressLoader from '../../components/ui/ProgressLoader'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
+import TileLoader from '../../components/ui/TileLoader'
+import SquareLoader from '../../components/ui/SquareLoader'
 
 const DashBoard = () => {
 
@@ -52,7 +53,7 @@ const DashBoard = () => {
         <ActiveCustomer />
 
         {
-          loading ? <ProgressLoader /> :
+          loading ? <TileLoader cssClass='w-full h-32 bg-white' /> :
 
             <div className='bg-white p-4 rounded-xl text-sm shadow'>
               <p className="font-medium text-slate-600 flex justify-between mb-4 items-center">
@@ -69,16 +70,8 @@ const DashBoard = () => {
 
       <div className="xl:grid-cols-7 grid-cols-1 grid gap-6 mb-6">
         <SalesOverTime />
-        <div className="xl:col-span-3 col-span-full bg-white rounded-xl shadow">
-          <p className="font-medium flex justify-between items-center p-4 ">
-            <span className='text-sm'>Orders by category</span>
-            <span className="text-xs text-slate-400">
-              Orders
-            </span>
-          </p>
-          <MobjePieChart />
-        </div>
-      </div>
+        <MobjePieChart />
+      </div >
 
       <div className="flex gap-6 mb-6 flex-col xl:flex-row">
         <div className='bg-white  rounded-xl text-sm xl:basis-2/3 basis-full shadow'>
@@ -87,7 +80,7 @@ const DashBoard = () => {
 
         <div className='bg-white  rounded-xl text-sm xl:basis-1/3 basis-full'>
           {
-            loading ? <ProgressLoader /> :
+            loading ? <SquareLoader square={1} cssClass='h-full' squareClass='h-full w-full bg-white' />:
               <LowStockProducts lowProducts={lowStockProducts} />
           }
         </div>

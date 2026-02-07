@@ -3,7 +3,6 @@ import { createBrowserRouter, Navigate } from "react-router-dom"
 import { GoogleOAuthProvider } from '@react-oauth/google'
 
 import Preloader from "./components/ui/Preloader"
-import ProgressLoader from "./components/ui/ProgressLoader"
 import Contact from "./pages/Contact"
 const DashBoard = lazy(() => import("./pages/admin/DashBoard"))
 const Products = lazy(() => import("./pages/admin/Products"))
@@ -13,7 +12,7 @@ const EditProduct = lazy(() => import("./components/admin/EditProduct"))
 const Orders = lazy(() => import("./pages/admin/Orders"))
 const Customers = lazy(() => import("./pages/admin/Customers"))
 const Reviews = lazy(() => import("./pages/admin/Reviews"))
-const PrivateRoute = lazy(() => import("./pages/admin/Private"))
+const AdminPrivateRoute = lazy(() => import("./pages/admin/Private"))
 
 const Cart = lazy(() => import("./pages/Cart"))
 const Fail = lazy(() => import("./pages/checkout/Fail"))
@@ -32,7 +31,6 @@ const OrderConfirmation = lazy(() => import("./pages/checkout/OrderConfirmation"
 const Home = lazy(() => import("./pages/Home"))
 const Layout = lazy(() => import("./pages/Layout"))
 const Product = lazy(() => import("./pages/collections/ProductDetails"))
-// const Contact = lazy(() => import("./pages/Contact"))
 const Collections = lazy(() => import("./pages/collections/Collections"))
 const LogIn = lazy(() => import("./pages/LogIn"))
 const SignUp = lazy(() => import("./pages/SignUp"))
@@ -58,43 +56,31 @@ const router = createBrowserRouter([
             },
             {
                 path: '/collections/:slug',
-                element: <Suspense fallback={< Preloader />}>
-                    <Product />
-                </Suspense>
+                element: <Product />
             },
 
             {
                 path: '/contact',
-                element: <Suspense fallback={< Preloader />}>
-                    <Contact />
-                </Suspense>
+                element: <Contact />
             },
             {
                 path: '/cart',
-                element: <Suspense fallback={< Preloader />}>
-                    <Cart />
-                </Suspense>
+                element: <Cart />
             },
             {
                 path: '/checkout',
                 children: [
                     {
                         path: 'order-confirmation',
-                        element: <Suspense fallback={< Preloader />} >
-                            <OrderConfirmation />
-                        </Suspense>,
+                        element: <OrderConfirmation />,
                     },
                     {
                         path: 'fail',
-                        element: <Suspense fallback={< Preloader />} >
-                            <Fail />
-                        </Suspense>,
+                        element: <Fail />,
                     },
                     {
                         index: true,
-                        element: <Suspense fallback={< Preloader />}>
-                            <Checkout />
-                        </Suspense>,
+                        element: <Checkout />,
                     }
                 ]
 
@@ -102,45 +88,31 @@ const router = createBrowserRouter([
 
             {
                 path: '/account',
-                element: <Suspense fallback={<Preloader />}>
-                    <Account />
-                </Suspense>,
+                element: <Account />,
                 children: [
                     {
                         path: 'orders',
-                        element: <Suspense fallback={< Preloader />} >
-                            <UserOrders />
-                        </Suspense>,
+                        element: <UserOrders />,
                     },
                     {
                         path: 'orders/:orderNumber',
-                        element: <Suspense fallback={< Preloader />} >
-                            <UserOrderDetails />
-                        </Suspense>,
+                        element: <UserOrderDetails />,
                     },
                     {
                         path: 'wishlist',
-                        element: <Suspense fallback={< Preloader />} >
-                            <WishList />
-                        </Suspense>,
+                        element: <WishList />,
                     },
                     {
                         path: 'address-book',
-                        element: <Suspense fallback={< Preloader />} >
-                            <AddressBook />
-                        </Suspense>,
+                        element: <AddressBook />,
                     },
                     {
                         path: 'change-password',
-                        element: <Suspense fallback={< Preloader />} >
-                            <ChangePassword />
-                        </Suspense>,
+                        element: <ChangePassword />,
                     },
                     {
                         path: 'details',
-                        element: <Suspense fallback={< Preloader />} >
-                            <AccountDetails />
-                        </Suspense>,
+                        element: <AccountDetails />,
                     },
 
                     {
@@ -153,57 +125,39 @@ const router = createBrowserRouter([
 
             {
                 path: '/login',
-                element: <Suspense fallback={<Preloader />}>
-                    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-                        <LogIn />
-                    </GoogleOAuthProvider>
-                </Suspense>
+                element: <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+                    <LogIn />
+                </GoogleOAuthProvider>
             },
             {
                 path: '/signup',
-                element: <Suspense fallback={<Preloader />}>
-                    <SignUp />
-                </Suspense>
+                element: <SignUp />
             },
             {
                 path: '/admin/login',
-                element: <Suspense fallback={<Preloader />}>
-                    <SignIn />
-                </Suspense>
+                element: <SignIn />
             },
             {
                 path: '/admin',
-                element: <Suspense fallback={<Preloader />}>
-                    <PrivateRoute />
-                </Suspense>,
-
+                element: <AdminPrivateRoute />,
                 children: [
                     {
                         path: 'products',
-                        element:
-                            <Suspense fallback={< ProgressLoader />}>
-                                <Products />
-                            </Suspense>
+                        element: <Products />
                         ,
                     },
                     {
                         path: 'products/:slug',
-                        element: <Suspense fallback={<ProgressLoader />}>
-                            <EditProduct />
-                        </Suspense>,
+                        element: <EditProduct />
                     },
 
                     {
                         path: 'products/add',
-                        element: <Suspense fallback={<ProgressLoader />}>
-                            <AddProduct />
-                        </Suspense>,
+                        element: <AddProduct />
                     },
                     {
                         path: 'dashboard',
-                        element: <Suspense fallback={<ProgressLoader />}>
-                            <DashBoard />
-                        </Suspense>
+                        element: <DashBoard />
                     },
 
                     {
@@ -213,26 +167,19 @@ const router = createBrowserRouter([
 
                     {
                         path: 'customers',
-                        element: <Suspense fallback={<ProgressLoader />}>
-                            <Customers />
-                        </Suspense>
+                        element: <Customers />
                     },
 
                     {
                         path: 'reviews',
-                        element: <Suspense fallback={<ProgressLoader />}>
-                            <Reviews />
-                        </Suspense>
+                        element: <Reviews />
                     }
                 ]
             },
 
             {
                 path: '*',
-                element: <Suspense fallback={<Preloader />}>
-                    <PageNotFound />
-                </Suspense>,
-
+                element: <PageNotFound />
             },
 
         ]

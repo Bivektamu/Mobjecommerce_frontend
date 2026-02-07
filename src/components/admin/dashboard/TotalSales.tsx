@@ -1,12 +1,12 @@
 import { useQuery } from '@apollo/client'
 import { FaDollarSign } from 'react-icons/fa'
 import { GET_SALES_ANALYTICS } from '../../../data/query/analytics.query'
-import ProgressLoader from '../../ui/ProgressLoader'
 import { Toast, Toast_Vairant } from '../../../store/types'
 import { v4 } from 'uuid'
 import { useStoreDispatch } from '../../../store'
 import { addToast } from '../../../store/slices/toastSlice'
 import { useEffect } from 'react'
+import TileLoader from '../../ui/TileLoader'
 
 const TotalSales = () => {
     const dispatch = useStoreDispatch()
@@ -30,7 +30,7 @@ const TotalSales = () => {
     }
 
      if (loading) {
-        return <ProgressLoader />
+        return <TileLoader cssClass='w-full h-32 bg-white' />
     }
     const salesAnalytics = data?.salesAnalytics
 

@@ -4,9 +4,9 @@ import { GET_ORDER_ANALYTICS } from '../../../data/query/analytics.query'
 import { Toast, Toast_Vairant } from '../../../store/types'
 import { v4 } from 'uuid'
 import { addToast } from '../../../store/slices/toastSlice'
-import ProgressLoader from '../../ui/ProgressLoader'
 import { useQuery } from '@apollo/client'
 import { useEffect } from 'react'
+import TileLoader from '../../ui/TileLoader'
 
 const TotalOrders = () => {
     const dispatch = useStoreDispatch()
@@ -28,10 +28,8 @@ const TotalOrders = () => {
     }
 
 
-
-
-    if (loading) {
-        return <ProgressLoader />
+ if (loading) {
+        return <TileLoader cssClass='w-full h-32 bg-white' />
     }
     const orderAnalytics = data?.orderAnalytics
 

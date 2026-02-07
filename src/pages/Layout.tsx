@@ -1,4 +1,4 @@
-import { lazy } from 'react'
+import { lazy, Suspense } from 'react'
 const Header = lazy(() => import("../components/layout/Header"))
 
 import Footer from '../components/layout/Footer'
@@ -9,6 +9,7 @@ import { AnimatePresence } from 'framer-motion'
 import NewsLetter from '../components/layout/NewsLetter'
 import useResetScroll from '../hooks/useResetScroll'
 import useGTMPageView from '../hooks/useGTMPageViews.ts'
+import Preloader from '../components/ui/Preloader.tsx'
 
 const Layout = () => {
 
@@ -21,7 +22,7 @@ const Layout = () => {
 
   return (
     <>
-      
+
 
       {
         allToasts?.length > 0 && <ToastComponent toasts={allToasts} />
@@ -37,8 +38,9 @@ const Layout = () => {
             <AnimatePresence mode="wait">
 
               <main id="main" key={pathname}>
-
-                <Outlet />
+                <Suspense fallback={<Preloader />}>
+                  <Outlet />
+                </Suspense>
               </main>
             </AnimatePresence >
 

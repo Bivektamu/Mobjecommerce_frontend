@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
 import { getAuthStatus, useAuth } from '../../store/slices/authSlice'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
@@ -11,6 +11,7 @@ import { Status, Role } from '../../store/types'
 import { useStoreDispatch } from '../../store'
 import Preloader from '../../components/ui/Preloader'
 import AdminLogo from '../../components/ui/AdminLogo'
+import ProgressLoader from '../../components/ui/ProgressLoader'
 
 const PrivateRoute = () => {
     const navigate = useNavigate()
@@ -46,9 +47,6 @@ const PrivateRoute = () => {
         }
     }, [status, dispatch, navigate, isLoggedIn, user])
 
-
-
-
     if (auth && auth?.user?.role === Role.ADMIN) {
 
         return (
@@ -70,7 +68,9 @@ const PrivateRoute = () => {
                     <div className="h-[72px] flex items-center mb-12 justify-between">
                         <BreadCrumbs />
                     </div>
-                    <Outlet />
+                    <Suspense fallback={<ProgressLoader />}>
+                        <Outlet />
+                    </Suspense>
                 </section>
 
             </div>

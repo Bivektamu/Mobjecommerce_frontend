@@ -5,8 +5,8 @@ import { GET_ORDERS_BY_CATEGORY } from '../../../data/query/analytics.query';
 import { Toast, Toast_Vairant } from '../../../store/types';
 import { v4 } from 'uuid';
 import { addToast } from '../../../store/slices/toastSlice';
-import ProgressLoader from '../../ui/ProgressLoader';
 import { useEffect } from 'react';
+import SquareLoader from '../../ui/SquareLoader';
 
 
 const COLOR_PALETTES = [
@@ -26,61 +26,76 @@ const COLOR_PALETTES = [
 const MobjePieChart = () => {
     const dispatch = useStoreDispatch()
     const { data, error, loading, stopPolling } = useQuery(GET_ORDERS_BY_CATEGORY, {
-    pollInterval: 5000,
+        pollInterval: 5000,
     })
 
-    useEffect(()=> {
-      return(()=>stopPolling())
+    useEffect(() => {
+        return (() => stopPolling())
     }, [stopPolling])
 
-    
+
     if (error) {
         const newToast: Toast = {
             id: v4(),
             variant: Toast_Vairant.WARNING,
-            msg:error.message
+            msg: error.message
         }
         dispatch(addToast(newToast))
     }
 
+
     if (loading) {
-        return <ProgressLoader />
+        return <div className='xl:col-span-3 col-span-full rounded-xl shadow'>
+            <SquareLoader square={1} cssClass='h-full' squareClass='h-full w-full bg-white' />
+        </div>
     }
+
 
     const ordersByCategory = data?.ordersByCategory
 
-    if (ordersByCategory.length < 1) {
-        return <div className='italic text-slate-400 mb-4 p-4'>Sorry, no orders has been made yet over 30 days</div>
-    }
     return (
-        <ResponsiveContainer width="100%" height={400}>
-            <PieChart>
-                <Pie
-                    data={ordersByCategory}
-                    dataKey="count"
-                    nameKey="category"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={150}
-                    // innerRadius={70}
-                    label={{ fontSize: 10 }}
-                >
-                    {
-                        // eslint-disable-next-line
-                        ordersByCategory.map((_: any, index: number) =>
-                            <Cell key={`cell-${index}`} fill={COLOR_PALETTES[index]} />
-                        )
-                    }
+        <div className="xl:col-span-3 col-span-full bg-white rounded-xl shadow">
+            <p className="font-medium flex justify-between items-center p-4 ">
+                <span className='text-sm'>Orders by category</span>
+                <span className="text-xs text-slate-400">
+                    Orders
+                </span>
+            </p>
 
-                </Pie>
+            {
+                ordersByCategory.length < 1 ?
+                    <div className='italic text-slate-400 mb-4 p-4'>Sorry, no orders has been made yet over 30 days</div> :
 
-                <Tooltip
-                    contentStyle={{ fontSize: 10, textTransform: 'capitalize' }}
+                    <ResponsiveContainer width="100%" height={400}>
+                        <PieChart>
+                            <Pie
+                                data={ordersByCategory}
+                                dataKey="count"
+                                nameKey="category"
+                                cx="50%"
+                                cy="50%"
+                                outerRadius={150}
+                                // innerRadius={70}
+                                label={{ fontSize: 10 }}
+                            >
+                                {
+                                    // eslint-disable-next-line
+                                    ordersByCategory.map((_: any, index: number) =>
+                                        <Cell key={`cell-${index}`} fill={COLOR_PALETTES[index]} />
+                                    )
+                                }
 
-                />
-            </PieChart>
+                            </Pie>
 
-        </ResponsiveContainer>
+                            <Tooltip
+                                contentStyle={{ fontSize: 10, textTransform: 'capitalize' }}
+
+                            />
+                        </PieChart>
+
+                    </ResponsiveContainer>
+            }
+        </div>
     )
 }
 

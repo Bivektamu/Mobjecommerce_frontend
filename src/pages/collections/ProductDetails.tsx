@@ -100,7 +100,7 @@ const ProductComponent = () => {
 
             <div className="md:w-1/2 w-full px-4">
               <h2 className="md:text-3xl text-xl font-semibold mb-2">
-                {!productItem ? <TextLoader col='1' cssClass='w-2/5 h-12 ml-0' /> : productItem.title}
+                {!productItem ? <TextLoader  cssClass='w-2/5 h-12 ml-0' /> : productItem.title}
               </h2>
 
               <div className="flex gap-4 items-center mb-6">

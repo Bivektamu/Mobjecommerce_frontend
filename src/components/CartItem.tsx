@@ -126,8 +126,8 @@ const CartItem = ({ cartItem }: Props) => {
                     </div>
                 }
                 <div>
-                    <h3 className="font-semibold mb-2 ">{product ? product.title : <TextLoader col='1' cssClass='w-[80px] h-4' />}</h3>
-                    {!product ? <TextLoader col='1' cssClass='w-[80px] h-4' />
+                    <h3 className="font-semibold mb-2 ">{product ? product.title : <TextLoader cssClass='w-[80px] h-4' />}</h3>
+                    {!product ? <TextLoader cssClass='w-[80px] h-4' />
                         :
                         <p className='flex items-center text-xs gap-2'>Color: <span className={`w-4 h-4 rounded-full ${getClasses(cartItem.color as Colour).bgClass}`}></span> {cartItem.color} <span className="w-4 h-[2px] bg-slate-500"></span> Size: {cartItem.size}</p>
                     }
@@ -136,11 +136,11 @@ const CartItem = ({ cartItem }: Props) => {
 
             <div className='flex items-center gap-4 w-full md:w-auto text-sm md:text-base'>
 
-                {!product ? <TextLoader col='1' cssClass='w-8 h-8' /> : <p className='font-semibold mr-4'>$ {cartItem.price}</p>}
+                {!product ? <TextLoader cssClass='w-8 h-8' /> : <p className='font-semibold mr-4'>$ {cartItem.price}</p>}
 
 
                 {
-                    !product ? <TextLoader col='1' cssClass='w-24 h-8' /> :
+                    !product ? <TextLoader cssClass='w-24 h-8' /> :
 
                         <fieldset className=''>
                             <div className="flex items-center gap-2 w-min  justtify-start border-cultured border-[2px] rounded px-2 py-2">

@@ -4,10 +4,10 @@ import { GET_ORDERS } from '../../../../data/query/orders.query'
 import { Order, Toast, Toast_Vairant } from '../../../../store/types'
 import { v4 } from 'uuid'
 import { addToast } from '../../../../store/slices/toastSlice'
-import ProgressLoader from '../../../ui/ProgressLoader'
 import UserInfo from './UserInfo'
 import { NavLink } from 'react-router-dom'
 import { useEffect } from 'react'
+import SquareLoader from '../../../ui/SquareLoader'
 
 const RecentOrders = () => {
 
@@ -19,8 +19,8 @@ const RecentOrders = () => {
     pollInterval: 5000,
 
   })
-  useEffect(()=> {
-    return(()=>stopPolling())
+  useEffect(() => {
+    return (() => stopPolling())
   }, [])
 
   if (error) {
@@ -35,9 +35,11 @@ const RecentOrders = () => {
 
 
   const orders = data?.orders
-  if (loading || !orders) {
-    return <ProgressLoader />
+
+  if (loading) {
+    return <SquareLoader square={1} cssClass='h-[200px]' squareClass='h-full w-full' />
   }
+
   return (
     <div>
       <p className="font-semibold p-4 text-slate-600 flex justify-between items-center bg-regal-white lg:bg-inherit">
