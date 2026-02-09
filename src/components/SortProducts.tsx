@@ -1,31 +1,17 @@
-import React, { Dispatch, useState } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import Arrow from './ui/Arrow'
-import { Product } from '../store/types'
+import { SortType } from '../pages/collections/Collections'
 
 type Props = {
-    products: Product[],
-    sortProducts: Dispatch<React.SetStateAction<Product[]>>
+    setSortType:Dispatch<SetStateAction<SortType>>
 }
 
-const SortProducts = ({ products, sortProducts }: Props) => {
+const SortProducts = ({ setSortType }: Props) => {
     const [sortBy, setSortBy] = useState(false)
 
-    // sortProducts([...products.sort((a,b)=>a.title.localeCompare(b.title))]);
-
-    const sortHandler = (e: React.MouseEvent<HTMLButtonElement>, type: string) => {
+    const sortHandler = (e: React.MouseEvent<HTMLButtonElement>, type: SortType) => {
         e.stopPropagation()
-        if (type === 'a') {
-            sortProducts([...products.sort((a, b) => a.title.localeCompare(b.title))]);
-        }
-        else if (type === 'z') {
-            sortProducts([...products.sort((a, b) => a.title.localeCompare(b.title)).reverse()]);
-        }
-        else if (type === 'min') {
-            sortProducts([...products.sort((a, b) => b.price - a.price).reverse()]);
-        }
-        else if (type === 'max') {
-            sortProducts([...products.sort((a, b) => a.price - b.price).reverse()]);
-        }
+        setSortType(type)
     }
 
     return (

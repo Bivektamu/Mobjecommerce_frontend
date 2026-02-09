@@ -1,9 +1,9 @@
 
 import { getProducts, useProduct } from "../../store/slices/productSlice"
-import { MouseEvent, useEffect, useState } from "react"
+import { MouseEvent, useEffect, useMemo, useState } from "react"
 import { useStoreDispatch } from "../../store"
 import BreadCrumbs from "../../components/layout/BreadCrumbs"
-import { Filters, Product, Status } from "../../store/types"
+import { Filters, Status } from "../../store/types"
 import ProductFilter from "../../components/collections/ProductFilter"
 import Close from "../../components/ui/Close"
 import GridLoader from "../../components/ui/GridLoader"
@@ -13,6 +13,7 @@ import { resetCartAction, useCart } from "../../store/slices/cartSlice"
 import PageWrapper from "../../components/ui/PageWrapper"
 import { Helmet } from "react-helmet-async"
 
+export type SortType = 'a' | 'z' | 'min' | 'max' | null
 
 const Collections = () => {
   const dispatch = useStoreDispatch()
@@ -26,80 +27,82 @@ const Collections = () => {
     sizes: [],
     price: { min: '', max: '' }
   })
-
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
+  const [sortType, setSortType] = useState<SortType>(null)
 
   useEffect(() => {
-    dispatch(getProducts())
-  }, [])
+    if (status === Status.IDLE)
+      dispatch(getProducts())
+  }, [dispatch, status])
 
   useEffect(() => {
     if (action) {
       dispatch(resetCartAction())
     }
-  }, [action])
+  }, [action, dispatch])
 
 
-  useEffect(() => {
-    let tempProduct: Product[] = []
-    if (products.length > 0) {
-      if (filters.category.length > 0) {
-        filters.category.map(cat => {
-          products.map(product => {
-            if (product.category.indexOf(cat) === 0) tempProduct.push(product)
-          })
-        })
-      }
-      else {
-        tempProduct = [...products]
-      }
+  const filteredProducts = useMemo(() => {
+    if (!products || !products.length) return []
+    let result = products
+    if (filters.category.length) {
+      result = result.filter(product =>
+        filters.category.some(cat => product.category.startsWith(cat))
+      )
 
-      if (filters.colors.length > 0) {
-        const temp: Product[] = []
-        filters.colors.map(col => {
-          tempProduct.map(product => {
-            if (product.colors.indexOf(col) > -1) temp.push(product)
-          })
-        })
-        tempProduct = temp
-      }
+    }
 
-      if (filters.sizes.length > 0) {
-        const temp: Product[] = []
-        filters.sizes.map(size => {
-          tempProduct.map(product => {
-            if (product.sizes.indexOf(size) > -1) temp.push(product)
-          })
-        })
-        tempProduct = temp
-      }
+    if (filters.colors.length) {
+      result = result.filter(product =>
+        filters.colors.some(color => product.colors.includes(color))
+      )
+    }
 
-      if (filters.price.min) {
-        tempProduct = tempProduct.filter(product => product.price >= parseInt(filters.price.min as string))
-      }
+    if (filters.sizes.length) {
+      result = result.filter(product =>
+        filters.sizes.some(size => product.sizes.includes(size))
+      )
+    }
 
-      if (filters.price.max) {
-        tempProduct = tempProduct.filter(product => product.price <= parseInt(filters.price.max as string))
+    if (filters.price.min) {
+      result = result.filter(product => product.price >= Number(filters.price.min))
+    }
+
+    if (filters.price.max) {
+      result = result.filter(product => product.price <= Number(filters.price.max))
+    }
+
+    if (sortType) {
+      result = [...result]
+      switch (sortType) {
+        case 'a':
+          result = result.sort((a, b) => a.title.localeCompare(b.title))
+          break;
+        case 'z':
+          result = result.sort((a, b) => b.title.localeCompare(a.title))
+          break;
+        case 'min':
+          result = result.sort((a, b) => a.price - b.price)
+          break;
+        case 'max':
+          result = result.sort((a, b) => b.price - a.price)
+          break;
+        default:
+          break;
       }
     }
-    setFilteredProducts(Array.from(new Set([...tempProduct])))
+    return result
 
+  }, [filters, products, sortType])
 
-  }, [filters, products])
-
-  const clickHandler = (e: MouseEvent<HTMLButtonElement>, type:keyof Omit<Filters,  'price'>, item: string) => {
-    e.stopPropagation()
+  const clickHandler = (type: keyof Omit<Filters, 'price'>, item: string) => {
     setFilters(prev => ({ ...prev, [type]: prev[type].filter(c => c !== item) }))
   }
 
-  const priceHandler = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
+  const priceHandler = () => {
     setFilters(prev => ({ ...prev, price: { min: '', max: '' } }))
   }
 
-  const clearFiltersHandler = (e:MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    
+  const clearFiltersHandler = () => {
     setFilters({
       category: [],
       colors: [],
@@ -131,9 +134,9 @@ const Collections = () => {
             <div className="flex gap-4 mb-8 flex-wrap">
               {
                 category.map((cat, i) =>
-                  <p key={i} className="text-xs font-semibold flex gap-2 items-center capitalize text-black border-slate-300 border-[1px] py-[5px] px-6 rounded-[20px] ">
+                  <p key={`cat_${i}`} className="text-xs font-semibold flex gap-2 items-center capitalize text-black border-slate-300 border-[1px] py-[5px] px-6 rounded-[20px] ">
                     {cat}
-                    <button type="button" onClick={(e) => clickHandler(e, 'category', cat)}>
+                    <button type="button" onClick={() => clickHandler( 'category', cat)}>
                       <Close classN="w-3 bg-slate-600" />
                     </button>
                   </p>)
@@ -143,9 +146,9 @@ const Collections = () => {
 
                 colors.length > 0 &&
                 colors.map((clr, i) =>
-                  <p key={i} className="text-xs font-semibold flex gap-2 items-center capitalize text-black border-slate-300 border-[1px] py-[5px] px-6 rounded-[20px] ">
+                  <p key={`clr_${i}`} className="text-xs font-semibold flex gap-2 items-center capitalize text-black border-slate-300 border-[1px] py-[5px] px-6 rounded-[20px] ">
                     Color: {clr.toLowerCase()}
-                    <button type="button" onClick={e => clickHandler(e, 'colors', clr)}>
+                    <button type="button" onClick={() => clickHandler( 'colors', clr)}>
                       <Close classN="w-3 bg-slate-600" />
                     </button>
                   </p>
@@ -157,9 +160,9 @@ const Collections = () => {
 
                 sizes.length > 0 &&
                 sizes.map((size, i) =>
-                  <p key={i} className="text-xs font-semibold flex gap-2 items-center capitalize text-black border-slate-300 border-[1px] py-[5px] px-6 rounded-[20px] ">
+                  <p key={`size_${i}`} className="text-xs font-semibold flex gap-2 items-center capitalize text-black border-slate-300 border-[1px] py-[5px] px-6 rounded-[20px] ">
                     Size: {size}
-                    <button type="button" onClick={e => clickHandler(e, 'sizes', size)}>
+                    <button type="button" onClick={() => clickHandler('sizes', size)}>
                       <Close classN="w-3 bg-slate-600" />
                     </button>
                   </p>
@@ -177,10 +180,10 @@ const Collections = () => {
                 </p>
               }
               {
-                (filters.price.min || filters.price.max || sizes.length > 0 || colors.length > 0 || category.length > 0) && 
+                (filters.price.min || filters.price.max || sizes.length > 0 || colors.length > 0 || category.length > 0) &&
                 <button type="button" className="text-xs font-bold" onClick={clearFiltersHandler}>
                   Clear All Filters
-                  </button>
+                </button>
               }
 
             </div>
@@ -190,7 +193,7 @@ const Collections = () => {
                 filteredProducts.length > 0 &&
                 <p className="text-xs text-slate-400 font-medium">Showing {filteredProducts.length} results.</p>
               }
-              <SortProducts products={filteredProducts} sortProducts={setFilteredProducts} />
+              <SortProducts setSortType={setSortType} />
 
             </div>
 
