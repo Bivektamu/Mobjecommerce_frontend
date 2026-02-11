@@ -7,7 +7,7 @@ type Props = {
 
 const ProductCard = ({ item }: Props) => {
     return (
-        <div key={item.id}>
+        <div>
             <CustomNavLink to={`/collections/${item.slug}`} cssClass="bg-cultured mb-8 group justify-center flex items-center  aspect-[2/2.3]">
                 <img src={item.imgs[0].url} alt="" className="w-3/5 group-hover:scale-125 transition-all" />
             </CustomNavLink>

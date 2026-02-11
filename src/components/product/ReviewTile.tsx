@@ -26,6 +26,10 @@ const ReviewTile = ({ review, refetchReview }: Props) => {
     const { avatar, setAvatarEmail } = useAvatar()
     const dispatch = useStoreDispatch()
     const { user } = useAuth()
+      const [showModal, setShowModal] = useState({
+        flag: false,
+        content: ''
+    })
     const [deleteReview] = useMutation(DELETE_REVIEW, {
         onCompleted: () => {
             refetchReview?.()
@@ -46,13 +50,9 @@ const ReviewTile = ({ review, refetchReview }: Props) => {
             dispatch(addToast(newToast))
         }
     })
-    const [showModal, setShowModal] = useState({
-        flag: false,
-        content: ''
-    })
+  
 
     const deleteHandler = (e: MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault()
         deleteReview({
             variables: {
                 reviewId: review.id
@@ -67,17 +67,16 @@ const ReviewTile = ({ review, refetchReview }: Props) => {
     }, [email, setAvatarEmail])
 
     return (
-
         <div className="wrapper border-b pb-6 mb-6">
             <div className="grid md:grid-cols-16 grid-cols-5 items-start justify-between">
 
-                <p className=" col-span-1">
+                <p className="col-span-1">
                     <span className='w-12 h-12 overflow-hidden rounded-full block'>
                         {avatar}
                     </span>
                 </p>
 
-                <div className='md:col-span-12 col-span-4 md:text-base text-sm'>
+                <div className='md:col-span-12 col-span-3 md:text-base text-sm'>
                     <div className="mb-2 capitalize">
                         <p>{firstName} {lastName}</p>
                     </div>
@@ -85,10 +84,10 @@ const ReviewTile = ({ review, refetchReview }: Props) => {
 
                 </div>
 
-                <div className="col-span-5">
+                <div className="md:col-span-3 col-span-1">
                     <div className='flex gap-1 md:justify-end'>
                         {new Array(review.rating as number).fill('*').map((_, i) =>
-                            <StarIcon key={i} />
+                            <StarIcon key={`star_${i}`} />
                         )}
                     </div>
                 </div>

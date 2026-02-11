@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo} from 'react'
 import BreadCrumbs from '../../components/layout/BreadCrumbs'
 import { useStoreDispatch } from '../../store'
 
@@ -15,7 +15,7 @@ import SquareLoader from '../../components/ui/SquareLoader'
 import ProductCard from '../../components/ui/ProductCard'
 import { getAverageRating } from '../../utils/helpers'
 import PageWrapper from '../../components/ui/PageWrapper'
-import { useLazyQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { GET_REVIEWS_BY_PRODUCT_ID } from '../../data/query/reviews.query'
 import { stripTypename } from '@apollo/client/utilities'
 import { Helmet } from 'react-helmet-async'
@@ -23,59 +23,58 @@ import { Helmet } from 'react-helmet-async'
 const ProductComponent = () => {
 
   const params = useParams()
-  const navigate = useNavigate()
   const dispatch = useStoreDispatch()
+  const navigate = useNavigate()
 
-  const [productItem, setProductItem] = useState<null | Product>(null)
-  const [similarProducts, setSimilarProducts] = useState<Product[]>([])
   const { products, status } = useProduct()
-  const [reviews, setReviews] = useState<ReviewUserOnly[]>([])
-
-
-  const [queryReviews, { refetch, data }] = useLazyQuery(GET_REVIEWS_BY_PRODUCT_ID)
-
-  useEffect(() => {
-    if (data && data?.productReviews) {
-      const tempReviews = stripTypename(data.productReviews as ReviewUserOnly[]).sort((a, b) => (new Date(b.createdAt)).getTime() - (new Date(a.createdAt)).getTime())
-      setReviews([...tempReviews])
-    }
-  }, [data])
 
   useEffect(() => {
     if (status === Status.IDLE) {
       dispatch(getProducts())
     }
-  }, [dispatch])
+  }, [dispatch, status])
 
-  useEffect(() => {
-    if (products.length > 0) {
-      const productExists = products.filter(product => product.slug === params.slug)
-      if (productExists.length < 1) {
-        navigate('/')
-      }
-      setProductItem(productExists[0])
+
+  // find specific based on params
+  const productItem: Product | null = useMemo(() => {
+    if (products.length && params.slug) {
+      const foundProduct = products.find(product => product.slug === params.slug)
+      if (foundProduct) return foundProduct
     }
+    return null
+
   }, [products, params.slug])
 
+  // redirect to 404 if product not found
   useEffect(() => {
-    if (productItem) {
-
-      queryReviews({
-        variables: {
-          productReviewsId: productItem.id
-        }
-      })
-
-      const tempProducts = products.filter(product => product.category === productItem.category && product.id !== productItem.id)
-      if (tempProducts.length > 0) {
-        setSimilarProducts(tempProducts)
-      }
-      else {
-        setSimilarProducts(products.slice(0, 4))
-      }
+    if (status === Status.FULFILLED && !productItem && products.length) {
+      navigate('/404', { replace: true })
+      return
     }
+  }, [status, productItem, products, navigate])
 
-  }, [productItem])
+
+  const { data, refetch } = useQuery(GET_REVIEWS_BY_PRODUCT_ID, {
+    variables: {
+      productReviewsId: productItem?.id,
+    },
+    skip: !productItem
+  })
+
+  // similar products code
+  const similarProducts = useMemo(() => {
+    if (!productItem || !products.length) return []
+    const tempProducts = products.filter(product => product.category === productItem.category && product.id !== productItem.id)
+    return tempProducts.length > 0 ? tempProducts : products.slice(0, 4)
+  }, [productItem, products])
+
+  const reviews: ReviewUserOnly[] = useMemo(() => {
+    if (data && data?.productReviews) {
+      return stripTypename(data.productReviews as ReviewUserOnly[]).sort((a, b) => (new Date(b.createdAt)).getTime() - (new Date(a.createdAt)).getTime())
+    }
+    return []
+  }, [data])
+
 
   return (
     <PageWrapper>
@@ -83,8 +82,9 @@ const ProductComponent = () => {
         <title>
           {productItem?.title || 'Details'} | Mobje Commerce
         </title>
+        <meta name="description" content={productItem?.description} />
       </Helmet>
-      <section id="breadcrums" className="bg-white px-4">
+      <section id="breadcrumbs" className="bg-white px-4">
         <div className="py-8 container mx-auto">
           <BreadCrumbs rootLink="Ecommerce" />
         </div>
@@ -95,12 +95,12 @@ const ProductComponent = () => {
 
           <div className="flex gap-12 md:mb-32 mb-10 md:flex-row flex-col">
             <div className="md:w-1/2 w-full  bg-cultured flex items-center justify-center">
-              {!productItem ? <SquareLoader square={1} squareClass='w-full h-full' /> : <img src={productItem.imgs[0].url} alt="" className='w-3/5' />}
+              {!productItem ? <SquareLoader square={1} squareClass='w-full h-full' /> : <img src={productItem.imgs[0].url} alt={productItem.title} className='w-3/5' />}
             </div>
 
             <div className="md:w-1/2 w-full px-4">
               <h2 className="md:text-3xl text-xl font-semibold mb-2">
-                {!productItem ? <TextLoader  cssClass='w-2/5 h-12 ml-0' /> : productItem.title}
+                {!productItem ? <TextLoader cssClass='w-2/5 h-12 ml-0' /> : productItem.title}
               </h2>
 
               <div className="flex gap-4 items-center mb-6">
@@ -125,7 +125,10 @@ const ProductComponent = () => {
               </div>
 
               <p className="md:text-xl text-lg font-semibold mb-8">${productItem?.price}</p>
-              <AddToCartForm product={productItem} />
+              {
+                productItem && <AddToCartForm product={productItem} />
+              }
+
             </div>
           </div>
 

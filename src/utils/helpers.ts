@@ -1,4 +1,4 @@
-import { ErrorCode, Toast_Vairant } from "../store/types"
+import { Colour, ErrorCode, Size, Toast_Vairant } from "../store/types"
 
 export const getAverageRating = (ratings: number[]) => {
     if (ratings) {
@@ -34,3 +34,5 @@ export const getToastVariant = (errorCode: ErrorCode) => {
             return Toast_Vairant.DANGER
     }
 }
+
+export const generateCartProductId = (userId: string | null, productId: string,  color:Colour, size: Size ) => `${userId || 'guest'}_${productId}_${color}_${size}`

@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useState } from 'react'
+import { MouseEvent, useEffect, useMemo, useState } from 'react'
 import { useAuth } from '../../store/slices/authSlice'
 import { ReviewUserOnly, Role } from '../../store/types'
 
@@ -12,65 +12,29 @@ type Props = {
     reviews: ReviewUserOnly[],
     refetch: () => void
 }
+const REVIEWS_PER_PAGE = 1
+
 const ProductReviews = ({ productId, reviews, refetch }: Props) => {
 
     const { user } = useAuth()
 
-    const REVIEWS_PER_PAGE = 3
+    const [currentPage, setCurrentPage] = useState(1)
 
-    const [pagination, setPagination] = useState({
-        currentPage: 1,
-        lastPage: 1,
-        reviewsPerPage: reviews
-    })
+    const lastPage = Math.max(1, Math.ceil(reviews.length / REVIEWS_PER_PAGE))
+
+    useEffect(()=> {
+        if(currentPage > lastPage) setCurrentPage(lastPage)
+    }, [lastPage, currentPage])
+
+    const reviewsPerPage = currentPage < lastPage
+        ? reviews.slice(0, REVIEWS_PER_PAGE * currentPage)
+        : reviews
 
     const [showModal, setShowModal] = useState(false)
 
-    useEffect(() => {
-        if (reviews && reviews.length > 0) {
-            setPagination(prev => ({
-                ...prev,
-                lastPage: Math.ceil(reviews.length / REVIEWS_PER_PAGE),
-                reviewsPerPage: reviews.slice(0, REVIEWS_PER_PAGE)
-            }))
-        }
-    }, [reviews])
-
-
-    const { reviewsPerPage, currentPage, lastPage } = pagination
-
-
-    useEffect(() => {
-        if (currentPage < lastPage) {
-            setPagination(prev =>
-            ({
-                ...prev,
-                reviewsPerPage: reviews.slice(0, REVIEWS_PER_PAGE * currentPage)
-            })
-            )
-
-        }
-        else if (currentPage === lastPage) {
-            setPagination(prev =>
-            ({
-                ...prev,
-                reviewsPerPage: reviews,
-            })
-            )
-        }
-    }, [currentPage])
-
-
-
-
     const handlePagination = (e: MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation()
-
-        setPagination(prev => ({
-            ...prev,
-            currentPage: prev.currentPage + 1
-        }))
-
+        setCurrentPage(prev => prev + 1)
     }
 
     return (
@@ -78,7 +42,7 @@ const ProductReviews = ({ productId, reviews, refetch }: Props) => {
             <p className="font-semibold mb-4 text-sm md:text-base">Reviews</p>
 
             <div className='flex gap-4 items-center mb-10'>
-                {reviews && reviews.length > 0 ?
+                {reviews.length > 0 ?
                     <>
                         <h2 className="md:text-3xl text-xl font-bold">
                             {getAverageRating(reviews.map(review => review.rating) as number[])}
@@ -95,7 +59,7 @@ const ProductReviews = ({ productId, reviews, refetch }: Props) => {
             }
 
             {
-                reviews && reviews.length > 0 &&
+                reviews.length > 0 &&
                 <>
                     <div className='border-cultured border-b-[1px] py-4 flex justify-end mb-16'>
                         <p className="text-xs text-slate-600 uppercase font-semibold tracking-wider flex gap-2 items-center">sort by <span className="w-2 h-2 border-b-2 border-r-2 rotate-45 border-slate-600 -translate-y-[2px]"></span></p>
@@ -107,7 +71,7 @@ const ProductReviews = ({ productId, reviews, refetch }: Props) => {
                         )}
                     </div>
                     <button
-                        disabled={currentPage === lastPage && true}
+                        disabled={currentPage === lastPage}
                         onClick={handlePagination}
                         className={`border-[1px]  py-2 px-4 rounded text-center  text-sm font-medium text-slate-600 mx-auto block ${currentPage === lastPage ? 'cursor-not-allowed text-slate-200 border-slate-300' : 'cursor-pointer border-slate-600'}`}>Load more reviews</button>
                 </>

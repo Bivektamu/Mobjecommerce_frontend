@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, MouseEvent, useEffect, useMemo, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'react-router-dom'
 
@@ -13,6 +13,7 @@ import { addToCart, resetCartAction, updateCartQuantity, useCart } from '../../s
 import { useStoreDispatch } from '../../store';
 import { addToast } from '../../store/slices/toastSlice';
 import LikeButton from '../wishList/LikeButton';
+import { generateCartProductId } from '../../utils/helpers';
 
 type Props = {
     product: Product | null
@@ -21,9 +22,10 @@ type Props = {
 const ALL_SIZES = [Size.SMALL, Size.MEDIUM, Size.LARGE, Size.EXTRA_LARGE]
 
 function AddToCartForm({ product }: Props) {
+    const { action, cart } = useCart()
+
     const dispatch = useStoreDispatch()
     const { user } = useAuth()
-    const { action, cart } = useCart()
 
     const [formData, setFormData] = useState<Cart>({
         id: '',
@@ -31,102 +33,88 @@ function AddToCartForm({ product }: Props) {
         productId: product?.id || '',
         color: null,
         size: null,
-        quantity: 0,
+        quantity: 1,
         price: product?.price || null,
         imgUrl: ''
     })
 
-    const [userCart, setUserCart] = useState<Cart[]>([])
-    const [itemExists, setItemExists] = useState<boolean>(false)
 
     const [formErrors, setFormErrors] = useState<FormError>({})
 
+    // setting product related details to possible cart item
     useEffect(() => {
         if (product && Object.keys(product).length > 0) {
-            setFormData({ ...formData, id: product?.id, productId: product?.id, price: product?.price, imgUrl: product?.imgs[0].url })
+            setFormData(prev => ({
+                ...prev,
+                productId: product?.id,
+                price: product?.price,
+                imgUrl: product?.imgs[0].url
+            })
+            )
         }
     }, [product])
 
     // code to set userId in cart items
     useEffect(() => {
         if (user && user.role === Role.CUSTOMER) {
-            setFormData({ ...formData, userId: user.id })
+            setFormData(prev => ({
+                ...prev,
+                userId: user.id
+            }))
         }
     }, [user])
 
     //code to filter cart items specific to current user
-    useEffect(() => {
-        if (cart.length > 0) {
-            if (user) {
-                setUserCart(cart.filter(cartItem => cartItem.userId === user.id && cartItem.productId === formData.productId))
-            }
-            else {
-                setUserCart(cart.filter(CartItem => !CartItem.userId && CartItem.productId === formData.productId))
-            }
-
+    const userCart: Cart[] = useMemo(() => {
+        if (user) {
+            return cart.filter((cartItem: Cart) => cartItem.userId === user.id && cartItem.productId === formData.productId)
+        }
+        else {
+            return cart.filter((cartItem: Cart) => !cartItem.userId && cartItem.productId === formData.productId)
         }
     }, [user, cart, formData.productId])
 
-    // code to remove error info when fields are typed
-    useEffect(() => {
-        if (Object.keys(formData).length > 0) {
-            Object.keys(formData).map(key => {
-                if (formData[key as keyof Cart]) {
-                    setFormErrors(prev => ({ ...prev, [key]: '' }))
-                }
-            })
-        }
-    }, [formData])
 
     useEffect(() => {
-        if (action) {
-            let msg = '';
-            switch (action) {
-                case Action.ADD:
-                    msg = 'Product added to cart'
-                    break;
+        if (!action) return
+        let msg = '';
+        switch (action) {
+            case Action.ADD:
+                msg = 'Product added to cart'
+                break;
 
-                case Action.EDIT:
-                    msg = 'Item updated on cart'
-                    break;
+            case Action.EDIT:
+                msg = 'Item updated on cart'
+                break;
 
-                default:
-                    break;
-            }
-            const toast: Toast = {
-                id: uuidv4(),
-                variant: Toast_Vairant.SUCCESS,
-                msg: msg
-            }
-            dispatch(addToast(toast))
+            default:
+                break;
         }
-    }, [action])
+        const toast: Toast = {
+            id: uuidv4(),
+            variant: Toast_Vairant.SUCCESS,
+            msg: msg
+        }
+        if (!msg) return
+        dispatch(addToast(toast))
+    }, [action, dispatch])
 
     const { color, size, quantity, productId } = formData
 
-    useEffect(() => {
-
+    // code to check if item already exists in cart or not
+    const itemExists = useMemo(() => {
         if (color && size) {
-            setFormData(prev => ({ ...prev, id: product?.id + '_' + color + '_' + size }))
+            const itemExistsOrNot = (userCart.find(item => item.color === color && item.size === size))
+            return itemExistsOrNot ? itemExistsOrNot.id : null
         }
-
-        if (userCart.length > 0 && color && size) {
-
-            const itemExistsOrNot = (userCart.filter(item => item.color === color && item.size === size))
-            if (itemExistsOrNot.length > 0) {
-                setItemExists(true)
-            }
-            else {
-                setItemExists(false)
-            }
-        }
+        return null
     }, [color, size, userCart])
 
 
     const changeHandler = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        e.stopPropagation()
-        const { name, value } = e.target
         if (!product) return
+
+        const { name, value } = e.target
         if (action === Action.ADD) dispatch(resetCartAction())
 
         if (name === 'quantity') {
@@ -134,30 +122,44 @@ function AddToCartForm({ product }: Props) {
                 return
             }
             else
-                setFormData({ ...formData, quantity: parseInt(value) })
+                setFormData(prev => ({
+                    ...prev,
+                    quantity: Number(value)
+                }))
         }
         else {
-            setFormData({ ...formData, [name]: value })
+            setFormData(prev => ({
+                ...prev,
+                [name]: value
+            }))
         }
 
-
+        setFormErrors(prev => {
+            if (!prev[name]) return prev
+            return { ...prev, [name]: '' }
+        })
     }
 
-
-    const rangeHandler = (e: MouseEvent<HTMLButtonElement>, type: string) => {
-        e.stopPropagation()
+    const rangeHandler = (type: string) => {
         if (!product) return
         if (action === Action.ADD) dispatch(resetCartAction())
         if (type === '-') {
             if (formData.quantity > 0) {
-                setFormData({ ...formData, quantity: formData.quantity - 1 })
+                setFormData(prev => ({
+                    ...prev,
+                    quantity: prev.quantity - 1
+                }))
             }
         }
         else {
             if (formData.quantity < product?.quantity) {
-                setFormData({ ...formData, quantity: formData.quantity + 1 })
+                setFormData(prev => ({
+                    ...prev,
+                    quantity: prev.quantity + 1
+                }))
             }
         }
+
     }
 
     const submitHandler = (e: FormEvent) => {
@@ -192,20 +194,17 @@ function AddToCartForm({ product }: Props) {
             return setFormErrors(prev => ({ ...prev, ...errors }))
         }
 
-        if (userCart.length > 0) {
-            const itemExistsOrNot = (userCart.filter(item => item.color === color && item.size === size))
-
-            if (itemExistsOrNot.length > 0) {
-                const productToAdd = { ...formData, id: itemExistsOrNot[0].id }
-                dispatch(updateCartQuantity(productToAdd))
-            }
-            else {
-                const productToAdd = { ...formData, id: (user?.id || '') + productId + color + size }
-                dispatch(addToCart(productToAdd))
-            }
+        if (itemExists) {
+            dispatch(updateCartQuantity({
+                id: itemExists,
+                quantity
+            }))
         }
         else {
-            const productToAdd = { ...formData, id: (user?.id || '') + productId + color + size }
+            const productToAdd = {
+                ...formData,
+                id: generateCartProductId(user?.id || null, productId, color as Colour, size as Size)
+            }
             dispatch(addToCart({ ...productToAdd }))
         }
 
@@ -231,7 +230,9 @@ function AddToCartForm({ product }: Props) {
 
                                 return (
                                     <fieldset key={i}>
-                                        <label htmlFor={item} className={`w-8 h-8 block rounded-full ${bgClass}  cursor-pointer relative after:content-[""] after:w-10 after:h-10 after:rounded-full  after:absolute after:top-0 after:bottom-0 after:-right-1  after:m-auto ${color === item ? `after:${borderClass} after:border-2` : ''} }`}></label>
+                                        <label
+                                            htmlFor={item}
+                                            className={`w-8 h-8 block rounded-full ${bgClass}  cursor-pointer relative after:content-[""] after:w-10 after:h-10 after:rounded-full  after:absolute after:top-0 after:bottom-0 after:-right-1  after:m-auto ${color === item ? `after:${borderClass} after:border-2` : ''}`}></label>
                                         <input type="radio" id={item} name="color" value={item} onChange={changeHandler} className='appearance-none hidden ' />
                                     </fieldset>
                                 )
@@ -271,13 +272,13 @@ function AddToCartForm({ product }: Props) {
             <fieldset className='mb-8'>
                 <label htmlFor="quantity" className='font-medium text-slate-600 text-sm block mb-2 w-full uppercase'>Quantity</label>
                 <div className="flex items-center gap-4 w-min  justtify-start border-cultured border-[2px] rounded px-4 py-2">
-                    <button type="button" className='w-6 h-6 relative' onClick={e => rangeHandler(e, '-')}>
+                    <button type="button" className='w-6 h-6 relative' onClick={() => rangeHandler('-')}>
                         <span className='w-4 h-[2px] bg-slate-600 absolute top-0 bottom-0 m-auto left-0 right-0'></span>
                     </button>
 
                     <input type="number" name='quantity' value={quantity} onChange={changeHandler} className='w-[50px] text-center outline-none ' />
 
-                    <button type="button" className='w-6 h-6 relative' onClick={e => rangeHandler(e, '+')}>
+                    <button type="button" className='w-6 h-6 relative' onClick={() => rangeHandler('+')}>
                         <span className='w-4 h-[2px] bg-slate-600 absolute top-0 bottom-0 m-auto left-0 right-0'></span>
                         <span className='h-4 w-[2px] bg-slate-600 absolute top-0 bottom-0 m-auto left-0 right-0'></span>
                     </button>

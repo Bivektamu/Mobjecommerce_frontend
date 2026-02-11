@@ -1,6 +1,6 @@
 
 import { getProducts, useProduct } from "../../store/slices/productSlice"
-import { MouseEvent, useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useStoreDispatch } from "../../store"
 import BreadCrumbs from "../../components/layout/BreadCrumbs"
 import { Filters, Status } from "../../store/types"

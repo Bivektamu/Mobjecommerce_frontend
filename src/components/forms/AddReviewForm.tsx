@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { RatingWidget } from '../ui/RatingWidget'
-import { FormError, Review, ReviewInput, Toast, Toast_Vairant, ValidateSchema } from '../../store/types'
+import { FormError, ReviewInput, Toast, Toast_Vairant, ValidateSchema } from '../../store/types'
 import { useAuth } from '../../store/slices/authSlice'
 import validateForm from '../../utils/validate'
 import { v4 as uuidv4 } from 'uuid';
@@ -34,44 +34,33 @@ const AddReviewForm = ({ productId, refetchReviews, closeModal }: Props) => {
   const { user } = useAuth()
 
   const [formData, setFormData] = useState<ReviewInput>({
-    productId: productId,
-    userId: user?.id,
+    productId,
+    userId: user?.id ?? '',
     rating: null,
     review: '',
-  } as Review)
+  } as ReviewInput)
+
+  useEffect(() => {
+    if (user?.id) setFormData(prev => ({ ...prev, userId: user.id }))
+  }, [user])
 
   const [formErrors, setFormErrors] = useState<FormError>({})
 
   const [stars, setStars] = useState<number | null>(null)
 
-  // const {rating, review} = formData
   useEffect(() => {
-    if (stars) {
-
-      setFormData({ ...formData, rating: stars })
-
+    if (stars !== null) {
+      setFormData(prev => ({ ...prev, rating: stars }))
+      setFormErrors(prev => ({ ...prev, rating: '' }))
     }
   }, [stars])
 
-  // code to remove error info when fields are typed
-  useEffect(() => {
-    if (Object.keys(formData).length > 0) {
-      Object.keys(formData).map(key => {
-        if (formData[key as keyof ReviewInput]) {
-          setFormErrors(prev => ({ ...prev, [key]: '' }))
-        }
-      })
-    }
-  }, [formData])
-
-
   const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    e.preventDefault
-    setFormData({ ...formData, review: e.target.value })
+    setFormErrors(prev => ({ ...prev, review: '' }))
+    setFormData(prev=>({ ...prev, review: e.target.value }))
   }
   const submitHandler = (e: FormEvent) => {
     e.preventDefault()
-    // console.log(formData);
 
     const validateSchema: ValidateSchema<unknown>[] =
       [
@@ -98,20 +87,20 @@ const AddReviewForm = ({ productId, refetchReviews, closeModal }: Props) => {
         input: formData
       }
     })
-
-
-
   }
 
-  if (error) {
-    const newToast: Toast = {
-      id: uuidv4(),
-      variant: Toast_Vairant.DANGER,
-      msg:error.message
+
+  useEffect(() => {
+    if (error) {
+      const newToast: Toast = {
+        id: uuidv4(),
+        variant: Toast_Vairant.DANGER,
+        msg: error.message
+      }
+      dispatch(addToast(newToast))
     }
-    dispatch(addToast(newToast))
+  }, [error, dispatch])
 
-  }
 
   return (
     <div className="bg-white rounded-lg">
@@ -137,7 +126,7 @@ const AddReviewForm = ({ productId, refetchReviews, closeModal }: Props) => {
               {formErrors.review && <span className='text-red-500 text-xs'>{formErrors.review}</span>}
 
             </fieldset>
-            <button type="submit" className="w-[200px] bg-black text-white py-2 px-4 rounded text-center cursor-pointer">{!loading ? "Submit" : 'Submitting...'}</button>
+            <button type="submit" disabled={loading} className="w-[200px] bg-black text-white py-2 px-4 rounded text-center cursor-pointer">{!loading ? "Submit" : 'Submitting...'}</button>
           </div>
 
         </form>
