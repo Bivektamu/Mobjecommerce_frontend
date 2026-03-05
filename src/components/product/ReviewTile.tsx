@@ -8,7 +8,7 @@ import { AiTwotoneDelete } from 'react-icons/ai'
 import { useAuth } from '../../store/slices/authSlice'
 import Modal from '../layout/Modal'
 import EditReviewForm from '../forms/EditReviewForm'
-import { MouseEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { DELETE_REVIEW } from '../../data/mutation/reviews.mutation'
 import { v4 } from 'uuid'
@@ -52,7 +52,7 @@ const ReviewTile = ({ review, refetchReview }: Props) => {
     })
   
 
-    const deleteHandler = (e: MouseEvent<HTMLButtonElement>) => {
+    const deleteHandler = () => {
         deleteReview({
             variables: {
                 reviewId: review.id
