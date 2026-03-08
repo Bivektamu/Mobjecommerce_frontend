@@ -70,7 +70,6 @@ export const editProduct = createAsyncThunk<
             variables: { input: formData }
         })
 
-
         return response.data.editProduct
 
     } catch (err) {

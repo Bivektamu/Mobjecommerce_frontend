@@ -3,6 +3,7 @@ import Logo from '../ui/Logo'
 import GithubIcon from '../ui/GithubIcon'
 import InstagramIcon from '../ui/InstagramIcon'
 import YoutubeIcon from '../ui/YoutubeIcon'
+import CustomNavLink from '../CustomNavLink'
 
 const Footer = () => {
   return (
@@ -11,7 +12,7 @@ const Footer = () => {
         <div className="container flex flex-wrap justify-between items-start mx-auto md:py-14 py-8 gap-8">
           <div className="flex flex-col gap-8 ">
             <Logo />
-         
+
             <div className="flex gap-4">
               <Link className='pointer-events-none' to=''><GithubIcon /></Link>
               <Link className='pointer-events-none' to=''><InstagramIcon /></Link>
@@ -30,15 +31,15 @@ const Footer = () => {
             <div className='flex flex-col gap-2 md:gap-6 text-xs md:text-base'>
               <p className="text-slate-500 uppercase mb-4 md:mb-6 font-medium">COMPANY</p>
               <Link to='' className='pointer-events-none'>About us</Link>
-              <Link to='/contact' className=''>Contact</Link>
+              <CustomNavLink isNavLink={true} cssClass='flex items-center hover:font-bold' to="/contact">Contact</CustomNavLink>
               <Link to='' className='pointer-events-none'>Careers</Link>
             </div>
 
             <div className='flex flex-col gap-2 md:gap-6 text-xs md:text-base'>
               <p className="text-slate-500 uppercase mb-4 md:mb-6 font-medium">SHOP</p>
-              <Link to='/account' className=''>My Account</Link>
+              <CustomNavLink to='/account'  isNavLink={true} cssClass='flex items-center hover:font-bold' >My Account</CustomNavLink>
               {/* <Link to='/checkout' className=''>Checkout</Link> */}
-              <Link to='/cart' className=''>Cart</Link>
+              <CustomNavLink to='/cart' isNavLink={true} cssClass='flex items-center hover:font-bold' >Cart</CustomNavLink>
             </div>
           </div>
 

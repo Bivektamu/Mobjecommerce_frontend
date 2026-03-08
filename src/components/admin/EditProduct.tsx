@@ -18,6 +18,7 @@ interface PreviewImage {
 
 const EditProduct = () => {
 
+
     const dispatch = useStoreDispatch()
 
     const navigate = useNavigate()
@@ -32,7 +33,7 @@ const EditProduct = () => {
     useEffect(() => {
         if (status === Status.IDLE)
             dispatch(getProducts())
-    }, [])
+    }, [status, dispatch])
 
 
     useEffect(() => {
@@ -44,19 +45,15 @@ const EditProduct = () => {
                 navigate('/404')
             }
 
-
-
             let tempProduct: ProductEditInput = {} as ProductEditInput
 
             const { imgs, ...rest } = product[0]
 
             tempProduct = { ...rest, newImgs: [], oldImgs: imgs, }
 
-            // console.log(tempProduct);
-
             setFormData(tempProduct as ProductEditInput)
         }
-    }, [products, params.slug])
+    }, [products, params.slug, navigate])
 
 
 
@@ -285,19 +282,15 @@ const EditProduct = () => {
 
             dispatch(editProduct(formData))
         }
-
-
     }
 
-
-    if (Object.keys(formData).length < 1 || status === Status.PENDING) {
+    if (Object.keys(formData).length < 1) {
         return <ProgressLoader />
     }
 
     if (status === Status.FULFILLED && action === Action.EDIT) {
         return <Navigate to="/admin/products" />
     }
-
 
     return (
 
@@ -314,19 +307,19 @@ const EditProduct = () => {
                     <div className='grid grid-cols-1 w-full gap-6'>
                         <fieldset className=''>
                             <label htmlFor="title" className='capitalize font-medium text-slate-600 text-xs md:text-sm block mb-2 w-full'>title</label>
-                            <input type="text" id="title" name="title" onChange={changeHandler} value={title} className='border-[1px] outline-none text-xs md:text-sm block px-4 py-2 rounded w-full' />
+                            <input type="text" disabled={status === Status.PENDING} id="title" name="title" onChange={changeHandler} value={title} className='border-[1px] outline-none text-xs md:text-sm block px-4 py-2 rounded w-full' />
                             {formErrors.title && <span className='text-red-500 text-xs'>{formErrors.title}</span>}
                         </fieldset>
                         <fieldset className=''>
                             <label htmlFor="price" className='capitalize font-medium text-slate-600 text-xs md:text-sm block mb-2 w-full'>price</label>
-                            <input type="number" inputMode='numeric' id="price" name="price" onChange={changeHandler} value={price ? price : ''} className='border-[1px] outline-none text-xs md:text-sm block px-4 py-2 rounded w-full' />
+                            <input type="number" disabled={status === Status.PENDING} inputMode='numeric' id="price" name="price" onChange={changeHandler} value={price ? price : ''} className='border-[1px] outline-none text-xs md:text-sm block px-4 py-2 rounded w-full' />
                             {formErrors.price && <span className='text-red-500 text-xs'>{formErrors.price}</span>}
 
                         </fieldset>
 
                         <fieldset className=''>
                             <label htmlFor="slug" className='capitalize font-medium text-slate-600 text-xs md:text-sm block mb-2 w-full'>slug</label>
-                            <input type="text" id="slug" name="slug" value={slug} onChange={changeHandler} className='border-[1px] outline-none text-xs md:text-sm block px-4 py-2 rounded w-full' />
+                            <input type="text" disabled={status === Status.PENDING} id="slug" name="slug" value={slug} onChange={changeHandler} className='border-[1px] outline-none text-xs md:text-sm block px-4 py-2 rounded w-full' />
                             {formErrors.slug && <span className='text-red-500 text-xs'>{formErrors.slug}</span>}
 
                         </fieldset>
@@ -335,7 +328,7 @@ const EditProduct = () => {
                             <label htmlFor="stock" className='font-medium text-slate-600 text-xs md:text-sm block mb-2 w-full'>Stock status</label>
 
 
-                            <select value={stockStatus ? 'true' : 'false'} name="stockStatus" id="stock" className='border-[1px] outline-none text-xs md:text-sm block px-4 py-2 rounded w-full' onChange={changeHandler}>
+                            <select disabled={status === Status.PENDING} value={stockStatus ? 'true' : 'false'} name="stockStatus" id="stock" className='border-[1px] outline-none text-xs md:text-sm block px-4 py-2 rounded w-full' onChange={changeHandler}>
                                 <option value="" hidden>Select stock status</option>
                                 <option className='outline-none text-xs md:text-sm block px-4 py-2 rounded w-full' value='true'>In Stock</option>
                                 <option value='false' className='outline-none text-xs md:text-sm block px-4 py-2 rounded w-full'>Out of Stock</option>
@@ -346,13 +339,13 @@ const EditProduct = () => {
 
                         <fieldset className=''>
                             <label htmlFor="quantity" className='capitalize font-medium text-slate-600 text-xs md:text-sm block mb-2 w-full'>Available quantity</label>
-                            <input type="number" id="quantity" name="quantity" onChange={changeHandler} value={quantity ? quantity : ''} className='border-[1px] outline-none text-xs md:text-sm block px-4 py-2 rounded w-full' />
+                            <input type="number" disabled={status === Status.PENDING} id="quantity" name="quantity" onChange={changeHandler} value={quantity ? quantity : ''} className='border-[1px] outline-none text-xs md:text-sm block px-4 py-2 rounded w-full' />
                             {formErrors.quantity && <span className='text-red-500 text-xs'>{formErrors.quantity}</span>}
 
                         </fieldset>
 
                         <fieldset className='flex items-center gap-4 pt-4'>
-                            {featured ? <input type="checkbox" checked name="featured" id="featured" onChange={changeHandler} className=' w-6 h-6 border-[1px] rounded accent-slate-600' /> : <input type="checkbox" name="featured" id="featured" onChange={changeHandler} className=' w-6 h-6 border-[1px] rounded accent-slate-600' />}
+                            {featured ? <input type="checkbox" disabled={status === Status.PENDING} checked name="featured" id="featured" onChange={changeHandler} className=' w-6 h-6 border-[1px] rounded accent-slate-600' /> : <input type="checkbox" disabled={status === Status.PENDING} name="featured" id="featured" onChange={changeHandler} className=' w-6 h-6 border-[1px] rounded accent-slate-600' />}
 
 
                             <label htmlFor='featured' className='font-medium  text-slate-600'>Is Featured</label>
@@ -362,7 +355,7 @@ const EditProduct = () => {
                     <div className='grid grid-cols-1 w-full gap-6'>
                         <fieldset className=''>
                             <label htmlFor="sku" className='uppercase font-medium text-slate-600 text-xs md:text-sm block mb-2 w-full'>sku</label>
-                            <input type="text" id="sku" name="sku" onChange={changeHandler} value={sku.toUpperCase()} className='border-[1px] outline-none text-xs md:text-sm block px-4 py-2 rounded w-full' />
+                            <input type="text" disabled={status === Status.PENDING} id="sku" name="sku" onChange={changeHandler} value={sku.toUpperCase()} className='border-[1px] outline-none text-xs md:text-sm block px-4 py-2 rounded w-full' />
                             {formErrors.sku && <span className='text-red-500 text-xs'>{formErrors.sku}</span>}
 
                         </fieldset>
@@ -381,7 +374,7 @@ const EditProduct = () => {
 
 
                             {/* /////////////////////////// */}
-                            <input type='file' multiple id="images" name="newImgs" accept="image/png, image/jpeg, image/bmp, image/webp" className='border-[1px] outline-none text-xs md:text-sm block px-4 py-2 rounded w-full hidden' placeholder='Choose product images' onChange={changeHandler} />
+                            <input disabled={status === Status.PENDING} type='file' multiple id="images" name="newImgs" accept="image/png, image/jpeg, image/bmp, image/webp" className='border-[1px] outline-none text-xs md:text-sm block px-4 py-2 rounded w-full hidden' placeholder='Choose product images' onChange={changeHandler} />
 
                             {
                                 (oldImgs.length > 0 || imgPreviews.length > 0) &&
@@ -418,25 +411,25 @@ const EditProduct = () => {
                         <fieldset>
                             <legend className='capitalize font-medium text-slate-600 text-xs md:text-sm block mb-2 w-full'>colors</legend>
                             <div className="flex gap-4 items-center">
-                                <input type="checkbox" id="black" name="colors" onChange={changeHandler} value={Colour.BLACK} className='hidden appearance-none' />
+                                <input type="checkbox" disabled={status === Status.PENDING} id="black" name="colors" onChange={changeHandler} value={Colour.BLACK} className='hidden appearance-none' />
                                 <label htmlFor="black" className={`w-8 h-8 rounded-full bg-black  cursor-pointer relative ${colors.indexOf(Colour.BLACK) > -1 ? 'after:content-[""] after:w-10 after:h-10 after:rounded-full after:border-2 after:border-slate-800 after:absolute after:top-0 after:bottom-0 after:left-0 after:right-0 after:m-auto after:-translate-x-1' : ''}  `}></label>
 
                                 <label htmlFor="red" className={`w-8 h-8 rounded-full bg-red-600  cursor-pointer relative ${colors.indexOf(Colour.RED) > -1 ? 'after:content-[""] after:w-10 after:h-10 after:rounded-full after:border-2 after:border-red-600 after:absolute after:top-0 after:bottom-0 after:left-0 after:right-0 after:m-auto after:-translate-x-1' : ''}`}></label>
 
-                                <input type="checkbox" id="red" name="colors" onChange={changeHandler} value={Colour.RED} className='appearance-none hidden ' />
+                                <input type="checkbox" disabled={status === Status.PENDING} id="red" name="colors" onChange={changeHandler} value={Colour.RED} className='appearance-none hidden ' />
 
                                 <label htmlFor="gray" className={`w-8 h-8 rounded-full bg-gray-600  cursor-pointer relative ${colors.indexOf(Colour.GRAY) > -1 ? 'after:content-[""] after:w-10 after:h-10 after:rounded-full after:border-2 after:border-gray-600 after:absolute after:top-0 after:bottom-0 after:left-0 after:right-0 after:m-auto after:-translate-x-1' : ''}`}></label>
 
-                                <input type="checkbox" id="gray" name="colors" onChange={changeHandler} value={Colour.GRAY} className='appearance-none hidden ' />
+                                <input type="checkbox" disabled={status === Status.PENDING} id="gray" name="colors" onChange={changeHandler} value={Colour.GRAY} className='appearance-none hidden ' />
 
                                 <label htmlFor="white" className={`w-8 h-8 rounded-full bg-regal-white  cursor-pointer relative ${colors.indexOf(Colour.WHITE) > -1 ? 'after:content-[""] after:w-10 after:h-10 after:rounded-full after:border-2 after:border-regal-white after:absolute after:top-0 after:bottom-0 after:left-0 after:right-0 after:m-auto after:-translate-x-1' : ''}`}></label>
 
-                                <input type="checkbox" id="white" name="colors" onChange={changeHandler} value={Colour.WHITE} className='appearance-none hidden ' />
+                                <input type="checkbox" disabled={status === Status.PENDING} id="white" name="colors" onChange={changeHandler} value={Colour.WHITE} className='appearance-none hidden ' />
 
 
                                 <label htmlFor="amber" className={`w-8 h-8 rounded-full bg-amber-300  cursor-pointer relative ${colors.indexOf(Colour.AMBER) > -1 ? 'after:content-[""] after:w-10 after:h-10 after:rounded-full after:border-2 after:border-amber-300 after:absolute after:top-0 after:bottom-0 after:left-0 after:right-0 after:m-auto after:-translate-x-1' : ''}`}></label>
 
-                                <input type="checkbox" id="amber" name="colors" onChange={changeHandler} value={Colour.AMBER} className='appearance-none hidden ' />
+                                <input type="checkbox" disabled={status === Status.PENDING} id="amber" name="colors" onChange={changeHandler} value={Colour.AMBER} className='appearance-none hidden ' />
                             </div>
                             {formErrors.colors && <span className='text-red-500 text-xs'>{formErrors.colors}</span>}
 
@@ -447,18 +440,18 @@ const EditProduct = () => {
 
                             <div className="flex gap-4">
 
-                                <input type="checkbox" onChange={changeHandler} name="sizes" id="small" value={Size.SMALL} className='appearance-none hidden' />
+                                <input type="checkbox" disabled={status === Status.PENDING} onChange={changeHandler} name="sizes" id="small" value={Size.SMALL} className='appearance-none hidden' />
                                 <label htmlFor="small" className={`w-8 block flex items-center justify-center h-8 text-xs md:text-sm font-medium rounded cursor-pointer border-[1px] ${sizes.indexOf(Size.SMALL) > -1 ? 'bg-slate-200' : ''}`}>S</label>
 
 
-                                <input type="checkbox" onChange={changeHandler} name="sizes" id="medium" value={Size.MEDIUM} className='appearance-none hidden' />
+                                <input type="checkbox" disabled={status === Status.PENDING} onChange={changeHandler} name="sizes" id="medium" value={Size.MEDIUM} className='appearance-none hidden' />
                                 <label htmlFor="medium" className={`w-8 block flex items-center justify-center h-8 text-xs md:text-sm font-medium rounded cursor-pointer border-[1px] ${sizes.indexOf(Size.MEDIUM) > -1 ? 'bg-slate-200' : ''}`}>M</label>
 
 
-                                <input type="checkbox" onChange={changeHandler} name="sizes" id="large" value={Size.LARGE} className='appearance-none hidden' />
+                                <input type="checkbox" disabled={status === Status.PENDING} onChange={changeHandler} name="sizes" id="large" value={Size.LARGE} className='appearance-none hidden' />
                                 <label htmlFor="large" className={`w-8 block flex items-center justify-center h-8 text-xs md:text-sm font-medium rounded cursor-pointer border-[1px] ${sizes.indexOf(Size.LARGE) > -1 ? 'bg-slate-200' : ''}`}>L</label>
 
-                                <input type="checkbox" onChange={changeHandler} name="sizes" id="extraLarge" value={Size.EXTRA_LARGE} className='appearance-none hidden' />
+                                <input type="checkbox" disabled={status === Status.PENDING} onChange={changeHandler} name="sizes" id="extraLarge" value={Size.EXTRA_LARGE} className='appearance-none hidden' />
                                 <label htmlFor="extraLarge" className={`w-8 block flex items-center justify-center h-8 text-xs md:text-sm font-medium rounded cursor-pointer border-[1px] ${sizes.indexOf(Size.EXTRA_LARGE) > -1 ? 'bg-slate-200' : ''}`}>XL</label>
                             </div>
                             {formErrors.sizes && <span className='text-red-500 text-xs'>{formErrors.sizes}</span>}
@@ -467,7 +460,7 @@ const EditProduct = () => {
 
                         <fieldset className=''>
                             <label htmlFor="category" className='capitalize font-medium text-slate-600 text-xs md:text-sm block mb-2 w-full'>Category</label>
-                            <input type="text" id="category" name="category" onChange={changeHandler} value={category ? category : ''} className='border-[1px] outline-none text-xs md:text-sm block px-4 py-2 rounded w-full capitalize' />
+                            <input type="text" disabled={status === Status.PENDING} id="category" name="category" onChange={changeHandler} value={category ? category : ''} className='border-[1px] outline-none text-xs md:text-sm block px-4 py-2 rounded w-full capitalize' />
                             {formErrors.category && <span className='text-red-500 text-xs'>{formErrors.category}</span>}
                         </fieldset>
 
@@ -479,7 +472,13 @@ const EditProduct = () => {
                         {formErrors.description && <span className='text-red-500 text-xs'>{formErrors.description}</span>}
                     </fieldset>
 
-                    <button type="submit" className='md:w-[200px] bg-black text-white py-2 px-4 rounded text-center cursor-pointer text-sm md:text-base'>Edit Product</button>
+                    <button type="submit" disabled={status === Status.PENDING} className='md:w-[200px] flex justify-center gap-2 bg-black text-white py-2 px-4 rounded text-center cursor-pointer text-sm md:text-base'>
+                        {status === Status.PENDING ?
+                            <>
+                                <span>Editing</span>
+                                <span className='border-slate-600 loader'></span>
+                            </> : 'Edit Product'}
+                    </button>
 
                 </form>
             </div>

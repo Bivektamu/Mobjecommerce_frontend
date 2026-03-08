@@ -18,9 +18,7 @@ const BreadCrumbs = ({ rootLink = '' }: Props) => {
         const matches = path.split('/').filter(str => str !== '')
 
         const bugrerLinks = matches.map((url, index) => {
-            console.log(matches)
             const link = ('/' + matches.slice(0, index + 1).join('/').replace('Ecommerce', '')).replaceAll('//', '/')
-            console.log(link)
             return (
                 <div key={`burger_link_${index}`} className='flex items-center gap-x-2'>
                     <CustomNavLink isDisabled={index === matches.length - 1} to={link} cssClass={`  capitalize ${matches.length !== index + 1 ? 'font-medium text-slate-500' : 'font-bold'}`}>

@@ -53,6 +53,15 @@ export interface CreateUserForm {
     email: string,
     password: string,
 }
+export interface ContactForm {
+    firstName: string,
+    lastName: string,
+    email: string,
+    orderNumber?: string,
+    message: string,
+    subject: string,
+
+}
 
 export enum Status {
     PENDING = 'PENDING',
@@ -419,6 +428,6 @@ export interface PaymentIntent {
     items: OrderItem[],
     shippingAddress: Address,
     billingAddress: BillingDetails,
-    email?:string
-    
+    email?: string
+
 }
